@@ -58,7 +58,7 @@ export const AuroraBackground = ({
         </div>
 
         {/* Main Content */}
-        <div className="relative z-10 min-h-screen min-w-screen flex flex-col items-center justify-center overflow-hidden p-0 m-0">
+        <div className="relative z-10 min-h-screen min-w-screen flex flex-col items-center justify-center p-0 m-0">
           {children}
         </div>
       </div>
