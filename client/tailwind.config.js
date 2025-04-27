@@ -20,6 +20,9 @@ const config: Config = {
           },
         },
       },
+      dropShadow: {
+        arrow: "0 2px 4px rgba(0,0,0,0.1)",
+      },
     },
   },
   plugins: [],
