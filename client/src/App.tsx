@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import {Navbar, NavItems} from './components/ui/resizable-navbar';
 import { AuroraBackground } from "@/components/ui/aurora-background";
+import Menu from './pages/Menu';
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="/shop" element={<Shop />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/menu" element={<Menu />} />
           </Routes>
         </div>
       </AuroraBackground>
