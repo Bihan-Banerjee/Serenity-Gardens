@@ -82,37 +82,86 @@ const Reviews = () => {
     },
   ];
 
-  return (
-    <div className="flex flex-col items-center justify-center gap-12 mt-20">
-      {/* Section 1 - Marquee Testimonials */}
-      <section className="w-full max-w-7xl px-4 space-y-10">
-        <h2 className="text-4xl font-bold text-center mb-8">What Visitors Say</h2>
+  const splitTestimonials = () => {
+    const chunkSize = Math.ceil(testimonials.length / 3);
+    const chunks = [];
+    for (let i = 0; i < testimonials.length; i += chunkSize) {
+      chunks.push(testimonials.slice(i, i + chunkSize));
+    }
+    return chunks;
+  };
 
-        {/* Three Marquee Rows */}
+  const [firstRow, secondRow, thirdRow] = splitTestimonials();
+
+  return (
+    <div className="w-full pt-40">
+      {/* Section 1 - Marquee Testimonials */}
+      
+      <div className="max-w-5xl mx-auto px-4">
+        <h2 className="text-4xl font-bold text-center mb-8">
+          What Visitors Say
+        </h2>
+      </div>
+      <section className="w-full max-w-7xl px-2">
         <div className="space-y-8">
-          {[0, 1, 2].map((row) => (
-            <Marquee key={row} reverse={row === 1} className="gap-6">
-              {testimonials.map((testimonial, idx) => (
-                <div
-                  key={`${row}-${idx}`}
-                  className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
-                >
-                  <img
-                    src={testimonial.img}
-                    alt={testimonial.name}
-                    className="w-16 h-16 rounded-full object-cover mb-4"
-                  />
-                  <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
-                </div>
-              ))}
-            </Marquee>
-          ))}
+          {/* 1st Row */}
+          <Marquee className="gap-6">
+            {firstRow.map((testimonial, idx) => (
+              <div
+                key={`first-${idx}`}
+                className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
+              >
+                <img
+                  src={testimonial.img}
+                  alt={testimonial.name}
+                  className="w-16 h-16 rounded-full object-cover mb-4"
+                />
+                <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
+              </div>
+            ))}
+          </Marquee>
+
+          {/* 2nd Row - Reverse */}
+          <Marquee reverse className="gap-6">
+            {secondRow.map((testimonial, idx) => (
+              <div
+                key={`second-${idx}`}
+                className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
+              >
+                <img
+                  src={testimonial.img}
+                  alt={testimonial.name}
+                  className="w-16 h-16 rounded-full object-cover mb-4"
+                />
+                <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
+              </div>
+            ))}
+          </Marquee>
+
+          {/* 3rd Row */}
+          <Marquee className="gap-6">
+            {thirdRow.map((testimonial, idx) => (
+              <div
+                key={`third-${idx}`}
+                className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
+              >
+                <img
+                  src={testimonial.img}
+                  alt={testimonial.name}
+                  className="w-16 h-16 rounded-full object-cover mb-4"
+                />
+                <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
+              </div>
+            ))}
+          </Marquee>
         </div>
       </section>
 
       {/* Section 2 - Feedback Form */}
-      <section className="mt-20 w-full max-w-xl px-4">
+      <section className="max-w-xl mx-auto px-4 mt-20 pb-20">
         <h2 className="text-3xl font-bold text-center mb-4">Share Your Feedback</h2>
         <p className="text-gray-600 text-center mb-6">
           We would love to hear about your experience!

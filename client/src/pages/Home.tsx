@@ -23,12 +23,12 @@ const Home = () => {
       <section className="w-full max-w-7xl mx-auto">
         <FocusCards
           cards={[
-            { title: "Explore", src: "wall.jpg" },
-            { title: "Gallery", src: "corner.jpg" },
-            { title: "Reviews", src: "garden.jpg" },
-            { title: "Explore", src: "sky.jpg" },
-            { title: "Gallery", src: "harvest.jpg" },
-            { title: "Reviews", src: "bird.jpg" },
+            { title: "Explore", src: "/images/wall.jpg" },
+            { title: "Gallery", src: "/images/corner.jpg" },
+            { title: "Reviews", src: "/images/garden.jpg" },
+            { title: "Explore", src: "/images/sky.jpg" },
+            { title: "Gallery", src: "/images/harvest.jpg" },
+            { title: "Reviews", src: "/images/bird.jpg" },
           ]}
         />
       </section>
