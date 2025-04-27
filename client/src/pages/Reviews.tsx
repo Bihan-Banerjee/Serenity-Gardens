@@ -1,26 +1,85 @@
 "use client";
 
-import { Marquee } from "@/components/magicui/marquee"; // your Marquee component
+import { Marquee } from "@/components/magicui/marquee"; 
 import React from "react";
 
 const Reviews = () => {
   const testimonials = [
     {
-      name: "John Doe",
-      review: "Amazing place, felt very close to nature!",
-      img: "/john.jpg",
+      name: "Suvankar Chakraborty",
+      review: "We visited this Serenity gardens for our get together with old friends on 22/12/24. The ambience of the garden is too good. The hospitality by the caretaker,Laltu was amazing and food served was tasty and hygienic, thanks to Swarup and his brother Arup. I would highly recommend this place to for family get together.",
+      img: "/reviews/suvankar.png",
     },
     {
-      name: "Jane Smith",
-      review: "The gardens were peaceful and beautiful. Loved it!",
-      img: "/jane.jpg",
+      name: "Soma Gupta",
+      review: "It is an excellent farm house with lot of places for the children to play, for taking colourful snaps and lot of adda. The food and the hospitality served there by Laltu & his wife, needs special mention... really they were too tasty👌",
+      img: "/reviews/soma.png",
     },
     {
-      name: "Alex Johnson",
-      review: "Perfect spot for relaxation and rejuvenation!",
-      img: "/alex.jpg",
+      name: "Parna Banerjee",
+      review: "My recent visit at Serenity Gardens in Baruipur was nothing short of delightful. Nestled in a serene and green environment, the retreat offered the perfect escape from the bustle of daily life. The blend of modern amenities with a tranquil, nature-filled atmosphere truly set it apart...",
+      img: "/reviews/parna.png",
     },
-    // add more if you have
+    {
+      name: "Kankani Mukherjee",
+      review: "Mesmerising atmosphere,eye soothing greenery with various fruits,vegetable and flower plants.A place which keeps away all the stress and rejuvenates everybody.Ideal place for get together with all the amenities. A must visit place to feel the nature very near to the city.",
+      img: "/reviews/kankani.png",
+    },
+    {
+      name: "Sutreyi",
+      review: "It is B-E-A-U-T-I-F-U-L...💚",
+      img: "/reviews/sutreyi.png",
+    },
+    {
+      name: "Madhumita Chatterjee",
+      review: "Serenity Garden , what an appropriate and significant name of this huge tranquil plot of land one can only gaze with appreciation. Much effort has been taken by the owners to beautify this area with various flowers, fruits and vegetables, and is also ornamented with lovely painting and decorative planter. Worth spending a whole day for relaxation...",
+      img: "/reviews/madhumita.png",
+    },
+    {
+      name: "SRABANI CHAKRABORTY",
+      review: "The scenic beauty of this place is amezing,every part is full of greenery.",
+      img: "/reviews/srabani.png",
+    },
+    {
+      name: "Paramita Roy",
+      review: "I along with my friends visited Serenity Gardens on last Sunday. It’s an aesthetically decorated, very neat and well maintained Farm House. Food was also very amazing . Worth a visit.",
+      img: "/reviews/paramita.png",
+    },
+    {
+      name: "soma dasgupta",
+      review: "Very nice place & very large area. I would highly recommend it for a family picnic . Enjoyed a lot with my buddies.",
+      img: "/reviews/soma1.png",
+    },
+    {
+      name: "Tamali Ghosh",
+      review: "I wanted to take a moment to express my heartfelt gratitude for hosting us at your beautiful farmhouse. The entire experience was absolutely wonderful and truly unforgettable! From the moment we arrived, we were captivated by the picturesque surroundings. The serene landscape, lush greenery, and charming farmhouse created the perfect setting for a relaxing day out...",
+      img: "/reviews/tamali.png",
+    },
+    {
+      name: "Munmun Basu",
+      review: "Excellent food,superb hospitality, beauty and peace of nature prevail everywhere in this place",
+      img: "/reviews/munmun.png",
+    },
+    {
+      name: "Dola Ray",
+      review: "A fantastic experience at Serenity Gardens. Exceptional arrangements and tasty food, surrounded by pristine greens. A walk down the gardens and pond was pure joy. An island of peace and serenity indeed.",
+      img: "/reviews/dola.png",
+    },
+    {
+      name: "dipankar bandyopadhyay",
+      review: "Open up to Mother Nature for tranquility and peace",
+      img: "/reviews/dipankar.png",
+    },
+    {
+      name: "Arun Thakur",
+      review: "Very good place...",
+      img: "/reviews/arun.png",
+    },
+    {
+      name: "DR ARINDAM MANDAL",
+      review: "What a wonderful place surrounded by nature,play ground ,water body and a beautiful bunglow❤️",
+      img: "/reviews/arindam.png",
+    },
   ];
 
   return (
@@ -43,7 +102,7 @@ const Reviews = () => {
                     alt={testimonial.name}
                     className="w-16 h-16 rounded-full object-cover mb-4"
                   />
-                  <h3 className="font-semibold">{testimonial.name}</h3>
+                  <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
                   <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
                 </div>
               ))}
