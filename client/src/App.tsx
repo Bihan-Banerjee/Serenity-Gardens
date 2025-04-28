@@ -10,6 +10,7 @@ import Register from './pages/Register';
 import {Navbar, NavItems} from './components/ui/resizable-navbar';
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import Menu from './pages/Menu';
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/menu" element={<Menu />} />
           </Routes>
+          <Toaster position="top-right" reverseOrder={false} />
         </div>
       </AuroraBackground>
     </Router>

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 export const Card = React.memo(
   ({
@@ -9,15 +10,27 @@ export const Card = React.memo(
     index,
     hovered,
     setHovered,
+    redirectOnClick,
   }: {
     card: any;
     index: number;
     hovered: number | null;
     setHovered: React.Dispatch<React.SetStateAction<number | null>>;
-  }) => (
+    redirectOnClick?: boolean;
+  }) => {
+
+    const navigate = useNavigate(); // 👈 added
+
+    const handleClick = () => {
+      if (redirectOnClick && card.link) {
+        navigate(card.link);
+      }
+    };
+    return(
     <div
       onMouseEnter={() => setHovered(index)}
       onMouseLeave={() => setHovered(null)}
+      onClick={handleClick}
       className={cn(
         "rounded-lg relative bg-gray-100 dark:bg-neutral-900 overflow-hidden h-60 md:h-96 w-full transition-all duration-300 ease-out",
         hovered !== null && hovered !== index && "blur-sm scale-[0.98]"
@@ -39,17 +52,19 @@ export const Card = React.memo(
         </div>
       </div>
     </div>
-  )
+  );
+  }
 );
 
 Card.displayName = "Card";
 
-type Card = {
+type CardType = {
   title: string;
   src: string;
+  link?: string;
 };
 
-export function FocusCards({ cards }: { cards: Card[] }) {
+export function FocusCards({ cards, redirectOnClick = false }: { cards: CardType[]; redirectOnClick?: boolean; }) {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
@@ -61,6 +76,7 @@ export function FocusCards({ cards }: { cards: Card[] }) {
           index={index}
           hovered={hovered}
           setHovered={setHovered}
+          redirectOnClick={redirectOnClick}
         />
       ))}
     </div>

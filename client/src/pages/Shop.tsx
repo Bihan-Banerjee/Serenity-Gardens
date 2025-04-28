@@ -8,9 +8,9 @@ const Shop = () => {
       <section className="w-full min-w-4xl max-w-7xl mx-auto mt-10">
       <FocusCards
         cards={[
-          { title: "First time? Register!", src: "register.jpg" },
-          { title: "Login and shop!", src: "login.jpg" },
-          { title: "Insight about catalogue", src: "robot.png" }
+          { title: "First time? Register!", src: "register.jpg", link: "/register" },
+          { title: "Login and shop!", src: "login.jpg", link: "/login" },
+          { title: "Admin", src: "robot.png", link: "/admin" }
         ]}
       />
     </section>
