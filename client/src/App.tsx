@@ -11,6 +11,15 @@ import {Navbar, NavItems} from './components/ui/resizable-navbar';
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import Menu from './pages/Menu';
 import { Toaster } from "react-hot-toast";
+import AdminDashboard from './pages/AdminDashboard';
+
+const isAdmin = () => {
+  const token = localStorage.getItem('token');
+  if (!token) return false;
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  return payload.role === 'admin'; 
+};
+
 
 const App = () => {
   return (
@@ -27,6 +36,7 @@ const App = () => {
               { name: "Register", link: "/register" },
               { name: "Login", link: "/login" },
               { name: "Explore", link: "/explore" },
+              { name: "Admin", link: "/admin" },
             ]}
             onItemClick={() => console.log("Navbar item clicked!")}
           />
@@ -42,6 +52,8 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/menu" element={<Menu />} />
+            <Route path="/admin" element={<AdminDashboard/>}/>
+            {/*<Route path="/admin" element={isAdmin() ? <AdminDashboard /> : <Navigate to="/" />}/>*/}
           </Routes>
           <Toaster position="top-right" reverseOrder={false} />
         </div>

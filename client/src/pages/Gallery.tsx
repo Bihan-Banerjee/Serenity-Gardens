@@ -4,6 +4,18 @@ import Carousel from "@/components/ui/carousel";
 const Gallery = () => {
   const slides = [
     {
+      title: "Sunset Bliss",
+      src: "/images/entrance.jpg",
+    },
+    {
+      title: "Colorful Blooms",
+      src: "/images/fields.jpg",
+    },
+    {
+      title: "Blooming Gardens",
+      src: "/images/floweringTiles.jpg",
+    },
+    {
       title: "Blooming Gardens",
       src: "/images/wall.jpg",
     },
@@ -26,18 +38,6 @@ const Gallery = () => {
     {
       title: "Harvest Season",
       src: "/images/corner.jpg",
-    },
-    {
-      title: "Sunset Bliss",
-      src: "/images/entrance.jpg",
-    },
-    {
-      title: "Colorful Blooms",
-      src: "/images/fields.jpg",
-    },
-    {
-      title: "Blooming Gardens",
-      src: "/images/floweringTiles.jpg",
     },
     {
       title: "Harvest Season",

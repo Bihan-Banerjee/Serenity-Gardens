@@ -1,28 +1,55 @@
-import express from 'express';
-import Product from '../models/Product.js';
-import { protect, admin } from '../middleware/authMiddleware.js';
+import express from "express";
+import Item from "../models/Item.js";
 
 const router = express.Router();
 
-// Get all products (for customers)
-router.get('/', async (req, res) => {
+// Fetch all items
+router.get("/", async (req, res) => {
   try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching products' });
+    const items = await Item.find();
+    res.json(items);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
-// Add product (Admin only)
-router.post('/', protect, admin, async (req, res) => {
-  const { name, category, price, description, imageUrl } = req.body;
+// Add a new item
+router.post("/", async (req, res) => {
+  const { title, price, stock } = req.body;
+  const newItem = new Item({ title, price, stock });
+
   try {
-    const product = new Product({ name, category, price, description, imageUrl });
-    await product.save();
-    res.status(201).json({ message: 'Product added successfully', product });
-  } catch (error) {
-    res.status(500).json({ message: 'Error adding product' });
+    const savedItem = await newItem.save();
+    res.status(201).json(savedItem);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// Update stock of item
+router.patch("/:id", async (req, res) => {
+  try {
+    const { stock } = req.body;
+    const updatedItem = await Item.findByIdAndUpdate(
+      req.params.id,
+      { stock },
+      { new: true }
+    );
+    if (!updatedItem) return res.status(404).json({ message: "Item not found" });
+    res.json(updatedItem);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// Delete an item
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedItem = await Item.findByIdAndDelete(req.params.id);
+    if (!deletedItem) return res.status(404).json({ message: "Item not found" });
+    res.json({ message: "Item deleted" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 });
 
