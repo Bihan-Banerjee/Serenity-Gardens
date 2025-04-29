@@ -7,6 +7,7 @@ const Shop = () => {
       </div>
       <section className="w-full min-w-4xl max-w-7xl mx-auto mt-10">
       <FocusCards
+      redirectOnClick={true}
         cards={[
           { title: "First time? Register!", src: "register.jpg", link: "/register" },
           { title: "Login and shop!", src: "login.jpg", link: "/login" },
