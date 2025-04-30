@@ -1,8 +1,9 @@
 import express from "express";
 import Item from "../models/Item.js";
-
+import multer from 'multer';
 const router = express.Router();
-
+const storage = multer.memoryStorage(); // You can later switch to disk or cloud (e.g., Cloudinary)
+const upload = multer({ storage });
 // Fetch all items
 router.get("/", async (req, res) => {
   try {
@@ -14,18 +15,25 @@ router.get("/", async (req, res) => {
 });
 
 // Add a new item
-router.post("/", async (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
     const { name, description, price, stock } = req.body;
-    if (!name || !price || stock == null) {
-      return res.status(400).json({ message: "Missing required fields" });
-    }
 
-    const newItem = new Item({ name, description, price, stock });
-    await newItem.save();
-    res.status(201).json(newItem);
+    const imageBuffer = req.file ? req.file.buffer.toString("base64") : null;
+    const imageMimeType = req.file?.mimetype;
+
+    const item = new Item({
+      name,
+      description,
+      price,
+      stock,
+      image: imageBuffer ? `data:${imageMimeType};base64,${imageBuffer}` : null,
+    });
+
+    const savedItem = await item.save();
+    res.status(201).json(savedItem);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 

@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 const ItemManager = () => {
   const [items, setItems] = useState([]);
-  const [form, setForm] = useState({ name: "", description: "", price: "", stock: "" });
+  const [form, setForm] = useState({ name: "", description: "", price: "", stock: "", image: null });
   const [editingStockId, setEditingStockId] = useState(null);
   const [newStock, setNewStock] = useState("");
 
@@ -18,24 +18,32 @@ const ItemManager = () => {
     }
   };
 
-  const handleAddItem = async (e) => {
+  const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = {
-      name: form.name,
-      description: form.description,
-      price: Number(form.price),
-      stock: Number(form.stock),
-    };
-  
-    console.log("Sending item payload:", payload); // ✅ Debug log
-  
+
+    const formData = new FormData();
+    formData.append("name", form.name);
+    formData.append("description", form.description);
+    formData.append("price", form.price);
+    formData.append("stock", form.stock);
+    if (form.image) formData.append("image", form.image);
+
     try {
-      await axios.post("http://localhost:5000/api/items", payload);
+      await axios.post("http://localhost:5000/api/items", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       toast.success("Item added!");
-      setForm({ name: "", description: "", price: "", stock: "" });
+      setForm({
+        name: "",
+        description: "",
+        price: "",
+        stock: "",
+        image: null,
+      });
       fetchItems();
-    } catch (err) {
-      console.error(err.response?.data || err.message);
+    } catch {
       toast.error("Error adding item");
     }
   };
@@ -101,6 +109,14 @@ const ItemManager = () => {
           className="w-full p-2 border rounded text-black"
           required
         />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) =>
+            setForm({ ...form, image: e.target.files?.[0] || null })
+          }
+          className="w-full p-2 border rounded text-black"
+        />
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
           Add Item
         </button>
@@ -113,6 +129,13 @@ const ItemManager = () => {
             key={item._id}
             className="p-4 border rounded flex flex-col bg-white dark:bg-neutral-800"
           >
+            {item.image && (
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-48 object-cover rounded mb-4"
+              />
+            )}
             <h3 className="text-lg font-bold">{item.name}</h3>
             <p className="text-sm text-gray-600 mb-1">{item.description}</p>
             <p>Price: ₹{item.price}</p>
