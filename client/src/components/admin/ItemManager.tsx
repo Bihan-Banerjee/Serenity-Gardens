@@ -58,6 +58,17 @@ const ItemManager = () => {
     }
   };
 
+  const handleFinalize = async (id) => {
+    try {
+      await axios.patch(`http://localhost:5000/api/items/finalize/${id}`);
+      toast.success("Item finalized!");
+      fetchItems();
+    } catch (err) {
+      toast.error("Error finalizing item");
+    }
+  };
+  
+
   const handleStockUpdate = async (id) => {
     try {
       await axios.patch(`http://localhost:5000/api/items/${id}`, { stock: newStock });
@@ -174,6 +185,12 @@ const ItemManager = () => {
               className="mt-4 bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700"
             >
               Delete
+            </button>
+            <button
+              onClick={() => handleFinalize(item._id)}
+              className="mt-2 bg-purple-600 text-white px-4 py-1 rounded hover:bg-purple-700"
+            >
+              Finalize
             </button>
           </div>
         ))}

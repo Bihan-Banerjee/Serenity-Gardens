@@ -37,6 +37,27 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
+router.patch('/finalize/:id', async (req, res) => {
+  try {
+    const item = await Item.findByIdAndUpdate(req.params.id, { finalized: true }, { new: true });
+    if (!item) return res.status(404).json({ message: "Item not found" });
+    res.json(item);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// itemRoutes.js
+router.get("/", async (req, res) => {
+  try {
+    const items = await Item.find({ finalized: true });
+    res.json(items);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching items" });
+  }
+});
+
+
 // Update stock of item
 router.patch("/:id", async (req, res) => {
   try {

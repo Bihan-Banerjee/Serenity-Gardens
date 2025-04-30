@@ -1,25 +1,25 @@
 "use client";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-import { useState } from "react";
+export default function Menu() {
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
 
-// Dummy shop data
-const products = [
-  { id: 1, name: "Cabbage", price: 100, stock: 10, img: "images/cabbage.jpg" },
-  { id: 2, name: "Tomato", price: 200, stock: 5, img: "images/tomato.jpg" },
-  { id: 3, name: "Flower", price: 50, stock: 20, img: "images/bigFlower.jpg" },
-];
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/items");
+        setProducts(res.data.filter(item => item.finalized));
 
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-}
+      } catch (err) {
+        console.error("Error fetching products", err);
+      }
+    };
+    fetchProducts();
+  }, []);
 
-export default function Shop() {
-  const [cart, setCart] = useState<CartItem[]>([]);
-
-  const handleAddToCart = (product: typeof products[0]) => {
+  const handleAddToCart = (product) => {
     const quantity = parseInt(
       prompt(`Enter quantity (Available: ${product.stock})`) || "0",
       10
@@ -35,16 +35,16 @@ export default function Shop() {
       return;
     }
 
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === product.id);
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.id === product.id
+    setCart((prev) => {
+      const existing = prev.find((item) => item._id === product._id);
+      if (existing) {
+        return prev.map((item) =>
+          item._id === product._id
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       } else {
-        return [...prevCart, { ...product, quantity }];
+        return [...prev, { ...product, quantity }];
       }
     });
   };
@@ -60,31 +60,30 @@ export default function Shop() {
           <img src="/logo.jpg" alt="Logo" className="w-12 h-12 rounded-full" />
           <h1 className="text-3xl font-bold">Serenity Gardens Shop</h1>
         </div>
-
-        <div className="flex flex-col text-right">
-          <p className="font-semibold text-lg">🛒 Items: {totalItems}</p>
-          <p className="font-semibold text-lg">💵 Total: ₹{totalPrice}</p>
+        <div className="text-right">
+          <p className="font-semibold">🛒 Items: {totalItems}</p>
+          <p className="font-semibold">💵 Total: ₹{totalPrice}</p>
         </div>
       </div>
 
-      {/* Product Cards */}
+      {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-6xl">
         {products.map((product) => (
           <div
-            key={product.id}
-            className="bg-white dark:bg-neutral-900 p-6 rounded-lg shadow-md flex flex-col items-center justify-center hover:shadow-xl transition"
+            key={product._id}
+            className="bg-white dark:bg-neutral-900 p-6 rounded-lg shadow-md hover:shadow-xl transition"
           >
             <img
-              src={product.img}
+              src={product.image || "fallback.jpg"}
               alt={product.name}
-              className="w-full h-48 object-cover rounded-md mb-4"
+              className="w-full h-48 object-cover rounded mb-4"
             />
-            <h2 className="text-xl font-semibold mb-2 text-black">{product.name}</h2>
-            <p className="text-gray-500 mb-2">₹{product.price}</p>
+            <h2 className="text-xl font-bold text-black">{product.name}</h2>
+            <p className="text-gray-500">₹{product.price}</p>
             <p className="text-gray-400 mb-4">Stock: {product.stock}</p>
             <button
               onClick={() => handleAddToCart(product)}
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded transition"
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
             >
               Add to Cart
             </button>
