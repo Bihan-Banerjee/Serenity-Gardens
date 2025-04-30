@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 const ItemManager = () => {
   const [items, setItems] = useState([]);
-  const [form, setForm] = useState({ title: "", price: "", stock: "" });
+  const [form, setForm] = useState({ name: "", description: "", price: "", stock: "" });
   const [editingStockId, setEditingStockId] = useState(null);
   const [newStock, setNewStock] = useState("");
 
@@ -20,12 +20,22 @@ const ItemManager = () => {
 
   const handleAddItem = async (e) => {
     e.preventDefault();
+    const payload = {
+      name: form.name,
+      description: form.description,
+      price: Number(form.price),
+      stock: Number(form.stock),
+    };
+  
+    console.log("Sending item payload:", payload); // ✅ Debug log
+  
     try {
-      await axios.post("http://localhost:5000/api/items", form);
+      await axios.post("http://localhost:5000/api/items", payload);
       toast.success("Item added!");
-      setForm({ title: "", price: "", stock: "" });
+      setForm({ name: "", description: "", price: "", stock: "" });
       fetchItems();
     } catch (err) {
+      console.error(err.response?.data || err.message);
       toast.error("Error adding item");
     }
   };
@@ -59,14 +69,22 @@ const ItemManager = () => {
     <div className="space-y-6">
       {/* Add Item Form */}
       <form onSubmit={handleAddItem} className="space-y-4">
-        <input
+      <input
           type="text"
-          placeholder="Title"
-          value={form.title}
-          onChange={(e) => setForm({ ...form, title: e.target.value })}
+          placeholder="Name"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
           className="w-full p-2 border rounded text-black"
           required
         />
+        <input
+          type="text"
+          placeholder="Description"
+          value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
+          className="w-full p-2 border rounded text-black"
+        />
+
         <input
           type="number"
           placeholder="Price"
@@ -88,19 +106,24 @@ const ItemManager = () => {
         </button>
       </form>
 
-      {/* List of Items */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+       {/* ✅ Items Display */}
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {items.map((item) => (
-          <div key={item._id} className="p-4 border rounded flex flex-col">
-            <h3 className="text-lg font-bold">{item.title}</h3>
+          <div
+            key={item._id}
+            className="p-4 border rounded flex flex-col bg-white dark:bg-neutral-800"
+          >
+            <h3 className="text-lg font-bold">{item.name}</h3>
+            <p className="text-sm text-gray-600 mb-1">{item.description}</p>
             <p>Price: ₹{item.price}</p>
+
             {editingStockId === item._id ? (
               <div className="flex gap-2 mt-2">
                 <input
                   type="number"
                   value={newStock}
                   onChange={(e) => setNewStock(e.target.value)}
-                  className="border p-1 rounded w-20"
+                  className="border p-1 rounded w-20 text-black"
                 />
                 <button
                   onClick={() => handleStockUpdate(item._id)}
@@ -113,7 +136,10 @@ const ItemManager = () => {
               <p className="mt-2">
                 Stock: {item.stock}{" "}
                 <button
-                  onClick={() => { setEditingStockId(item._id); setNewStock(item.stock); }}
+                  onClick={() => {
+                    setEditingStockId(item._id);
+                    setNewStock(item.stock);
+                  }}
                   className="text-blue-500 underline text-sm ml-2"
                 >
                   Edit

@@ -39,7 +39,7 @@ const OrderManager = () => {
           <ul className="list-disc ml-6 mt-2">
             {order.items.map((item, idx) => (
               <li key={idx}>
-                {item.title} x {item.quantity}
+                {item.name} x {item.quantity}
               </li>
             ))}
           </ul>

@@ -5,6 +5,7 @@ const ItemSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   description: { type: String },
   imageUrl: { type: String }, // Optional image URL for the product
+  stock: { type: Number, required: true, default: 0 }, 
 });
 
 export default mongoose.model("Item", ItemSchema);

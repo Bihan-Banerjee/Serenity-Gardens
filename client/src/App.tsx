@@ -37,6 +37,7 @@ const App = () => {
               { name: "Login", link: "/login" },
               { name: "Explore", link: "/explore" },
               { name: "Admin", link: "/admin" },
+              { name: "Menu", link: "/menu" },
             ]}
             onItemClick={() => console.log("Navbar item clicked!")}
           />

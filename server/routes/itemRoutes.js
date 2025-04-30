@@ -15,14 +15,17 @@ router.get("/", async (req, res) => {
 
 // Add a new item
 router.post("/", async (req, res) => {
-  const { title, price, stock } = req.body;
-  const newItem = new Item({ title, price, stock });
-
   try {
-    const savedItem = await newItem.save();
-    res.status(201).json(savedItem);
+    const { name, description, price, stock } = req.body;
+    if (!name || !price || stock == null) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const newItem = new Item({ name, description, price, stock });
+    await newItem.save();
+    res.status(201).json(newItem);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
