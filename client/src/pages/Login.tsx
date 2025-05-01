@@ -32,11 +32,11 @@ const Login = () => {
 
       localStorage.setItem("token", data.token);
 
-      toast.success("Login successful 🚀"); // ✅ Toast
+      toast.success("Login successful"); 
       navigate("/menu");
     } catch (err: any) {
       setError(err.message);
-      toast.error(err.message || "Login failed ❌"); // ✅ Error Toast
+      toast.error(err.message || "Login failed"); 
     }
   };
 

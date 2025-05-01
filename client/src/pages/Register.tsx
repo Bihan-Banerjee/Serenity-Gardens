@@ -32,11 +32,11 @@ const Register = () => {
 
       localStorage.setItem("token", data.token);
 
-      toast.success("Registration successful! 🎉"); // ✅ Toast
+      toast.success("Registration successful!"); 
       navigate("/login");
     } catch (err: any) {
       setError(err.message);
-      toast.error(err.message || "Registration failed ❌"); // ✅ Error Toast
+      toast.error(err.message || "Registration failed");
     }
   };
 
