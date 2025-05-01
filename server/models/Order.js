@@ -1,14 +1,19 @@
 import mongoose from "mongoose";
 
 const OrderSchema = new mongoose.Schema({
-  userEmail: { type: String, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   items: [
     {
-      title: String,
+      id: String,
+      name: String,
+      price: Number,
       quantity: Number,
     },
   ],
+  totalAmount: Number,
   paid: { type: Boolean, default: false },
+  razorpayPaymentId: { type: String }, 
+  createdAt: { type: Date, default: Date.now },
 });
 
 export default mongoose.model("Order", OrderSchema);

@@ -34,11 +34,13 @@ const OrderManager = () => {
     <div className="space-y-6">
       {orders.map((order) => (
         <div key={order._id} className="p-4 border rounded">
-          <h3 className="font-bold text-lg">User: {order.userEmail}</h3>
-          <p>Status: {order.paid ? "✅ Paid" : "❌ Unpaid"}</p>
+          <h3 className="font-bold text-lg text-black">
+            User: {order.userId.name} ({order.userId.email})
+          </h3>
+          <p className="text-black">Status: {order.paid ? "✅ Paid" : "❌ Unpaid"}</p>
           <ul className="list-disc ml-6 mt-2">
             {order.items.map((item, idx) => (
-              <li key={idx}>
+              <li className="text-black" key={idx}>
                 {item.name} x {item.quantity}
               </li>
             ))}
