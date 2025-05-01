@@ -256,22 +256,26 @@ function Sidebar({
         >
           {children}
            {/* Toggle button */}
-          <button
+           <button
             onClick={() => toggleSidebar()}
             className={cn(
-              "absolute top-40 z-20 flex h-8 w-8 items-center justify-center rounded-full border bg-background shadow-sm transition-all duration-300 hover:bg-muted",
+              "absolute top-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-muted-foreground/20 bg-background shadow-lg transition-all duration-300",
+              "hover:bg-muted hover:border-muted-foreground/40 hover:scale-105",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+              "active:scale-95",
               side === "left"
                 ? state === "expanded"
-                  ? "-right-4"
-                  : "-right-12"
+                  ? "-right-5"
+                  : "-right-14"
                 : state === "expanded"
-                ? "-left-4"
-                : "-left-12"
+                ? "-left-5"
+                : "-left-14"
             )}
+            aria-label={state === "expanded" ? "Collapse sidebar" : "Expand sidebar"}
           >
             <ChevronRight
               className={cn(
-                "h-4 w-4 transition-transform duration-300",
+                "h-5 w-5 absolute z-50 cursor-pointer transition-transform duration-300 text-white",
                 side === "left" 
                   ? state === "expanded" 
                     ? "rotate-180" 
