@@ -48,30 +48,32 @@ export default function MenuPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-6xl">
+      <div data-ignore-outside-click className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-6xl">
         {products.map((product) => (
           <div
             key={product._id}
             data-ignore-outside-click
             className="bg-white dark:bg-neutral-900 p-4 rounded-lg shadow-md hover:shadow-lg transition"
           >
-            {product.imageUrl && (
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="w-full h-40 object-cover rounded mb-3"
-              />
-            )}
-            <h2 className="text-xl font-semibold text-black dark:text-white">
-              {product.name}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-1">
-              ₹{product.price}
-            </p>
-            <p className="text-sm text-gray-400 mb-2">Stock: {product.stock}</p>
-            <Button onClick={() => handleAddToCart(product)}>
-              Add to Cart
-            </Button>
+            <div data-ignore-outside-click>
+              {product.imageUrl && (
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
+                  className="w-full h-40 object-cover rounded mb-3"
+                />
+              )}
+              <h2 className="text-xl font-semibold text-black dark:text-white">
+                {product.name}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-1">
+                ₹{product.price}
+              </p>
+              <p className="text-sm text-gray-400 mb-2">Stock: {product.stock}</p>
+              <Button onClick={() => handleAddToCart(product)}>
+                Add to Cart
+              </Button>
+            </div>
           </div>
         ))}
       </div>

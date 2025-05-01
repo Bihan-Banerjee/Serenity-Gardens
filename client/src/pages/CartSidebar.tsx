@@ -16,43 +16,44 @@ export function CartSidebar() {
   const { cart, removeItem, updateQuantity } = useCartStore();
   const { isOpen, setOpen } = useSidebar(); 
   const navigate = useNavigate();
-  const sidebarRef = useRef(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      console.log("Clicked element:", target, "Sidebar ref:", sidebarRef.current);
+  const handleClickOutside = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
 
-      // If clicked inside the sidebar → don't close
-      if (sidebarRef.current && sidebarRef.current.contains(target)) {
-        return;
-      }
-  
-      // If clicked on or inside an element marked to ignore → don't close
-      if (target.closest('[data-ignore-outside-click]')) {
-        return;
-      }
-  
-      // Otherwise, close sidebar
-      setOpen(false);
-    };
-  
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+    if (!sidebarRef.current) return;
+
+    if (sidebarRef.current.classList.contains('collapsed')) {
+      console.log("Sidebar visually closed (collapsed class), skipping click check");
+      return;
     }
+
+    if (sidebarRef.current.contains(target)) {
+      console.log("Clicked inside sidebar — ignoring");
+      return;
+    }
+
+    if (target.closest('[data-ignore-outside-click]')) {
+      console.log("Clicked on ignore area — ignoring");
+      return;
+    }
+
+    console.log("Clicked outside — closing sidebar");
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen, setOpen]);
+  }, [setOpen]);
+  
   return (
     <>
-      
-
-      <Sidebar side="right" variant="sidebar" ref={sidebarRef}>
-        
-
+      <Sidebar data-open={isOpen ? "true" : "false"} side="right" variant="sidebar" ref={sidebarRef}>
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>Your Cart</SidebarGroupLabel>

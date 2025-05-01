@@ -165,13 +165,14 @@ function Sidebar({
 }) {
   const { isMobile, state, open, openMobile, setOpenMobile, toggleSidebar } = useSidebar();
   const sidebarRef = React.useRef<SidebarRef>(null);
-
+  /*
   // Close sidebar when clicking outside
   useOnClickOutside(sidebarRef, () => {
     if (open && !isMobile) {
       toggleSidebar();
     }
   });
+  */
   if (collapsible === "none") {
     return (
       <div
