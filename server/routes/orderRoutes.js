@@ -2,6 +2,7 @@ import express from "express";
 import Order from "../models/Order.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import Item from "../models/Item.js";
 dotenv.config();
 
 const router = express.Router();
@@ -43,12 +44,21 @@ router.post("/", authMiddleware, async (req, res) => {
 
     await newOrder.save();
 
+    for (const orderItem of items) {
+      const product = await import("../models/Item.js").then(m => m.default.findById(orderItem.id));
+      if (product) {
+        product.stock = Math.max(0, product.stock - orderItem.quantity);
+        await product.save();
+      }
+    }
+
     res.status(201).json({ message: "Order placed successfully", orderId: newOrder._id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to place order" });
   }
 });
+
 
 router.patch("/:id", async (req, res) => {
   try {
