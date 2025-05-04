@@ -23,6 +23,7 @@ export default function PaymentPage() {
       clearCart();
       alert("Order placed as Cash on Delivery!");
       navigate("/menu");
+      window.location.reload(); 
     } catch (err) {
       alert("Failed to place COD order. Please try again.");
     }
@@ -45,6 +46,7 @@ export default function PaymentPage() {
           clearCart();
           alert("Payment successful and order placed!");
           navigate("/menu");
+          window.location.reload(); 
         } catch (err) {
           alert("Order processing failed after payment. Please contact support.");
         }

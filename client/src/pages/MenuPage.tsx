@@ -9,16 +9,16 @@ export default function MenuPage() {
   const { addItem } = useCartStore();
   const [products, setProducts] = useState([]);
 
+  const fetchItems = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/items");
+      setProducts(res.data.filter((item) => item.finalized));
+    } catch (err) {
+      console.error("Failed to fetch items");
+    }
+  };
+  
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/items");
-        setProducts(res.data.filter((item) => item.finalized));
-      } catch (err) {
-        console.error("Failed to fetch items");
-      }
-    };
-
     fetchItems();
   }, []);
 

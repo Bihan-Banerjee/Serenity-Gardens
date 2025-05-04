@@ -32,7 +32,10 @@ router.post("/", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "No items provided" });
     }
 
-    const totalAmount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const totalAmount = items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
 
     const newOrder = new Order({
       userId: req.user.id,
@@ -44,21 +47,26 @@ router.post("/", authMiddleware, async (req, res) => {
 
     await newOrder.save();
 
-    for (const orderItem of items) {
-      const product = await import("../models/Item.js").then(m => m.default.findById(orderItem.id));
-      if (product) {
-        product.stock = Math.max(0, product.stock - orderItem.quantity);
-        await product.save();
+    if (paid) {
+      for (const orderItem of items) {
+        const product = await import("../models/Item.js").then((m) =>
+          m.default.findById(orderItem.id)
+        );
+        if (product) {
+          product.stock = Math.max(0, product.stock - orderItem.quantity);
+          await product.save();
+        }
       }
     }
 
-    res.status(201).json({ message: "Order placed successfully", orderId: newOrder._id });
+    res
+      .status(201)
+      .json({ message: "Order placed successfully", orderId: newOrder._id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to place order" });
   }
 });
-
 
 router.patch("/:id", async (req, res) => {
   try {
@@ -67,6 +75,16 @@ router.patch("/:id", async (req, res) => {
 
     const order = await Order.findById(id);
     if (!order) return res.status(404).json({ message: "Order not found" });
+
+    if (paid && !order.paid) {
+      for (const orderItem of order.items) {
+        const product = await Item.findById(orderItem.id);
+        if (product) {
+          product.stock = Math.max(0, product.stock - orderItem.quantity);
+          await product.save();
+        }
+      }
+    }
 
     order.paid = paid;
     await order.save();
