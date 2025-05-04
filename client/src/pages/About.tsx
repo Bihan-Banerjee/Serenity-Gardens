@@ -1,38 +1,4 @@
-import { HoverEffect } from "@/components/ui/card-hover-effect";
-
-const aboutHighlights = [
-  {
-    title: "Baba",
-    src: "/images/bird.jpg",
-    link: "#",
-  },
-  {
-    title: "Ma",
-    src: "/images/bird.jpg",
-    link: "#",
-  },
-  {
-    title: "Gablu",
-    src: "/images/bird.jpg",
-    link: "#",
-  },
-  {
-    title: "Jeja",
-    src: "/images/bird.jpg",
-    link: "#",
-  },
-  {
-    title: "Jemma",
-    src: "/images/bird.jpg",
-    link: "#",
-  },
-  {
-    title: "Titi didi",
-    src: "/images/bird.jpg",
-    link: "#",
-  },
-];
-
+import { FocusCards } from "@/components/ui/focus-cards";
 
 const About = () => {
   return (
@@ -44,8 +10,17 @@ const About = () => {
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4">
-        <HoverEffect items={aboutHighlights} />
+      <div className="w-5xl mx-auto mb-20 mt-30 px-4">
+      <FocusCards
+          cards={[
+            { title: "Baba", src: "/images/wall.jpg" },
+            { title: "Ma", src: "/images/corner.jpg" },
+            { title: "Gablu", src: "/images/garden.jpg" },
+            { title: "Jeja", src: "/images/sky.jpg" },
+            { title: "Jemma", src: "/images/harvest.jpg" },
+            { title: "Titi Didi", src: "/images/bird.jpg" },
+          ]}
+        />
       </div>
     </div>
   );

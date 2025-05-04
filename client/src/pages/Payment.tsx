@@ -31,7 +31,7 @@ export default function PaymentPage() {
   const handleRazorpayPayment = async () => {
     const options = {
       key: "YOUR_RAZORPAY_KEY",
-      amount: total * 100, // Razorpay expects amount in paisa
+      amount: total * 100, 
       currency: "INR",
       name: "Serenity Gardens",
       description: "Order Payment",

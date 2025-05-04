@@ -10,13 +10,11 @@ const AdminDashboard = () => {
         Admin Dashboard
       </h1>
 
-      {/* Section to manage menu items */}
       <section className="bg-white dark:bg-neutral-900 shadow-lg p-6 rounded-lg">
         <h2 className="text-2xl text-black dark:text-black font-bold mb-6 text-center">Manage Items</h2>
         <ItemManager />
       </section>
 
-      {/* Section to manage orders */}
       <section className="bg-white dark:bg-neutral-900 shadow-lg p-6 rounded-lg">
         <h2 className="text-2xl text-black dark:text-black font-bold mb-6 text-center">Manage Orders</h2>
         <OrderManager />

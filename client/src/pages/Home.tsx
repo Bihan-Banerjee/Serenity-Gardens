@@ -5,7 +5,6 @@ import { FocusCards } from "@/components/ui/focus-cards";
 const Home = () => {
   return (
     <AuroraBackground className="pt-36 pb-20 px-4">
-      {/* Title below Navbar */}
       <div className="flex flex-col items-center text-center space-y-4 mb-16">
         <AuroraText className="text-4xl md:text-6xl font-bold">
           Serenity Gardens
@@ -18,8 +17,6 @@ const Home = () => {
           Explore, relax, and rejuvenate your senses in a peaceful environment.
         </p>
       </div>
-
-      {/* Cards section */}
       <section className="w-full max-w-7xl mx-auto">
         <FocusCards
           cards={[
