@@ -22,3 +22,5 @@ coverage/
 # Optional: If you're using a system-specific OS, add the following:
 .DS_Store
 Thumbs.db
+
+export.md

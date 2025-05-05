@@ -138,7 +138,7 @@ const ItemManager = () => {
         {items.map((item) => (
           <div
             key={item._id}
-            className="p-4 border rounded flex flex-col bg-white dark:bg-neutral-800"
+            className="p-2 border rounded flex flex-col bg-white dark:bg-neutral-800 max-w-xs mx-autoshadow-lg"
           >
             {item.image && (
               <img
@@ -147,9 +147,9 @@ const ItemManager = () => {
                 className="w-full h-48 object-cover rounded mb-4"
               />
             )}
-            <h3 className="text-lg font-bold">{item.name}</h3>
+            <h3 className="text-lg text-gray-800 font-bold">{item.name}</h3>
             <p className="text-sm text-gray-600 mb-1">{item.description}</p>
-            <p>Price: ₹{item.price}</p>
+            <p className="text-sm text-gray-600">Price: ₹{item.price}</p>
 
             {editingStockId === item._id ? (
               <div className="flex gap-2 mt-2">
@@ -161,20 +161,20 @@ const ItemManager = () => {
                 />
                 <button
                   onClick={() => handleStockUpdate(item._id)}
-                  className="bg-green-500 text-white px-2 rounded"
+                  className="bg-green-500 text-black px-2 rounded"
                 >
                   Save
                 </button>
               </div>
             ) : (
-              <p className="mt-2">
+              <p className="mt-2 text-sm text-gray-600">
                 Stock: {item.stock}{" "}
                 <button
                   onClick={() => {
                     setEditingStockId(item._id);
                     setNewStock(item.stock);
                   }}
-                  className="text-blue-500 underline text-sm ml-2"
+                  className="text-white text-sm ml-2"
                 >
                   Edit
                 </button>
