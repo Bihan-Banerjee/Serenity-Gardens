@@ -6,25 +6,25 @@ const ExplorePage = () => {
       quote: "Serenity Gardens is the perfect getaway spot for family picnics. Surrounded by nature, you’ll feel rejuvenated and relaxed!",
       name: "Family Picnic",
       designation: "Nature Retreat",
-      src: "/images/corner.jpg",
+      src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/ibdeyxi3jveyr3haywum.jpg",
     },
     {
       quote: "Host your next birthday or anniversary party here! Beautiful spaces, great lighting, and plenty of greenery for photos.",
       name: "Party Venue",
       designation: "Celebrations & Events",
-      src: "/images/entrance.jpg",
+      src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/qzb7kxjiaubde9wy3ebb.jpg",
     },
     {
       quote: "Looking for a peaceful photoshoot location? Our floral gardens and rustic benches offer the perfect backdrop.",
       name: "Photography",
       designation: "Perfect Backdrops",
-      src: "/images/house.jpg",
+      src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/pg04ahdxekzcrtajcuwz.jpg",
     },
     {
       quote: "Escape the city buzz and enjoy an evening under the stars at Serenity Gardens. Unwind, relax, and make memories.",
       name: "Evening Escape",
       designation: "Under the Stars",
-      src: "/images/ghat.jpg",
+      src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/hr8dz5acvwvdpa427txt.jpg",
     },
   ];
 

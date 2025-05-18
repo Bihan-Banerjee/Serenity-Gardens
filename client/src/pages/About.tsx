@@ -13,12 +13,12 @@ const About = () => {
       <div className="w-5xl mx-auto mb-20 mt-30 px-4">
       <FocusCards
           cards={[
-            { title: "Baba", src: "/images/wall.jpg" },
-            { title: "Ma", src: "/images/corner.jpg" },
-            { title: "Gablu", src: "/images/garden.jpg" },
-            { title: "Jeja", src: "/images/sky.jpg" },
-            { title: "Jemma", src: "/images/harvest.jpg" },
-            { title: "Titi Didi", src: "/images/bird.jpg" },
+            { title: "Baba", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Ma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Gablu", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Jeja", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Jemma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Titi Didi", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
           ]}
         />
       </div>

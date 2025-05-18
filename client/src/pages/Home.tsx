@@ -20,12 +20,12 @@ const Home = () => {
       <section className="w-full max-w-7xl mx-auto">
         <FocusCards
           cards={[
-            { title: "Explore", src: "/images/wall.jpg" },
-            { title: "Gallery", src: "/images/corner.jpg" },
-            { title: "Reviews", src: "/images/garden.jpg" },
-            { title: "Explore", src: "/images/sky.jpg" },
-            { title: "Gallery", src: "/images/harvest.jpg" },
-            { title: "Reviews", src: "/images/bird.jpg" },
+            { title: "Explore", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Gallery", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/ibdeyxi3jveyr3haywum.jpg" },
+            { title: "Reviews", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/zww1tqnxhcxqj3kvipbc.jpg" },
+            { title: "Explore", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/nxg3svvd6hqg4jxcounn.jpg" },
+            { title: "Gallery", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/ve16mdjatbtj5ml1elrs.jpg" },
+            { title: "Reviews", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/snuootxbedmhpy09lzie.jpg" },
           ]}
         />
       </section>
