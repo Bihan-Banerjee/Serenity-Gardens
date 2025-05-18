@@ -1,9 +1,12 @@
 import express from "express";
 import Item from "../models/Item.js";
-import multer from 'multer';
-const router = express.Router();
-const storage = multer.memoryStorage(); // You can later switch to disk or cloud (e.g., Cloudinary)
+import multer from "multer";
+import sharp from "sharp";
+import cloudinary from "../utils/cloudinary.js";
+
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
+const router = express.Router();
 // Fetch all items
 router.get("/", async (req, res) => {
   try {
@@ -17,23 +20,44 @@ router.get("/", async (req, res) => {
 // Add a new item
 router.post("/", upload.single("image"), async (req, res) => {
   try {
-    const { name, description, price, stock } = req.body;
+    let imageUrl = null;
 
-    const imageBuffer = req.file ? req.file.buffer.toString("base64") : null;
-    const imageMimeType = req.file?.mimetype;
+    if (req.file) {
+      const buffer = await sharp(req.file.buffer)
+        .resize(800) // Resize if needed
+        .jpeg({ quality: 80 })
+        .toBuffer();
 
-    const item = new Item({
-      name,
-      description,
-      price,
-      stock,
-      image: imageBuffer ? `data:${imageMimeType};base64,${imageBuffer}` : null,
-    });
+      const result = await cloudinary.uploader.upload_stream(
+        { folder: "serenity-items" },
+        (error, result) => {
+          if (error) throw error;
+          imageUrl = result.secure_url;
+          finalize();
+        }
+      );
 
-    const savedItem = await item.save();
-    res.status(201).json(savedItem);
+      // Pipe buffer into Cloudinary stream
+      streamifier.createReadStream(buffer).pipe(result);
+    } else {
+      finalize();
+    }
+
+    async function finalize() {
+      const item = new Item({
+        name,
+        price,
+        stock,
+        description,
+        image: imageUrl,
+      });
+
+      await item.save();
+      res.status(201).json(item);
+    }
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    console.error(err);
+    res.status(500).json({ message: "Failed to upload item" });
   }
 });
 

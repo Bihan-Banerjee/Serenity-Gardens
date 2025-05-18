@@ -56,9 +56,9 @@ export default function MenuPage() {
             className="bg-white dark:bg-neutral-900 p-4 rounded-lg shadow-md hover:shadow-lg transition"
           >
             <div data-ignore-outside-click>
-              {product.imageUrl && (
+              {product.image && (
                 <img
-                  src={product.imageUrl}
+                  src={product.image}
                   alt={product.name}
                   className="w-full h-40 object-cover rounded mb-3"
                 />
@@ -70,7 +70,7 @@ export default function MenuPage() {
                 ₹{product.price}
               </p>
               <p className="text-sm text-gray-400 mb-2">Stock: {product.stock}</p>
-              <Button onClick={() => handleAddToCart(product)}>
+              <Button className="w-full" onClick={() => handleAddToCart(product)}>
                 Add to Cart
               </Button>
             </div>
