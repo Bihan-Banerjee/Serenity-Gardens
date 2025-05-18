@@ -4,11 +4,13 @@ import cors from "cors";
 import authRoutes from "./routes/auth.js"; 
 import itemRoutes from "./routes/itemRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import compression from "compression"; 
 import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
 const PORT = 5000;
+app.use(compression());
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
