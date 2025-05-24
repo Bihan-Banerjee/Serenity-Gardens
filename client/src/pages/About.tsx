@@ -1,5 +1,6 @@
 import { FocusCards } from "@/components/ui/focus-cards";
-
+import { AuroraText } from "@/components/magicui/aurora-text";
+import { Compare } from "@/components/ui/compare";
 const About = () => {
   return (
     <div className="max-w-7xl mx-auto mt-40 px-6">
@@ -22,6 +23,27 @@ const About = () => {
           ]}
         />
       </div>
+      <AuroraText className="text-4xl md:text-6xl font-bold flex items-center justify-center text-center">
+        Before VS After
+      </AuroraText>
+      <div className="w-full h-[90vh] px-1 md:px-8 flex items-center justify-center [perspective:800px] [transform-style:preserve-3d]">
+      <div
+        style={{
+          transform: "rotateX(15deg) translateZ(80px)",
+        }}
+        className="p-1 md:p-4 border rounded-3xl dark:bg-neutral-900 bg-neutral-100  border-neutral-200 dark:border-neutral-800 mx-auto w-3/4 h-1/2 md:h-3/4"
+      >
+        <Compare
+          firstImage="https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/ztej7qikgddcvdme1b3y.jpg"
+          secondImage="https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/zi2znwbqllsfazamxkty.jpg"
+          firstImageClassName="object-cover object-left-top w-full"
+          secondImageClassname="object-cover object-left-top w-full"
+          className="w-full h-full rounded-[22px] md:rounded-lg"
+          slideMode="hover"
+          autoplay={true}
+        />
+      </div>
+    </div>
     </div>
   );
 };
