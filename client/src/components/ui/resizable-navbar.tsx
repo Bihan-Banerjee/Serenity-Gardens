@@ -52,32 +52,57 @@ interface MobileNavMenuProps {
 
 export const Navbar = ({ children, className }: NavbarProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const [visible, setVisible] = useState<boolean>(false);
+  const { scrollY } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 100) {
-      setVisible(true);
-    } else {
+  const [visible, setVisible] = useState(true);
+  const inactivityTimer = useRef<NodeJS.Timeout | null>(null);
+
+  const resetTimer = () => {
+    if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
+    inactivityTimer.current = setTimeout(() => {
       setVisible(false);
-    }
-  });
+    }, 5000);
+  };
+
+  const showNavbar = () => {
+    if (!visible) setVisible(true);
+    resetTimer();
+  };
+
+  useEffect(() => {
+    const handleActivity = () => {
+      showNavbar();
+    };
+
+    window.addEventListener("mousemove", handleActivity);
+    window.addEventListener("scroll", handleActivity);
+
+    resetTimer();
+
+    return () => {
+      window.removeEventListener("mousemove", handleActivity);
+      window.removeEventListener("scroll", handleActivity);
+      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
+    };
+  }, [visible]);
 
   return (
     <motion.div
       ref={ref}
-      className={cn("fixed inset-x-0 top-20 z-40 w-full", className)}
+      onMouseEnter={showNavbar}
+      className={cn(
+        "fixed inset-x-0 top-20 z-40 w-full transition-opacity duration-500",
+        visible ? "opacity-100 visible" : "opacity-0 invisible",
+        className
+      )}
     >
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? React.cloneElement(
               child as React.ReactElement<{ visible?: boolean }>,
-              { visible },
+              { visible }
             )
-          : child,
+          : child
       )}
     </motion.div>
   );
