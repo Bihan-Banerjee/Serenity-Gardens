@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-
+import Loader from "@/components/loaders/RainbowLoader";
+import { useLoader } from "@/hooks/useLoader";
 const Register = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
+  const { loading, runWithLoader } = useLoader(1500);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,8 +18,7 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
-    try {
+    await runWithLoader(async () => {
       const res = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -32,16 +33,17 @@ const Register = () => {
 
       localStorage.setItem("token", data.token);
 
-      toast.success("Registration successful!"); 
+      toast.success("Registration successful!");
       navigate("/login");
-    } catch (err: any) {
+    }).catch((err: any) => {
       setError(err.message);
       toast.error(err.message || "Registration failed");
-    }
+    });
   };
 
   return (
     <div className="flex flex-col items-center justify-center mt-20">
+      {loading && <Loader />}
       <h2 className="text-3xl font-bold mb-4">Register</h2>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}

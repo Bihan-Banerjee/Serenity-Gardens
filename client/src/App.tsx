@@ -14,6 +14,7 @@ import { Toaster } from "react-hot-toast";
 import AdminDashboard from './pages/AdminDashboard';
 import CheckoutPage from './pages/checkout';
 import PaymentPage from './pages/Payment';
+import MyProfile from './pages/MyProfile';
 const isAdmin = () => {
   const token = localStorage.getItem('token');
   if (!token) return false;
@@ -39,6 +40,7 @@ const App = () => {
               { name: "Explore", link: "/explore" },
               { name: "Admin", link: "/admin" },
               { name: "Menu", link: "/menu" },
+              { name: "My Profile", link: "/my-profile" }
             ]}
             onItemClick={() => console.log("Navbar item clicked!")}
           />
@@ -57,6 +59,7 @@ const App = () => {
             <Route path="/admin" element={<AdminDashboard/>}/>
             <Route path="/checkout" element={<CheckoutPage/>} />
             <Route path="/payment" element={<PaymentPage/>} />
+            <Route path="/my-profile" element={<MyProfile />} />
             {/*<Route path="/admin" element={isAdmin() ? <AdminDashboard /> : <Navigate to="/" />}/>*/}
           </Routes>
           <Toaster position="top-right" reverseOrder={false} />

@@ -105,4 +105,14 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/my", authMiddleware, async (req, res) => {
+  try {
+    const userOrders = await Order.find({ userId: req.user.id }).sort({ createdAt: -1 });
+    res.json(userOrders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch user orders" });
+  }
+});
+
 export default router;
