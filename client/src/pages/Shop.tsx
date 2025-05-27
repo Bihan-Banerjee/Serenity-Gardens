@@ -11,7 +11,7 @@ const Shop = () => {
         cards={[
           { title: "First time? Register!", src: "register.jpg", link: "/register" },
           { title: "Login and shop!", src: "login.jpg", link: "/login" },
-          { title: "Admin", src: "robot.png", link: "/admin" }
+          { title: "Admin", src: "admin.jpg", link: "/admin" }
         ]}
       />
     </section>

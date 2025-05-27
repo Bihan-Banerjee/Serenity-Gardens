@@ -1,5 +1,3 @@
-// scripts/upload.js (CommonJS version)
-
 const cloudinary = require("cloudinary").v2;
 const dotenv = require("dotenv");
 const fs = require("fs");

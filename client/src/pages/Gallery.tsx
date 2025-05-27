@@ -105,7 +105,7 @@ const Gallery = () => {
       <h2 className="text-4xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-500">
         Gallery
       </h2>
-      <p className="text-center text-gray-500 mb-8 max-w-xl">
+      <p className="text-center text-white mb-8 max-w-xl">
         Photos and videos capturing the beauty of Serenity Gardens.
       </p>
 
