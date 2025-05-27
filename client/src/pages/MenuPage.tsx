@@ -4,6 +4,7 @@ import { useCartStore } from "./useCartStore";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { logout } from "@/lib/auth";
 
 export default function MenuPage() {
   const { addItem } = useCartStore();
@@ -48,6 +49,12 @@ export default function MenuPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
+      <Button
+        className="fixed bottom-4 left-4 z-50 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow"
+        onClick={logout}
+      >
+        Logout
+      </Button>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-6xl">
         {products.map((product) => (
           <div

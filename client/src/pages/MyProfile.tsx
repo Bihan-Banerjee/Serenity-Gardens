@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-
+import { logout } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
 interface Order {
   _id: string;
   items: { name: string; quantity: number }[];
@@ -49,6 +50,12 @@ export default function MyProfile() {
 
   return (
     <div className="min-h-screen mt-28 px-4 py-10">
+       <Button
+        className="fixed bottom-4 left-4 z-50 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow"
+        onClick={logout}
+      >
+        Logout
+      </Button>
       <h2 className="text-3xl font-bold text-center mb-6">My Orders</h2>
 
       {loading ? (
