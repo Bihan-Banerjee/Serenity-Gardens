@@ -1,5 +1,5 @@
 "use client";
-
+import { AuroraText } from "@/components/magicui/aurora-text";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";

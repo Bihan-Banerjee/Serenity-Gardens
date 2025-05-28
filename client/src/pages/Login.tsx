@@ -1,5 +1,5 @@
 "use client";
-
+import { AuroraText } from "@/components/magicui/aurora-text";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -43,7 +43,11 @@ const Login = () => {
   return (
     <div className="flex flex-col items-center justify-center mt-20">
       {loading && <Loader />}
-      <h2 className="text-3xl font-bold mb-4">Login</h2>
+      <div className="w-full px-1 md:px-8 flex items-center justify-center">
+          <AuroraText className="text-4xl md:text-6xl mb-10 font-bold flex items-center justify-center text-center">
+            About Us
+          </AuroraText>          
+      </div>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
 

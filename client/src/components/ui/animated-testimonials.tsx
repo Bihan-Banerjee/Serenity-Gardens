@@ -2,7 +2,7 @@
 
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "motion/react";
-
+import { AuroraText } from "@/components/magicui/aurora-text";
 import { useEffect, useState } from "react";
 
 type Testimonial = {
@@ -112,13 +112,13 @@ export const AnimatedTestimonials = ({
               ease: "easeInOut",
             }}
           >
-            <h3 className="text-2xl font-bold text-white dark:text-white">
+            <AuroraText className="text-2xl md:text-4xl mb-2 font-bold flex items-center justify-center text-center">
               {testimonials[active].name}
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-neutral-500">
-              {testimonials[active].designation}
+            </AuroraText>         
+            <p className="text-sm text-white dark:text-neutral-500">
+              -{testimonials[active].designation}-
             </p>
-            <motion.p className="mt-8 text-lg text-gray-500 dark:text-neutral-300">
+            <motion.p className="mt-8 text-lg text-white dark:text-neutral-300">
               {testimonials[active].quote.split(" ").map((word, index) => (
                 <motion.span
                   key={index}

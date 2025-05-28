@@ -1,5 +1,5 @@
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
-
+import { AuroraText } from "@/components/magicui/aurora-text";
 const ExplorePage = () => {
   const testimonials = [
     {
@@ -29,11 +29,13 @@ const ExplorePage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center mt-28 px-4">
-      <h1 className="text-4xl font-bold mb-6 text-center">
-        Explore Serenity Gardens
-      </h1>
-      <p className="text-center text-gray-600 max-w-2xl mb-10">
+    <div className="min-h-screen flex flex-col items-center justify-center mt-22 px-4">
+      <div className="w-full px-1 md:px-8 flex items-center justify-center">
+          <AuroraText className="text-4xl md:text-6xl mb-10 font-bold flex items-center justify-center text-center">
+            About Us
+          </AuroraText>
+      </div>
+      <p className="text-center text-white max-w-2xl mb-10">
         Discover the charm and versatility of our garden house — perfect for rentals, parties, photo sessions, and peaceful retreats.
       </p>
 

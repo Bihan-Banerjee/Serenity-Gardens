@@ -15,6 +15,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import CheckoutPage from './pages/checkout';
 import PaymentPage from './pages/Payment';
 import MyProfile from './pages/MyProfile';
+import UpcomingPlans from './pages/UpcomingPlans';
 const isAdmin = () => {
   const token = localStorage.getItem('token');
   if (!token) return false;
@@ -40,7 +41,8 @@ const App = () => {
               { name: "Explore", link: "/explore" },
               { name: "Admin", link: "/admin" },
               { name: "Menu", link: "/menu" },
-              { name: "My Profile", link: "/my-profile" }
+              { name: "My Profile", link: "/my-profile" },
+              { name: "Upcoming Plans", link: "/upcoming-plans" } 
             ]}
             onItemClick={() => console.log("Navbar item clicked!")}
           />
@@ -60,6 +62,7 @@ const App = () => {
             <Route path="/checkout" element={<CheckoutPage/>} />
             <Route path="/payment" element={<PaymentPage/>} />
             <Route path="/my-profile" element={<MyProfile />} />
+            <Route path="/upcoming-plans" element={<UpcomingPlans />} />
             {/*<Route path="/admin" element={isAdmin() ? <AdminDashboard /> : <Navigate to="/" />}/>*/}
           </Routes>
           <Toaster position="top-right" reverseOrder={false} />

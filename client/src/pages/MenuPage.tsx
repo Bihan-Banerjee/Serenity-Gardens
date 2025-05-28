@@ -1,5 +1,5 @@
 "use client";
-
+import { AuroraText } from "@/components/magicui/aurora-text";
 import { useCartStore } from "./useCartStore";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
@@ -55,6 +55,11 @@ export default function MenuPage() {
       >
         Logout
       </Button>
+      <div className="w-full px-1 md:px-12 flex items-center justify-start">
+          <AuroraText className="text-3xl md:text-5xl mb-10 font-bold text-left">
+            Shop Catalogue For This Week
+          </AuroraText>          
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-6xl">
         {products.map((product) => (
           <div

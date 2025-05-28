@@ -7,7 +7,11 @@ const About = () => {
     <div className="max-w-7xl mx-auto mt-40 px-6">
       {/* Intro */}
       <div className="max-w-2xl mx-auto mb-12">
-        <h2 className="text-4xl md:text-6xl font-bold mb-4">About Us</h2>
+        <div className="w-full px-1 md:px-8 flex items-center justify-center">
+          <AuroraText className="text-4xl md:text-6xl mb-10 font-bold flex items-center justify-center text-center">
+            About Us
+          </AuroraText>          
+      </div>
         <p className="text-white text-lg">
           What began as parents’ wish to see a combined venture between the brothers, ‘Serenity Gardens’ has become a reflection of the close familial ties and much more. Nestling amongst the Tematha farm lands, it speaks volumes about supporting a biosustainable economy in form of pisciculture, organic farm produce, and greenhouse resources. The project of ‘Serenity Gardens’ commenced and still continues in the hands of the locals and provides an inspiration to give back to the community in form of free medical and teaching services. This sanctum is a quest to serve Mother Nature while respecting family values and preserving our roots in its every spectrum.
         </p>

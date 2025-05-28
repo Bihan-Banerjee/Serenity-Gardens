@@ -24,12 +24,12 @@ const Home = () => {
   return (
     <AuroraBackground className="pt-36 pb-20 px-4">
       <div className="flex flex-col items-center text-center space-y-4 mb-16">
-        <AuroraText className="text-4xl md:text-6xl font-bold">
+        <h2 className="text-2xl md:text-4xl font-semibold mt-4">
+          Welcome to
+        </h2>
+        <AuroraText className="text-4xl md:text-6xl mb-7.5 font-bold">
           Serenity Gardens
         </AuroraText>
-        <h2 className="text-2xl md:text-4xl font-semibold mt-4">
-          Welcome to Serenity Gardens
-        </h2>
         <p className="mt-2 text-lg max-w-2xl text-center">
           Discover the beauty of nature and tranquility in our serene gardens.
           Explore, relax, and rejuvenate your senses in a peaceful environment.

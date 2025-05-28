@@ -1,6 +1,6 @@
 "use client";
 import Carousel from "@/components/ui/carousel";
-
+import { AuroraText } from "@/components/magicui/aurora-text";
 const Gallery = () => {
   const slides = [
     {
@@ -102,9 +102,11 @@ const Gallery = () => {
 
   return (
     <div className="mt-30 flex flex-col items-center justify-center pb-20">
-      <h2 className="text-4xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-500">
-        Gallery
-      </h2>
+      <div className="w-full px-1 md:px-8 mb-5 flex items-center justify-center">
+              <AuroraText className="text-4xl md:text-6xl font-bold flex items-center justify-center text-center">
+                Gallery
+              </AuroraText>
+            </div>
       <p className="text-center text-white mb-8 max-w-xl">
         Photos and videos capturing the beauty of Serenity Gardens.
       </p>

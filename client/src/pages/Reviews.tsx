@@ -4,6 +4,7 @@ import { Marquee } from "@/components/magicui/marquee";
 import React from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { AuroraText } from "@/components/magicui/aurora-text";
 
 const Reviews = () => {
 
@@ -132,10 +133,10 @@ const Reviews = () => {
     <div className="w-full pt-40">
       {/* Section 1 - Marquee Testimonials */}
       
-      <div className="max-w-5xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-8">
-          What Visitors Say
-        </h2>
+      <div className="w-full px-1 md:px-8 mt-0 mb-5 flex items-center justify-center">
+        <AuroraText className="text-4xl md:text-6xl font-bold flex items-center justify-center text-center">
+          Meet the Family
+        </AuroraText>
       </div>
       <section className="w-full max-w-7xl px-2">
         <div className="space-y-8">
@@ -197,8 +198,8 @@ const Reviews = () => {
 
       {/* Section 2 - Feedback Form */}
       <section className="max-w-xl mx-auto px-4 mt-20 pb-20">
-        <h2 className="text-3xl font-bold text-center mb-4">Share Your Feedback</h2>
-        <p className="text-gray-600 text-center mb-6">
+        <h2 className="text-3xl font-bold text-white text-center mb-4">Share Your Feedback</h2>
+        <p className="text-white text-center mb-6">
           We would love to hear about your experience!
         </p>
         <form onSubmit={handleFeedbackSubmit} className="space-y-4">
