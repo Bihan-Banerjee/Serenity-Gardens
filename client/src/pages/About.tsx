@@ -43,18 +43,18 @@ const About = () => {
       <div className="space-y-16 mb-20 px-4">
         {[
           {
-            before: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/ztej7qikgddcvdme1b3y.jpg",
-            after: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/zi2znwbqllsfazamxkty.jpg",
-            caption: "Transformation of the pond area over time.",
+            before: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433093/oldhouse_gfbe4s.jpg",
+            after: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433090/bhalochobi_wffpic.jpg",
+            caption: "Transformation of the house area over time.",
           },
           {
-            before: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/gxjkyg7yaz25qrv3ietb.jpg",
-            after: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jllt6lujrz0oqdblbjni.jpg",
-            caption: "Vegetable patch before and after seasonal growth.",
+            before: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433093/oldground_vhlxeo.jpg",
+            after: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433090/beforestorm_udqr99.jpg",
+            caption: "Evolution of the lawn.",
           },
           {
-            before: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/yqagkpovtdx5vb84bmgr.jpg",
-            after: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/ve16mdjatbtj5ml1elrs.jpg",
+            before: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433092/oldgreenhouse_wfri5x.jpg",
+            after: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433094/greenhouse_d4pwwu.jpg",
             caption: "Greenhouse area evolving across monsoons.",
           },
         ].map((item, idx) => (
