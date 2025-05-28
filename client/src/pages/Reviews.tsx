@@ -2,8 +2,43 @@
 
 import { Marquee } from "@/components/magicui/marquee"; 
 import React from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const Reviews = () => {
+
+  const [form, setForm] = useState({ name: "", review: "" });
+
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("You must be logged in to submit feedback.");
+      return;
+    }
+  
+    try {
+      const res = await fetch("http://localhost:5000/api/reviews/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(form),
+      });
+    
+      const data = await res.json();
+    
+      if (!res.ok) throw new Error(data.message || "Failed to submit feedback");
+    
+      toast.success("Thank you for your feedback!");
+      setForm({ name: "", review: "" });
+    } catch (err: any) {
+      toast.error(err.message || "Error submitting feedback");
+    }
+  };
+
   const testimonials = [
     {
       name: "Suvankar Chakraborty",
@@ -166,15 +201,21 @@ const Reviews = () => {
         <p className="text-gray-600 text-center mb-6">
           We would love to hear about your experience!
         </p>
-        <form className="space-y-4">
+        <form onSubmit={handleFeedbackSubmit} className="space-y-4">
           <input
             type="text"
             placeholder="Your Name"
             className="w-full p-2 border rounded"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            required
           />
           <textarea
             placeholder="Your Review"
             className="w-full p-2 border rounded h-24"
+            value={form.review}
+            onChange={(e) => setForm({ ...form, review: e.target.value })}
+            required
           ></textarea>
           <button
             type="submit"

@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.js"; 
 import itemRoutes from "./routes/itemRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
 import compression from "compression"; 
 import dotenv from "dotenv";
 dotenv.config();
@@ -17,7 +18,7 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(cors());
 app.use(express.json());
-
+app.use("/api/reviews", reviewRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/orders", orderRoutes);

@@ -1,27 +1,44 @@
-import express from 'express';
-import Review from '../models/Review.js';
+import express from "express";
+import Review from "../models/Review.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
+dotenv.config();
 const router = express.Router();
 
-// Get all reviews
-router.get('/', async (req, res) => {
-  try {
-    const reviews = await Review.find();
-    res.json(reviews);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching reviews' });
-  }
-});
+// Auth middleware to get user info from token
+const authMiddleware = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "No token provided" });
 
-// Submit a review
-router.post('/', async (req, res) => {
-  const { name, review, rating } = req.body;
   try {
-    const newReview = new Review({ name, review, rating });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+};
+
+// Submit feedback
+router.post("/submit", authMiddleware, async (req, res) => {
+  const { name, review } = req.body;
+
+  if (!name || !review) {
+    return res.status(400).json({ message: "Name and review required" });
+  }
+
+  try {
+    const newReview = new Review({
+      name,
+      email: req.user.email,
+      review,
+    });
+
     await newReview.save();
-    res.status(201).json({ message: 'Review submitted successfully', newReview });
-  } catch (error) {
-    res.status(500).json({ message: 'Error submitting review' });
+    res.status(201).json({ message: "Review submitted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to submit review" });
   }
 });
 
