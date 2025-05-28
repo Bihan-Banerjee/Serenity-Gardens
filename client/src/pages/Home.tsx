@@ -1,8 +1,26 @@
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { FocusCards } from "@/components/ui/focus-cards";
-
+import MainLoader from "@/components/loaders/MainLoader";
+import { useEffect, useState } from "react";
 const Home = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3500);
+
+    return () => clearTimeout(timer); 
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50">
+        <MainLoader />
+      </div>
+    );
+  }
   return (
     <AuroraBackground className="pt-36 pb-20 px-4">
       <div className="flex flex-col items-center text-center space-y-4 mb-16">
