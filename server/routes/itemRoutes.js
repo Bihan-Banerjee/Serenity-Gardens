@@ -3,61 +3,63 @@ import Item from "../models/Item.js";
 import multer from "multer";
 import sharp from "sharp";
 import cloudinary from "../utils/cloudinary.js";
+import streamifier from "streamifier";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 const router = express.Router();
-// Fetch all items
-router.get("/", async (req, res) => {
-  try {
-    const items = await Item.find();
-    res.json(items);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
 
-// Add a new item
+
 router.post("/", upload.single("image"), async (req, res) => {
   try {
-    let imageUrl = null;
+    const { name, price, stock, description } = req.body;
+
+    if (!name || !price || !stock) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    let imageUrl = "";
 
     if (req.file) {
       const buffer = await sharp(req.file.buffer)
-        .resize(800) // Resize if needed
+        .resize(800)
         .jpeg({ quality: 80 })
         .toBuffer();
 
-      const result = await cloudinary.uploader.upload_stream(
-        { folder: "serenity-items" },
-        (error, result) => {
-          if (error) throw error;
-          imageUrl = result.secure_url;
-          finalize();
-        }
-      );
+      const uploadFromBuffer = (buffer) => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: "serenity-items" },
+            (error, result) => {
+              if (error) {
+                console.error("Cloudinary upload error:", error);
+                return reject(error);
+              }
+              resolve(result);
+            }
+          );
+          streamifier.createReadStream(buffer).pipe(stream);
+        });
+      };
 
-      // Pipe buffer into Cloudinary stream
-      streamifier.createReadStream(buffer).pipe(result);
-    } else {
-      finalize();
+      const result = await uploadFromBuffer(buffer);
+      imageUrl = result.secure_url;
     }
 
-    async function finalize() {
-      const item = new Item({
-        name,
-        price,
-        stock,
-        description,
-        image: imageUrl,
-      });
+    const item = new Item({
+      name,
+      price: Number(price),
+      stock: Number(stock),
+      description,
+      image: imageUrl,
+      finalized: false,
+    });
 
-      await item.save();
-      res.status(201).json(item);
-    }
+    await item.save();
+    res.status(201).json(item);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to upload item" });
+    console.error("Add item failed:", err);
+    res.status(500).json({ message: "Failed to upload item", error: err.message });
   }
 });
 
@@ -71,16 +73,25 @@ router.patch('/finalize/:id', async (req, res) => {
   }
 });
 
-// itemRoutes.js
-router.get("/", async (req, res) => {
+// ✅ Admin Panel should use this
+router.get("/all", async (req, res) => {
   try {
-    const items = await Item.find({ finalized: true });
+    const items = await Item.find(); // No filter
     res.json(items);
   } catch (err) {
     res.status(500).json({ message: "Error fetching items" });
   }
 });
 
+// ✅ Shop page should use this
+router.get("/", async (req, res) => {
+  try {
+    const items = await Item.find({ finalized: true });
+    res.json(items);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching finalized items" });
+  }
+});
 
 // Update stock of item
 router.patch("/:id", async (req, res) => {

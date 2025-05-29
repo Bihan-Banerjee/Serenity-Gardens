@@ -26,6 +26,19 @@ const OrderManager = () => {
     }
   };
 
+   const handleDeleteOrder = async (id: string) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this order?");
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`http://localhost:5000/api/orders/${id}`);
+      toast.success("Order deleted successfully");
+      fetchOrders();
+    } catch (err) {
+      toast.error("Error deleting order");
+    }
+  };
+
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -53,6 +66,12 @@ const OrderManager = () => {
               Mark Paid
             </button>
           )}
+          <button
+              onClick={() => handleDeleteOrder(order._id)}
+              className="bg-red-600 ml-2 text-white px-4 py-1 rounded hover:bg-red-700"
+            >
+              Remove
+            </button>
         </div>
       ))}
     </div>
