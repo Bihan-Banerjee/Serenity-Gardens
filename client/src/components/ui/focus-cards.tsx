@@ -1,5 +1,4 @@
-// focus-cards.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +16,7 @@ export function FocusCards({
   redirectOnClick?: boolean;
 }) {
   const [hovered, setHovered] = useState<number | null>(null);
-  const navigate = useNavigate(); // ✅ Move here
+  const navigate = useNavigate(); 
 
   const handleCardClick = (card: CardType) => {
     if (redirectOnClick && card.link) {

@@ -76,7 +76,6 @@ const ItemManager = () => {
     fetchItems();
   }, []);
 
-  // 🔢 Pagination Logic
   const totalPages = Math.ceil(items.length / itemsPerPage);
   const startIdx = (currentPage - 1) * itemsPerPage;
   const currentItems = items.slice(startIdx, startIdx + itemsPerPage);

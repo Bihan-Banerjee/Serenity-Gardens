@@ -40,7 +40,7 @@ export default function CheckoutPage() {
         {cart.map((item) => (
           <div
             key={item.id}
-            className="flex justify-between border-b py-2 text-black dark:text-white"
+            className="flex justify-between border-b py-2 text-white dark:text-white"
           >
             <span>
               {item.name} x {item.quantity}

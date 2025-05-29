@@ -12,7 +12,7 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import Menu from './pages/Menu';
 import { Toaster } from "react-hot-toast";
 import AdminDashboard from './pages/AdminDashboard';
-import CheckoutPage from './pages/checkout';
+import CheckoutPage from './pages/Checkout';
 import PaymentPage from './pages/Payment';
 import MyProfile from './pages/MyProfile';
 import UpcomingPlans from './pages/UpcomingPlans';

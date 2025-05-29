@@ -56,8 +56,8 @@ export default function MyProfile() {
       >
         Logout
       </Button>
-      <h2 className="text-3xl font-bold text-center mb-6">My Orders</h2>
-
+      
+      <AuroraText className="text-3xl font-bold ml-13.5 mb-4">My Orders</AuroraText>
       {loading ? (
         <p className="text-center text-gray-500">Loading orders...</p>
       ) : orders.length === 0 ? (

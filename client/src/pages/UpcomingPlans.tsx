@@ -3,7 +3,6 @@ import {
   DraggableCardBody,
   DraggableCardContainer,
 } from "@/components/ui/draggable-card";
-import React from "react";
 import { AuroraText } from "@/components/magicui/aurora-text";
 
 

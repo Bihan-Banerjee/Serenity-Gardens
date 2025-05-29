@@ -73,17 +73,17 @@ router.patch('/finalize/:id', async (req, res) => {
   }
 });
 
-// ✅ Admin Panel should use this
+
 router.get("/all", async (req, res) => {
   try {
-    const items = await Item.find(); // No filter
+    const items = await Item.find();
     res.json(items);
   } catch (err) {
     res.status(500).json({ message: "Error fetching items" });
   }
 });
 
-// ✅ Shop page should use this
+
 router.get("/", async (req, res) => {
   try {
     const items = await Item.find({ finalized: true });
@@ -93,7 +93,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Update stock of item
+
 router.patch("/:id", async (req, res) => {
   try {
     const { stock } = req.body;
@@ -109,7 +109,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-// Delete an item
+
 router.delete("/:id", async (req, res) => {
   try {
     const deletedItem = await Item.findByIdAndDelete(req.params.id);

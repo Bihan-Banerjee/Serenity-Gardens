@@ -81,7 +81,7 @@ export default function PaymentPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 space-y-6">
       <h2 className="text-3xl font-bold text-center">Checkout</h2>
-      <p className="text-gray-600 text-center max-w-md">
+      <p className="text-white text-center max-w-md">
         Total amount: ₹{total}
       </p>
 

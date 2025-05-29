@@ -1,7 +1,7 @@
 import { SidebarProvider } from "../components/ui/sidebar";
 import  {CartSidebar}  from "./CartSidebar";
 import MenuPage from "./MenuPage";
-import React, { useState } from "react";
+import { useState } from "react";
 export default function MenuWithSidebar() {
   const [cart, setCart] = useState<CartItem[]>([]); 
   return (
