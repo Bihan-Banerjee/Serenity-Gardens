@@ -43,7 +43,7 @@ router.post("/", upload.single("image"), async (req, res) => {
       };
 
       const result = await uploadFromBuffer(buffer);
-      imageUrl = result.secure_url;
+      imageUrl = result.secure_url || "https://res.cloudinary.com/drj7t97rd/image/upload/v1748499034/placeholder-images-image_large_pnwitd.webp";;
     }
 
     const item = new Item({

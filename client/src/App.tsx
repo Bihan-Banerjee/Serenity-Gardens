@@ -16,12 +16,32 @@ import CheckoutPage from './pages/checkout';
 import PaymentPage from './pages/Payment';
 import MyProfile from './pages/MyProfile';
 import UpcomingPlans from './pages/UpcomingPlans';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+
 const isAdmin = () => {
   const token = localStorage.getItem('token');
   if (!token) return false;
-  const payload = JSON.parse(atob(token.split('.')[1]));
-  return payload.role === 'admin'; 
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.isAdmin === true;
+  } catch (err) {
+    return false;
+  }
 };
+
+const RedirectWithToast = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    toast.error("You are not authorized to access the admin panel");
+    navigate("/shop");
+  }, []);
+
+  return null;
+};
+
 
 
 const App = () => {
@@ -35,14 +55,11 @@ const App = () => {
               { name: "About", link: "/about" },
               { name: "Gallery", link: "/gallery" },
               { name: "Reviews", link: "/reviews" },
-              { name: "Shop", link: "/shop" },
-              { name: "Register", link: "/register" },
-              { name: "Login", link: "/login" },
+              { name: "Upcoming Plans", link: "/upcoming-plans" },
               { name: "Explore", link: "/explore" },
-              { name: "Admin", link: "/admin" },
               { name: "Menu", link: "/menu" },
               { name: "My Profile", link: "/my-profile" },
-              { name: "Upcoming Plans", link: "/upcoming-plans" } 
+              { name: "Sign In", link: "/shop" }
             ]}
             onItemClick={() => console.log("Navbar item clicked!")}
           />
@@ -58,12 +75,14 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/menu" element={<Menu />} />
-            <Route path="/admin" element={<AdminDashboard/>}/>
             <Route path="/checkout" element={<CheckoutPage/>} />
             <Route path="/payment" element={<PaymentPage/>} />
             <Route path="/my-profile" element={<MyProfile />} />
             <Route path="/upcoming-plans" element={<UpcomingPlans />} />
-            {/*<Route path="/admin" element={isAdmin() ? <AdminDashboard /> : <Navigate to="/" />}/>*/}
+            <Route
+              path="/admin"
+              element={isAdmin() ? <AdminDashboard /> : <RedirectWithToast />}
+            />
           </Routes>
           <Toaster position="top-right" reverseOrder={false} />
         </div>

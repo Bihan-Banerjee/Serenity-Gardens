@@ -60,17 +60,17 @@ export default function MenuPage() {
             Shop Catalogue For This Week
           </AuroraText>          
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-6xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full mb-10max-w-6xl">
         {products.map((product) => (
           <div
             key={product._id}
             data-ignore-outside-click
-            className="bg-white dark:bg-neutral-900 p-4 rounded-lg shadow-md hover:shadow-lg transition"
+            className="bg-white h-[340px] w-[250px] dark:bg-neutral-900 p-4 rounded-lg shadow-md hover:shadow-lg transition"
           >
             <div data-ignore-outside-click>
               {product.image && (
                 <img
-                  src={product.image}
+                  src={product.image || "https://res.cloudinary.com/drj7t97rd/image/upload/v1748499034/placeholder-images-image_large_pnwitd.webp"}
                   alt={product.name}
                   className="w-full h-40 object-cover rounded mb-3"
                 />

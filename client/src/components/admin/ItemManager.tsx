@@ -102,9 +102,9 @@ const ItemManager = () => {
       {/* 🧾 Items Display (Paginated) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {currentItems.map((item) => (
-          <div key={item._id} className="p-2 border rounded flex flex-col bg-white dark:bg-neutral-800 max-w-xs mx-auto shadow-lg">
+          <div key={item._id} className="h-[450px] w-[200px] p-2 border rounded flex flex-col bg-white dark:bg-neutral-800 max-w-xs mx-auto shadow-lg">
             {item.image && (
-              <img src={item.image} alt={item.name} className="w-full h-48 object-cover rounded mb-4" />
+              <img src={item.image || "https://res.cloudinary.com/drj7t97rd/image/upload/v1748499034/placeholder-images-image_large_pnwitd.webp"} alt={item.name} className="w-full h-48 object-cover rounded mb-4" />
             )}
             <h3 className="text-lg text-gray-800 font-bold">{item.name}</h3>
             <p className="text-sm text-gray-600 mb-1">{item.description}</p>

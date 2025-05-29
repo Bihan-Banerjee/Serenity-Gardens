@@ -135,7 +135,7 @@ const Reviews = () => {
       
       <div className="w-full px-1 md:px-8 mt-0 mb-5 flex items-center justify-center">
         <AuroraText className="text-4xl md:text-6xl font-bold flex items-center justify-center text-center">
-          Meet the Family
+          What People Say
         </AuroraText>
       </div>
       <section className="w-full max-w-7xl px-2">

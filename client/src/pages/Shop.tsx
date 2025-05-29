@@ -1,9 +1,12 @@
 import { FocusCards } from "@/components/ui/focus-cards";
+import { AuroraText } from "@/components/magicui/aurora-text";
 const Shop = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="mt-10">
-        <h2 className="text-3xl font-bold text-center">Shop</h2>
+        <AuroraText className="text-4xl md:text-6xl font-bold flex items-center justify-center text-center">
+          Sign In/Sign Up
+        </AuroraText>
       </div>
       <section className="w-full min-w-4xl max-w-7xl mx-auto mt-10">
       <FocusCards
