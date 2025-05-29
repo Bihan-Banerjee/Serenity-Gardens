@@ -46,7 +46,7 @@ const Register = () => {
       {loading && <Loader />}
       <div className="w-full px-1 md:px-8 flex items-center justify-center">
           <AuroraText className="text-4xl md:text-6xl mb-10 font-bold flex items-center justify-center text-center">
-            About Us
+            Register
           </AuroraText>  
       </div>
 

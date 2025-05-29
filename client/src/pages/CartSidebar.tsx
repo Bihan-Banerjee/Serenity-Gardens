@@ -11,6 +11,7 @@ import { useCartStore } from "./useCartStore";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 
 export function CartSidebar() {
   const { cart, removeItem, updateQuantity } = useCartStore();
@@ -51,6 +52,16 @@ export function CartSidebar() {
     };
   }, [setOpen]);
   
+  const handleProceedToBuy = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("You must be logged in to proceed!");
+      navigate("/login");
+      return;
+    }
+    navigate("/checkout")
+  };
+
   return (
     <>
       <Sidebar data-open={isOpen ? "true" : "false"} side="right" variant="sidebar" ref={sidebarRef}>
@@ -77,7 +88,7 @@ export function CartSidebar() {
         <SidebarFooter>
           <div className="w-full p-4 space-y-2">
             <div className="font-bold">Total: ₹{total}</div>
-            <Button className="w-full" onClick={() => navigate("/checkout")}>
+            <Button className="w-full" onClick={handleProceedToBuy}>
               Proceed to Buy
             </Button>
           </div>

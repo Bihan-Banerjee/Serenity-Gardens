@@ -4,13 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "./useCartStore";
 import axios from "axios";
-
+import { toast } from "react-hot-toast";
 export default function PaymentPage() {
   const navigate = useNavigate();
   const { cart, clearCart } = useCartStore();
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const handleCOD = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("You must be logged in to proceed.");
+      navigate("/login");
+      return;
+  }
     try {
         const token = localStorage.getItem("token");
         await axios.post(
@@ -21,15 +27,20 @@ export default function PaymentPage() {
             }
           );
       clearCart();
-      alert("Order placed as Cash on Delivery!");
+      toast.success("Order placed as Cash on Delivery!");
       navigate("/menu");
-      window.location.reload(); 
     } catch (err) {
-      alert("Failed to place COD order. Please try again.");
+      toast.error("Failed to place COD order. Please try again.");
     }
   };
 
   const handleRazorpayPayment = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("You must be logged in to proceed.");
+      navigate("/login");
+      return;
+    }
     const options = {
       key: "YOUR_RAZORPAY_KEY",
       amount: total * 100, 
@@ -44,11 +55,10 @@ export default function PaymentPage() {
             razorpayPaymentId: response.razorpay_payment_id,
           });
           clearCart();
-          alert("Payment successful and order placed!");
+          toast.success("Payment successful and order placed!");
           navigate("/menu");
-          window.location.reload(); 
         } catch (err) {
-          alert("Order processing failed after payment. Please contact support.");
+          toast.error("Order failed after payment. Please contact support.");
         }
       },
       prefill: {
@@ -63,7 +73,7 @@ export default function PaymentPage() {
 
     const rzp = new (window as any).Razorpay(options);
     rzp.on("payment.failed", function (response: any) {
-      alert("Payment failed. Please try again.");
+      toast.error("Payment failed. Please try again.");
     });
     rzp.open();
   };

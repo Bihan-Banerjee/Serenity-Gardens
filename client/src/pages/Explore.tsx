@@ -32,7 +32,7 @@ const ExplorePage = () => {
     <div className="min-h-screen flex flex-col items-center justify-center mt-22 px-4">
       <div className="w-full px-1 md:px-8 flex items-center justify-center">
           <AuroraText className="text-4xl md:text-6xl mb-10 font-bold flex items-center justify-center text-center">
-            About Us
+            Explore
           </AuroraText>
       </div>
       <p className="text-center text-white max-w-2xl mb-10">
