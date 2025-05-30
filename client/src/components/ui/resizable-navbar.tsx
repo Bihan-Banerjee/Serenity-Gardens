@@ -266,6 +266,7 @@ export const NavbarLogo = () => {
         alt="logo"
         width={30}
         height={30}
+        loading="lazy"
       />
       <span className="font-medium text-black dark:text-white">Startup</span>
     </Link>

@@ -70,8 +70,9 @@ export default function MenuPage() {
             <div data-ignore-outside-click>
               {product.image && (
                 <img
-                  src={product.image || "https://res.cloudinary.com/drj7t97rd/image/upload/v1748499034/placeholder-images-image_large_pnwitd.webp"}
+                  src={product.image || "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748499034/placeholder-images-image_large_pnwitd.webp"}
                   alt={product.name}
+                  loading="lazy"
                   className="w-full h-40 object-cover rounded mb-3"
                 />
               )}

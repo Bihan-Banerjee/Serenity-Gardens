@@ -41,6 +41,7 @@ export function FocusCards({
           <img
             src={card.src}
             alt={card.title}
+            loading="lazy"
             className="object-cover absolute w-full h-full inset-0"
           />
           <div

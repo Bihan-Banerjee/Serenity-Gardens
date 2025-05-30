@@ -26,12 +26,12 @@ const About = () => {
       <div className="w-5xl mx-auto mb-20 mt-30 px-4">
         <FocusCards
           cards={[
-            { title: "Baba", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
-            { title: "Ma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
-            { title: "Gablu", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
-            { title: "Jeja", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
-            { title: "Jemma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
-            { title: "Titi Didi", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Baba", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Ma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Gablu", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Jeja", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Jemma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Titi Didi", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
           ]}
         />
       </div>
@@ -47,18 +47,18 @@ const About = () => {
       <div className="space-y-16 mb-20 px-4">
         {[
           {
-            before: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433093/oldhouse_gfbe4s.jpg",
-            after: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433090/bhalochobi_wffpic.jpg",
+            before: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433093/oldhouse_gfbe4s.jpg",
+            after: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433090/bhalochobi_wffpic.jpg",
             caption: "Transformation of the house area over time.",
           },
           {
-            before: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433093/oldground_vhlxeo.jpg",
-            after: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433090/beforestorm_udqr99.jpg",
+            before: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433093/oldground_vhlxeo.jpg",
+            after: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433090/beforestorm_udqr99.jpg",
             caption: "Evolution of the lawn.",
           },
           {
-            before: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433092/oldgreenhouse_wfri5x.jpg",
-            after: "https://res.cloudinary.com/drj7t97rd/image/upload/v1748433094/greenhouse_d4pwwu.jpg",
+            before: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433092/oldgreenhouse_wfri5x.jpg",
+            after: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433094/greenhouse_d4pwwu.jpg",
             caption: "Greenhouse area evolving across monsoons.",
           },
         ].map((item, idx) => (

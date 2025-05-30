@@ -44,77 +44,77 @@ const Reviews = () => {
     {
       name: "Suvankar Chakraborty",
       review: "We visited this Serenity gardens for our get together with old friends on 22/12/24. The ambience of the garden is too good. The hospitality by the caretaker,Laltu was amazing and food served was tasty and hygienic, thanks to Swarup and his brother Arup. I would highly recommend this place to for family get together.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/bda4vmw4mehswejygvor.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/bda4vmw4mehswejygvor.png",
     },
     {
       name: "Soma Gupta",
       review: "It is an excellent farm house with lot of places for the children to play, for taking colourful snaps and lot of adda. The food and the hospitality served there by Laltu & his wife, needs special mention... really they were too tasty👌",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/zlqgjt3lm6b7jalhveah.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/zlqgjt3lm6b7jalhveah.png",
     },
     {
       name: "Parna Banerjee",
       review: "My recent visit at Serenity Gardens in Baruipur was nothing short of delightful. Nestled in a serene and green environment, the retreat offered the perfect escape from the bustle of daily life. The blend of modern amenities with a tranquil, nature-filled atmosphere truly set it apart...",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/unypd2i70nlq0imyafmo.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/unypd2i70nlq0imyafmo.png",
     },
     {
       name: "Kankani Mukherjee",
       review: "Mesmerising atmosphere,eye soothing greenery with various fruits,vegetable and flower plants.A place which keeps away all the stress and rejuvenates everybody.Ideal place for get together with all the amenities. A must visit place to feel the nature very near to the city.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/jxh7deq1ujr89ujs02zq.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/jxh7deq1ujr89ujs02zq.png",
     },
     {
       name: "Sutreyi",
       review: "It is B-E-A-U-T-I-F-U-L...💚",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/dfshdxpysbmpulync8s1.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/dfshdxpysbmpulync8s1.png",
     },
     {
       name: "Madhumita Chatterjee",
       review: "Serenity Garden , what an appropriate and significant name of this huge tranquil plot of land one can only gaze with appreciation. Much effort has been taken by the owners to beautify this area with various flowers, fruits and vegetables, and is also ornamented with lovely painting and decorative planter. Worth spending a whole day for relaxation...",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/vibfhfnc2nvxn4gnmi0m.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/vibfhfnc2nvxn4gnmi0m.png",
     },
     {
       name: "SRABANI CHAKRABORTY",
       review: "The scenic beauty of this place is amezing,every part is full of greenery.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/qnv8b492tbgew4fkq8au.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/qnv8b492tbgew4fkq8au.png",
     },
     {
       name: "Paramita Roy",
       review: "I along with my friends visited Serenity Gardens on last Sunday. It’s an aesthetically decorated, very neat and well maintained Farm House. Food was also very amazing . Worth a visit.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/mrutcikbaf7ldtxktpvy.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/mrutcikbaf7ldtxktpvy.png",
     },
     {
       name: "soma dasgupta",
       review: "Very nice place & very large area. I would highly recommend it for a family picnic . Enjoyed a lot with my buddies.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/tilrklmafxa4qllchpqw.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/tilrklmafxa4qllchpqw.png",
     },
     {
       name: "Tamali Ghosh",
       review: "I wanted to take a moment to express my heartfelt gratitude for hosting us at your beautiful farmhouse. The entire experience was absolutely wonderful and truly unforgettable! From the moment we arrived, we were captivated by the picturesque surroundings. The serene landscape, lush greenery, and charming farmhouse created the perfect setting for a relaxing day out...",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/o9iu64o306czn9as8nxf.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/o9iu64o306czn9as8nxf.png",
     },
     {
       name: "Munmun Basu",
       review: "Excellent food,superb hospitality, beauty and peace of nature prevail everywhere in this place",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/xutld21di7lvbslmskkb.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/xutld21di7lvbslmskkb.png",
     },
     {
       name: "Dola Ray",
       review: "A fantastic experience at Serenity Gardens. Exceptional arrangements and tasty food, surrounded by pristine greens. A walk down the gardens and pond was pure joy. An island of peace and serenity indeed.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/l06eh1wgorrc4d8rmecj.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/l06eh1wgorrc4d8rmecj.png",
     },
     {
       name: "dipankar bandyopadhyay",
       review: "Open up to Mother Nature for tranquility and peace",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/mpmnbt7dnrmyy1ranskx.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/mpmnbt7dnrmyy1ranskx.png",
     },
     {
       name: "Arun Thakur",
       review: "Very good place...",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/bnaooludw4aofky58zon.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/bnaooludw4aofky58zon.png",
     },
     {
       name: "DR ARINDAM MANDAL",
       review: "What a wonderful place surrounded by nature,play ground ,water body and a beautiful bunglow❤️",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/v1747576918/serenity/reviews/xgepuv0e5fxkh3omfjod.png",
+      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/xgepuv0e5fxkh3omfjod.png",
     },
   ];
 

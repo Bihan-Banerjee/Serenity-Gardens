@@ -11,47 +11,47 @@ const UpcomingPlans = () => {
     {
       title: "Solar Integration",
       image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/v1748484638/solar_coulby.jpg",
+        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484638/solar_coulby.jpg",
       className: "absolute top-5 left-[40%] rotate-[8deg]",
     },
     {
       title: "Rainwater Harvesting",
       image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/v1748484636/rainwater-harvesting-in-india_zf0qyf.jpg",
+        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484636/rainwater-harvesting-in-india_zf0qyf.jpg",
       className: "absolute top-32 left-[55%] rotate-[10deg]",
     },
     {
       title: "Eco Workshop on Vermiculture",
       image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/v1748484635/vermiculture_tm3cbx.jpg",
+        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484635/vermiculture_tm3cbx.jpg",
       className: "absolute top-20 right-[35%] rotate-[2deg]",
     },
     {
       title: "Greenhouse Agriculture",
       image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/v1748484636/greenhouse_ypk0zo.jpg",
+        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484636/greenhouse_ypk0zo.jpg",
       className: "absolute top-24 left-[45%] rotate-[-7deg]",
     },
     {
       title: "Mushroom Farming",
       image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/v1748484635/mushroom_jtfxp8.jpg",
+        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484635/mushroom_jtfxp8.jpg",
       className: "absolute top-8 left-[30%] rotate-[4deg]",
     },{
       title: "Nursery",
       image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/v1748484638/nursery_uvbrfl.jpg",
+        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484638/nursery_uvbrfl.jpg",
       className: "absolute top-10 left-[20%] rotate-[-5deg]",
     },
     {
       title: "Pisciculture",
       image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/v1748484635/pisciculture_i25l1s.webp",
+        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484635/pisciculture_i25l1s.webp",
       className: "absolute top-40 left-[25%] rotate-[-7deg]",
     },
   ];
   return (
-    <div className="min-h-screen pt-32 px-6 min-w-[100rem] mx-auto">
+    <div className="min-h-screen pt-32 px-6 min-w-[100rem] mx-auto overflow-x-hidden w-full">
         <div className="w-full px-1 md:px-8 flex items-center justify-center">
             <AuroraText className="text-4xl md:text-6xl mb-10 font-bold flex items-center justify-center text-center">
                 Upcoming Plans
@@ -70,6 +70,7 @@ const UpcomingPlans = () => {
             <img
               src={item.image}
               alt={item.title}
+              loading="lazy"
               className="pointer-events-none relative z-10 h-80 w-80 object-cover"
             />
             <h3 className="mt-4 text-center text-2xl font-bold text-neutral-700 dark:text-neutral-300">
