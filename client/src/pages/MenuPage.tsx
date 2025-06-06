@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { logout } from "@/lib/auth";
+import { toast } from "react-hot-toast";
 
 export default function MenuPage() {
   const { addItem } = useCartStore();
   const [products, setProducts] = useState([]);
+  const [hasPreviousOrder, setHasPreviousOrder] = useState(false);
 
   const fetchItems = async () => {
     try {
@@ -18,9 +20,49 @@ export default function MenuPage() {
       console.error("Failed to fetch items");
     }
   };
+
+  const checkPreviousOrder = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const res = await axios.get("http://localhost:5000/api/orders/my-latest", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.data) setHasPreviousOrder(true);
+    } catch (err) {
+      setHasPreviousOrder(false); 
+    }
+  };
+
+  const handleRepeatOrder = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const res = await axios.get("http://localhost:5000/api/orders/my-latest", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const previousItems = res.data.items;
+      previousItems.forEach((item) => {
+        addItem({
+          id: item.productId || item.id, 
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+        });
+      });
+
+      toast.success("Previous order added to cart!");
+    } catch (err) {
+      toast.error("Could not repeat previous order.");
+    }
+  };
   
   useEffect(() => {
     fetchItems();
+    checkPreviousOrder();
   }, []);
 
   const handleAddToCart = (product) => {
@@ -55,11 +97,22 @@ export default function MenuPage() {
       >
         Logout
       </Button>
+      
+      
+      
       <div className="w-full px-1 md:px-12 flex items-center justify-start">
           <AuroraText className="text-3xl md:text-5xl mb-10 font-bold text-left">
             Shop Catalogue For This Week
           </AuroraText>          
       </div>
+      {hasPreviousOrder && (
+        <Button
+          className="mb-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded"
+          onClick={handleRepeatOrder}
+        >
+          Repeat Last Order
+        </Button>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full mb-10max-w-6xl">
         {products.map((product) => (
           <div

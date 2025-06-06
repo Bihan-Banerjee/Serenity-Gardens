@@ -124,4 +124,17 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.get("/my-latest", authMiddleware, async (req, res) => {
+  try {
+    const order = await Order.findOne({ userId: req.user.id })
+      .sort({ createdAt: -1 })
+      .limit(1);
+    if (!order) return res.status(404).json({ message: "No previous order found" });
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch previous order" });
+  }
+});
+
+
 export default router;
