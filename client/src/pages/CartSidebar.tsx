@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 
 export function CartSidebar() {
   const { cart, removeItem, updateQuantity } = useCartStore();
-  const { isOpen, setOpen } = useSidebar(); 
+  const { state, setOpen } = useSidebar();
   const navigate = useNavigate();
   const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -64,7 +64,7 @@ export function CartSidebar() {
 
   return (
     <>
-      <Sidebar data-open={isOpen ? "true" : "false"} side="right" variant="sidebar" ref={sidebarRef}>
+      <Sidebar data-open={state === "expanded" ? "true" : "false"} side="right" variant="sidebar" ref={sidebarRef}>
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>Your Cart</SidebarGroupLabel>
