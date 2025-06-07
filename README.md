@@ -14,7 +14,7 @@ The project combines dynamic frontend components, secure authentication, admin f
 
 ### Frontend
 - **React** with **Vite**
-- **TypeScript** and **JavaScript (hybrid)**
+- **TypeScript** and **JavaScript**
 - **TailwindCSS** for styling
 - **react-router-dom** for routing
 - **react-hot-toast** for notifications
@@ -27,7 +27,7 @@ The project combines dynamic frontend components, secure authentication, admin f
 - **MongoDB** with **Mongoose**
 - **JWT (JSON Web Tokens)** for authentication
 - **Bcrypt** for password hashing
-- **Razorpay** (planned) for payment integration
+- **Razorpay** for payment integration
 - **Multer** for file uploads
 - **Sharp** for image compression
 - **Cloudinary SDK** for uploads
@@ -59,18 +59,10 @@ The project combines dynamic frontend components, secure authentication, admin f
   - Item Manager:
     - Add/Edit/Delete/Finalize items
     - Upload images with compression and Cloudinary integration
-    - Pagination (10 items per page)
   - Order Manager:
     - View all orders
     - Mark orders as Paid
     - Delete unwanted orders
-    - Pagination (10 orders per page)
-
-### Performance
-- Lazy image loading
-- Minimized bundle via Vite and optimized imports
-- Home loader shown only on initial load/reload
-- Prevent horizontal scroll and layout shifts
 
 ---
 
