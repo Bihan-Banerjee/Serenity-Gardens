@@ -5,7 +5,6 @@ import { Compare } from "@/components/ui/compare";
 const About = () => {
   return (
     <div className="max-w-7xl mx-auto mt-40 px-6">
-      {/* Intro */}
       <div className="max-w-2xl mx-auto mb-12">
         <div className="w-full px-1 md:px-8 flex items-center justify-center">
           <AuroraText className="text-4xl md:text-6xl mb-10 font-bold flex items-center justify-center text-center">
@@ -17,7 +16,6 @@ const About = () => {
         </p>
       </div>
 
-      {/* Family Section */}
       <div className="w-full px-1 md:px-8 flex items-center justify-center">
         <AuroraText className="text-4xl md:text-6xl font-bold flex items-center justify-center text-center">
           Meet the Family
@@ -26,24 +24,22 @@ const About = () => {
       <div className="w-5xl mx-auto mb-20 mt-30 px-4">
         <FocusCards
           cards={[
-            { title: "Baba", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
-            { title: "Ma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
-            { title: "Gablu", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
-            { title: "Jeja", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
-            { title: "Jemma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
-            { title: "Titi Didi", src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg" },
+            { title: "Jeja", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262436/IMG-20250105-WA0358_s951gn.jpg" },
+            { title: "Jemma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262437/IMG-20250607-WA0003_idmwey.jpg" },
+            { title: "Titi Didi", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262437/IMG-20250327-WA0010_vkvozh.jpg" },
+            { title: "Baba", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262437/IMG-20240909-WA0044_hyishp.jpg" },
+            { title: "Ma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262437/IMG-20250607-WA0004_ubpv1x.jpg" },
+            { title: "Gablu", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262437/IMG-20250521-WA0198_db36hz.jpg" },
           ]}
         />
       </div>
 
-      {/* Compare Section Header */}
       <div className="w-full px-1 md:px-8 flex items-center justify-center">
         <AuroraText className="text-4xl md:text-6xl font-bold flex items-center justify-center text-center">
           Before VS After
         </AuroraText>
       </div>
 
-      {/* Compare Blocks */}
       <div className="space-y-16 mb-20 px-4">
         {[
           {
