@@ -4,8 +4,6 @@ import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
   motion,
   AnimatePresence,
-  useScroll,
-  useMotionValueEvent,
 } from "motion/react";
 
 import React, { useRef, useState, useEffect } from "react";
@@ -52,7 +50,6 @@ interface MobileNavMenuProps {
 
 export const Navbar = ({ children, className }: NavbarProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
   const [visible, setVisible] = useState(true);
   const inactivityTimer = useRef<NodeJS.Timeout | null>(null);
@@ -220,7 +217,6 @@ export const MobileNavMenu = ({
   children,
   className,
   isOpen,
-  onClose,
 }: MobileNavMenuProps) => {
   return (
     <AnimatePresence>
