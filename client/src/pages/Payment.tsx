@@ -33,7 +33,7 @@ export default function PaymentPage() {
       toast.error("Failed to place COD order. Please try again.");
     }
   };
-
+  /*
   const handleRazorpayPayment = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -77,7 +77,7 @@ export default function PaymentPage() {
     });
     rzp.open();
   };
-
+  */
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 space-y-6">
       <h2 className="text-3xl font-bold text-center">Checkout</h2>
@@ -94,7 +94,7 @@ export default function PaymentPage() {
         </Button>
         <Button
           className="bg-green-600 hover:bg-green-700"
-          onClick={handleRazorpayPayment}
+          /* onClick={handleRazorpayPayment} */
         >
           Pay Now
         </Button>

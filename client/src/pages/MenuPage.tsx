@@ -1,25 +1,40 @@
 "use client";
 import { AuroraText } from "@/components/magicui/aurora-text";
-import { useCartStore } from "./useCartStore";
+import { useCartStore, CartItem } from "./useCartStore";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { logout } from "@/lib/auth";
 import { toast } from "react-hot-toast";
 
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  stock: number;
+  image?: string;
+}
+
+
 export default function MenuPage() {
   const { addItem } = useCartStore();
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [hasPreviousOrder, setHasPreviousOrder] = useState(false);
 
   const fetchItems = async () => {
     try {
       const res = await axios.get("https://serenity-gardens.onrender.com/api/items");
-      setProducts(res.data.filter((item) => item.finalized));
+      setProducts(res.data.filter((item: Product) => item.finalized));
     } catch (err) {
       console.error("Failed to fetch items");
     }
   };
+
+  
+  useEffect(() => {
+    fetchItems();
+    checkPreviousOrder();
+  }, []);
 
   const checkPreviousOrder = async () => {
     const token = localStorage.getItem("token");
@@ -60,12 +75,8 @@ export default function MenuPage() {
     }
   };
   
-  useEffect(() => {
-    fetchItems();
-    checkPreviousOrder();
-  }, []);
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (product: Product) => {
     const quantity = parseInt(
       prompt(`Enter quantity (Available: ${product.stock})`) || "0",
       10
@@ -81,12 +92,16 @@ export default function MenuPage() {
       return;
     }
 
-    addItem({
+    const item: CartItem = {
       id: product._id,
       name: product.name,
       price: product.price,
       quantity,
-    });
+      stock: product.stock,
+      image: product.image,
+    };
+
+    addItem(item);
   };
 
   return (

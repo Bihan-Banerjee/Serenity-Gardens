@@ -1,10 +1,12 @@
 import { create } from 'zustand';
 
-type CartItem = {
+export type CartItem = {
   id: string;
   name: string;
   price: number;
   quantity: number;
+  stock?: number;
+  image?: string;
 };
 
 interface CartState {
