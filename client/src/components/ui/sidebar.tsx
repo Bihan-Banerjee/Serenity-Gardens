@@ -4,7 +4,6 @@ import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import { PanelLeftIcon } from "lucide-react"
 import { ChevronRight } from "lucide-react" 
-import { useOnClickOutside } from "@/hooks/use-on-click-outside" 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -156,7 +155,7 @@ function Sidebar({
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
 }) {
-  const { isMobile, state, open, openMobile, setOpenMobile, toggleSidebar } = useSidebar();
+  const { isMobile, state, openMobile, setOpenMobile, toggleSidebar } = useSidebar();
   const sidebarRef = React.useRef<SidebarRef>(null);
   /*
   // Close sidebar when clicking outside

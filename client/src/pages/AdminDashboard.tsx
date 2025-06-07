@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import ItemManager from "@/components/admin/ItemManager";
 import OrderManager from "@/components/admin/OrderManager";
 
@@ -8,7 +8,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen pt-30 px-4">
-      {/* Toggle Buttons */}
       <div className="flex justify-center mb-8 space-x-4">
         <button
           onClick={() => setActiveComponent("items")}
@@ -32,7 +31,6 @@ const AdminDashboard = () => {
         </button>
       </div>
 
-      {/* Content Section */}
       <div className="bg-white dark:bg-neutral-800 rounded-xl shadow p-6 max-w-6xl mx-auto">
         {activeComponent === "items" ? <ItemManager /> : <OrderManager />}
       </div>
