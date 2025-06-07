@@ -15,6 +15,8 @@ const buttonVariants = cva(
         outline: "bg-black text-white",
         ghost: "bg-black text-white",
         link: "bg-black text-white underline",
+        destructive: "bg-black text-white underline",
+        icon: "bg-black text-white underline",
       },
       size: {
         default: "h-9 px-4 py-2",
