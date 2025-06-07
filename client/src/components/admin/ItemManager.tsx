@@ -3,10 +3,33 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+type Item = {
+  _id: string;
+  name: string;
+  description?: string;
+  price: number;
+  stock: number;
+  image?: string;
+};
+
+type ItemForm = {
+  name: string;
+  description: string;
+  price: string;
+  stock: string;
+  image: File | null;
+};
+
 const ItemManager = () => {
-  const [items, setItems] = useState([]);
-  const [form, setForm] = useState({ name: "", description: "", price: "", stock: "", image: null });
-  const [editingStockId, setEditingStockId] = useState(null);
+  const [items, setItems] = useState<Item[]>([]);
+  const [form, setForm] = useState<ItemForm>({
+    name: "",
+    description: "",
+    price: "",
+    stock: "",
+    image: null,
+  });
+  const [editingStockId, setEditingStockId] = useState<string | null>(null);
   const [newStock, setNewStock] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -41,7 +64,7 @@ const ItemManager = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id:string) => {
     try {
       await axios.delete(`https://serenity-gardens.onrender.com/api/items/${id}`);
       toast.success("Item deleted!");
@@ -51,7 +74,7 @@ const ItemManager = () => {
     }
   };
 
-  const handleFinalize = async (id) => {
+  const handleFinalize = async (id:string) => {
     try {
       await axios.patch(`https://serenity-gardens.onrender.com/api/items/finalize/${id}`);
       toast.success("Item finalized!");
@@ -61,7 +84,7 @@ const ItemManager = () => {
     }
   };
 
-  const handleStockUpdate = async (id) => {
+  const handleStockUpdate = async (id:string) => {
     try {
       await axios.patch(`https://serenity-gardens.onrender.com/api/items/${id}`, { stock: newStock });
       toast.success("Stock updated!");
@@ -88,7 +111,7 @@ const ItemManager = () => {
 
   return (
     <div className="space-y-6">
-      {/* ➕ Add Item Form */}
+      {/*Add Item Form */}
       <form onSubmit={handleAddItem} className="space-y-4">
         <input type="text" placeholder="Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full p-2 border rounded text-black" required />
         <input type="text" placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full p-2 border rounded text-black" />
@@ -98,7 +121,7 @@ const ItemManager = () => {
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Add Item</button>
       </form>
 
-      {/* 🧾 Items Display (Paginated) */}
+      {/*Items Display (Paginated) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {currentItems.map((item) => (
           <div key={item._id} className="h-[450px] w-[200px] p-2 border rounded flex flex-col bg-white dark:bg-neutral-800 max-w-xs mx-auto shadow-lg">
@@ -112,12 +135,12 @@ const ItemManager = () => {
             {editingStockId === item._id ? (
               <div className="flex gap-2 mt-2">
                 <input type="number" value={newStock} onChange={(e) => setNewStock(e.target.value)} className="border p-1 rounded w-20 text-black" />
-                <button onClick={() => handleStockUpdate(item._id)} className="bg-green-500 text-black px-2 rounded">Save</button>
+                <button onClick={() => handleStockUpdate(item._id)} className="bg-green-500 text-white px-2 rounded">Save</button>
               </div>
             ) : (
               <p className="mt-2 text-sm text-gray-600">
                 Stock: {item.stock}
-                <button onClick={() => { setEditingStockId(item._id); setNewStock(item.stock); }} className="text-white text-sm ml-2">Edit</button>
+                <button onClick={() => { setEditingStockId(item._id); setNewStock(String(item.stock)); }} className="text-white text-sm ml-2">Edit</button>
               </p>
             )}
 
@@ -127,7 +150,7 @@ const ItemManager = () => {
         ))}
       </div>
 
-      {/* 🔁 Pagination Controls */}
+      {/*Pagination Controls */}
       <div className="flex justify-center mt-6 space-x-2">
         <button
           className="px-3 py-1 rounded bg-gray-300 hover:bg-gray-400 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white dark:text-white"

@@ -3,9 +3,23 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+type OrderItem = {
+  name: string;
+  quantity: number;
+};
+
+type Order = {
+  _id: string;
+  paid: boolean;
+  userId: {
+    name: string;
+    email: string;
+  };
+  items: OrderItem[];
+};
 
 const OrderManager = () => {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const fetchOrders = async () => {
     try {
@@ -16,7 +30,7 @@ const OrderManager = () => {
     }
   };
 
-  const handleMarkPaid = async (id) => {
+  const handleMarkPaid = async (id:string) => {
     try {
       await axios.patch(`https://serenity-gardens.onrender.com/api/orders/${id}`, { paid: true });
       toast.success("Order marked as paid!");
