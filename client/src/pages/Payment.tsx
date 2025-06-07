@@ -20,7 +20,7 @@ export default function PaymentPage() {
     try {
         const token = localStorage.getItem("token");
         await axios.post(
-            "http://localhost:5000/api/orders",
+            "https://serenity-gardens.onrender.com/api/orders",
             { items: cart, paid: false },
             {
               headers: { Authorization: `Bearer ${token}` },
@@ -49,7 +49,7 @@ export default function PaymentPage() {
       description: "Order Payment",
       handler: async function (response) {
         try {
-          await axios.post("http://localhost:5000/api/orders", {
+          await axios.post("https://serenity-gardens.onrender.com/api/orders", {
             items: cart,
             paid: true,
             razorpayPaymentId: response.razorpay_payment_id,

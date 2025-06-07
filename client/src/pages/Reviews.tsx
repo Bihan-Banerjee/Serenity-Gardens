@@ -20,7 +20,7 @@ const Reviews = () => {
     }
   
     try {
-      const res = await fetch("http://localhost:5000/api/reviews/submit", {
+      const res = await fetch("https://serenity-gardens.onrender.com/api/reviews/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

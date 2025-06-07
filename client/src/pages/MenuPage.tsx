@@ -14,7 +14,7 @@ export default function MenuPage() {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/items");
+      const res = await axios.get("https://serenity-gardens.onrender.com/api/items");
       setProducts(res.data.filter((item) => item.finalized));
     } catch (err) {
       console.error("Failed to fetch items");
@@ -26,7 +26,7 @@ export default function MenuPage() {
     if (!token) return;
 
     try {
-      const res = await axios.get("http://localhost:5000/api/orders/my-latest", {
+      const res = await axios.get("https://serenity-gardens.onrender.com/api/orders/my-latest", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.data) setHasPreviousOrder(true);
@@ -40,7 +40,7 @@ export default function MenuPage() {
     if (!token) return;
 
     try {
-      const res = await axios.get("http://localhost:5000/api/orders/my-latest", {
+      const res = await axios.get("https://serenity-gardens.onrender.com/api/orders/my-latest", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
