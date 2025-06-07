@@ -7,7 +7,16 @@ import Reviews from './pages/Reviews';
 import Shop from './pages/Shop';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import {Navbar, NavItems} from './components/ui/resizable-navbar';
+import {
+  Navbar,
+  NavItems,
+  NavBody,
+  MobileNav,
+  MobileNavHeader,
+  MobileNavMenu,
+  MobileNavToggle,
+  NavbarLogo,
+} from "@/components/ui/resizable-navbar";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import Menu from './pages/Menu';
 import { Toaster } from "react-hot-toast";
@@ -16,7 +25,7 @@ import CheckoutPage from './pages/Checkout';
 import PaymentPage from './pages/Payment';
 import MyProfile from './pages/MyProfile';
 import UpcomingPlans from './pages/UpcomingPlans';
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
@@ -45,25 +54,47 @@ const RedirectWithToast = () => {
 
 
 const App = () => {
+
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const navLinks = [
+    { name: "Home", link: "/" },
+    { name: "About", link: "/about" },
+    { name: "Gallery", link: "/gallery" },
+    { name: "Reviews", link: "/reviews" },
+    { name: "Upcoming Plans", link: "/upcoming-plans" },
+    { name: "Explore", link: "/explore" },
+    { name: "Menu", link: "/menu" },
+    { name: "My Profile", link: "/my-profile" },
+    { name: "Sign In", link: "/shop" },
+  ];
+
   return (
     <Router>
       <AuroraBackground>
         <Navbar>
-          <NavItems
-            items={[
-              { name: "Home", link: "/" },
-              { name: "About", link: "/about" },
-              { name: "Gallery", link: "/gallery" },
-              { name: "Reviews", link: "/reviews" },
-              { name: "Upcoming Plans", link: "/upcoming-plans" },
-              { name: "Explore", link: "/explore" },
-              { name: "Menu", link: "/menu" },
-              { name: "My Profile", link: "/my-profile" },
-              { name: "Sign In", link: "/shop" }
-            ]}
-            onItemClick={() => console.log("Navbar item clicked!")}
-          />
+          <NavItems items={navLinks} onItemClick={() => setMobileOpen(false)} />
         </Navbar>
+
+        {/* Mobile Navbar */}
+        <MobileNav visible>
+          <MobileNavHeader>
+            <NavbarLogo />
+            <MobileNavToggle isOpen={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)} />
+          </MobileNavHeader>
+          <MobileNavMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)}>
+            {navLinks.map((item, idx) => (
+              <a
+                key={idx}
+                href={item.link}
+                className="w-full py-2 text-black dark:text-white"
+                onClick={() => setMobileOpen(false)}
+              >
+                {item.name}
+              </a>
+            ))}
+          </MobileNavMenu>
+        </MobileNav>
         <div className="p-0">
           <Routes>
             <Route path="/" element={<Home />} />
