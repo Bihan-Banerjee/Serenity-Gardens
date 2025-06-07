@@ -13,6 +13,7 @@ interface Product {
   price: number;
   stock: number;
   image?: string;
+  finalized: boolean;
 }
 
 
@@ -60,7 +61,14 @@ export default function MenuPage() {
       });
 
       const previousItems = res.data.items;
-      previousItems.forEach((item) => {
+      type OrderItem = {
+        id: string;
+        productId?: string;
+        name: string;
+        price: number;
+        quantity: number;
+      };
+      previousItems.forEach((item: OrderItem) => {
         addItem({
           id: item.productId || item.id, 
           name: item.name,
