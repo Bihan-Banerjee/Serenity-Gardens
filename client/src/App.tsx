@@ -10,7 +10,6 @@ import Register from './pages/Register';
 import {
   Navbar,
   NavItems,
-  NavBody,
   MobileNav,
   MobileNavHeader,
   MobileNavMenu,
