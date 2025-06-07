@@ -9,7 +9,7 @@ const OrderManager = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/orders");
+      const res = await axios.get("https://serenity-gardens.onrender.com/api/orders");
       setOrders(res.data);
     } catch (err) {
       toast.error("Error fetching orders");
@@ -18,7 +18,7 @@ const OrderManager = () => {
 
   const handleMarkPaid = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/api/orders/${id}`, { paid: true });
+      await axios.patch(`https://serenity-gardens.onrender.com/api/orders/${id}`, { paid: true });
       toast.success("Order marked as paid!");
       fetchOrders();
     } catch (err) {
@@ -31,7 +31,7 @@ const OrderManager = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/orders/${id}`);
+      await axios.delete(`https://serenity-gardens.onrender.com/api/orders/${id}`);
       toast.success("Order deleted successfully");
       fetchOrders();
     } catch (err) {

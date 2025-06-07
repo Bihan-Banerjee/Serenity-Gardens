@@ -27,7 +27,7 @@ export default function MyProfile() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/orders/my", {
+      const res = await fetch("https://serenity-gardens.onrender.com/api/orders/my", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
