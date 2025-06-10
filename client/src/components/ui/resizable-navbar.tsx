@@ -264,7 +264,7 @@ export const NavbarLogo = () => {
         height={30}
         loading="lazy"
       />
-      <span className="font-medium text-black dark:text-white">Startup</span>
+      <span className="font-medium text-black dark:text-white">Serenity Gardens</span>
     </Link>
   );
 };

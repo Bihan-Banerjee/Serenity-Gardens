@@ -74,8 +74,6 @@ const App = () => {
         <Navbar>
           <NavItems items={navLinks} onItemClick={() => setMobileOpen(false)} />
         </Navbar>
-
-        {/* Mobile Navbar */}
         <MobileNav visible>
           <MobileNavHeader>
             <NavbarLogo />
