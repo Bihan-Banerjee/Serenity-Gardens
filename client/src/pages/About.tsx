@@ -1,28 +1,32 @@
 import { FocusCards } from "@/components/ui/focus-cards";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { Compare } from "@/components/ui/compare";
+import useIsMobile from "@/hooks/useIsMobile";
 
 const About = () => {
+  const isMobile = useIsMobile();
+
   return (
-    <div className="max-w-7xl mx-auto mt-40 px-6">
-      <div className="max-w-2xl mx-auto mb-12">
-        <div className="w-full px-1 md:px-8 flex items-center justify-center">
-          <AuroraText className="text-4xl md:text-6xl mb-10 font-bold flex items-center justify-center text-center">
+    <div className={`mx-auto mt-40 ${isMobile ? "px-4 overflow-x-hidden" : "max-w-7xl px-6"}`}>
+      <div className={`${isMobile ? "max-w-full" : "max-w-2xl"} mx-auto mb-12`}>
+        <div className={`w-full flex items-center justify-center ${isMobile ? "px-2" : "px-1 md:px-8"}`}>
+          <AuroraText className={`font-bold text-center ${isMobile ? "text-3xl mb-6" : "text-4xl md:text-6xl mb-10"}`}>
             About Us
-          </AuroraText>          
-      </div>
-        <p className="text-white text-lg">
-          What began as parents’ wish to see a combined venture between the brothers, ‘Serenity Gardens’ has become a reflection of the close familial ties and much more. Nestling amongst the Tematha farm lands, it speaks volumes about supporting a biosustainable economy in form of pisciculture, organic farm produce, and greenhouse resources. The project of ‘Serenity Gardens’ commenced and still continues in the hands of the locals and provides an inspiration to give back to the community in form of free medical and teaching services. This sanctum is a quest to serve Mother Nature while respecting family values and preserving our roots in its every spectrum.
+          </AuroraText>
+        </div>
+        <p className={`${isMobile ? "text-base" : "text-lg"} text-white`}>
+          What began as parents’ wish to see a combined venture between the brothers, ‘Serenity Gardens’ has become a reflection of the close familial ties and much more...
         </p>
       </div>
 
-      <div className="w-full px-1 md:px-8 flex items-center justify-center">
-        <AuroraText className="text-4xl md:text-6xl font-bold flex items-center justify-center text-center">
+      <div className={`w-full flex items-center justify-center ${isMobile ? "px-2" : "px-1 md:px-8"}`}>
+        <AuroraText className={`font-bold text-center ${isMobile ? "text-3xl" : "text-4xl md:text-6xl"}`}>
           Meet the Family
         </AuroraText>
       </div>
-      <div className="w-5xl mx-auto mb-20 mt-30 px-4">
+      <div className={`mx-auto ${isMobile ? "mt-10 mb-14" : "w-5xl mb-20 mt-30 px-4"}`}>
         <FocusCards
+          redirectOnClick={false}
           cards={[
             { title: "Jeja", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262436/IMG-20250105-WA0358_s951gn.jpg" },
             { title: "Jemma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262437/IMG-20250607-WA0003_idmwey.jpg" },
@@ -34,13 +38,13 @@ const About = () => {
         />
       </div>
 
-      <div className="w-full px-1 md:px-8 flex items-center justify-center">
-        <AuroraText className="text-4xl md:text-6xl font-bold flex items-center justify-center text-center">
+      <div className={`w-full flex items-center justify-center ${isMobile ? "px-2" : "px-1 md:px-8"}`}>
+        <AuroraText className={`font-bold text-center ${isMobile ? "text-3xl" : "text-4xl md:text-6xl"}`}>
           Before VS After
         </AuroraText>
       </div>
 
-      <div className="space-y-16 mb-20 px-4">
+      <div className={`space-y-12 mb-20 ${isMobile ? "px-2" : "px-4"}`}>
         {[
           {
             before: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433093/oldhouse_gfbe4s.jpg",
@@ -59,14 +63,14 @@ const About = () => {
           },
         ].map((item, idx) => (
           <div key={idx} className="flex flex-col items-center">
-            <div
-              className="w-full h-[90vh] px-1 md:px-8 flex items-center justify-center [perspective:800px] [transform-style:preserve-3d]"
-            >
+            <div className={`w-full ${isMobile ? " h-[40vh]" : " h-[70vh]"} px-1 md:px-8 flex items-center justify-center [perspective:800px] [transform-style:preserve-3d]`}>
               <div
                 style={{
                   transform: "rotateX(15deg) translateZ(80px)",
                 }}
-                className="p-2 md:p-4 border rounded-3xl dark:bg-neutral-900 bg-neutral-100 border-neutral-200 dark:border-neutral-800 mx-auto mt-0 w-[90%] h-[40vh] md:w-[70%] md:h-[50vh]"
+                className={`p-2 md:p-4 border rounded-3xl dark:bg-neutral-900 bg-neutral-100 border-neutral-200 dark:border-neutral-800 mx-auto ${
+                  isMobile ? "w-[95%] h-[30vh]" : "w-[90%] h-[40vh] md:w-[70%] md:h-[50vh]"
+                }`}
               >
                 <Compare
                   firstImage={item.before}
@@ -79,7 +83,7 @@ const About = () => {
                 />
               </div>
             </div>
-            <p className="text-white text-lg text-center max-w-xl">
+            <p className="text-white text-base text-center mt-2 max-w-xl">
               {item.caption}
             </p>
           </div>

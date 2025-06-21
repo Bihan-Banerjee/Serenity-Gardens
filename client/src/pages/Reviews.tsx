@@ -1,13 +1,11 @@
-"use client";
-
 import { Marquee } from "@/components/magicui/marquee"; 
 import React from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AuroraText } from "@/components/magicui/aurora-text";
-
+import useIsMobile from "@/hooks/useIsMobile";
 const Reviews = () => {
-
+  const isMobile = useIsMobile();
   const [form, setForm] = useState({ name: "", review: "" });
 
   const handleFeedbackSubmit = async (e: React.FormEvent) => {
@@ -130,74 +128,97 @@ const Reviews = () => {
   const [firstRow, secondRow, thirdRow] = splitTestimonials();
 
   return (
-    <div className="w-full pt-40">
+    <div className={`w-full ${isMobile ? "pt-24 pb-8 px-2 overflow-hidden" : "pt-40 px-6 pb-20"}`}>
       {/* Section 1 - Marquee Testimonials */}
       
       <div className="w-full px-1 md:px-8 mt-0 mb-5 flex items-center justify-center">
-        <AuroraText className="text-4xl md:text-6xl font-bold flex items-center justify-center text-center">
+        <AuroraText className={`${isMobile ? "text-3xl" : "text-4xl md:text-6xl"} font-bold flex items-center justify-center text-center`}>
           What People Say
         </AuroraText>
       </div>
-      <section className="w-full max-w-7xl px-2">
-        <div className="space-y-8">
-          {/* 1st Row */}
-          <Marquee className="gap-6">
-            {firstRow.map((testimonial, idx) => (
-              <div
-                key={`first-${idx}`}
-                className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
-              >
-                <img
-                  src={testimonial.img}
-                  alt={testimonial.name}
-                  className="w-16 h-16 rounded-full object-cover mb-4"
-                />
-                <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
-              </div>
-            ))}
-          </Marquee>
-
-          {/* 2nd Row - Reverse */}
-          <Marquee reverse className="gap-6">
-            {secondRow.map((testimonial, idx) => (
-              <div
-                key={`second-${idx}`}
-                className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
-              >
-                <img
-                  src={testimonial.img}
-                  alt={testimonial.name}
-                  className="w-16 h-16 rounded-full object-cover mb-4"
-                />
-                <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
-              </div>
-            ))}
-          </Marquee>
-
-          {/* 3rd Row */}
-          <Marquee className="gap-6">
-            {thirdRow.map((testimonial, idx) => (
-              <div
-                key={`third-${idx}`}
-                className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
-              >
-                <img
-                  src={testimonial.img}
-                  alt={testimonial.name}
-                  className="w-16 h-16 rounded-full object-cover mb-4"
-                />
-                <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
-              </div>
-            ))}
-          </Marquee>
+      <section className={`w-full max-w-7xl px-2 ${isMobile ? "mx-auto" : ""}`}>
+        <div className={`${isMobile ? "space-y-4" : "space-y-8"}`}>
+          {isMobile ? (
+            
+              <Marquee className={`${isMobile ? "gap-4" : "gap-6"}`}>
+                {firstRow.map((testimonial, idx) => (
+                  <div
+                    key={`first-${idx}`}
+                    className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
+                  >
+                    <img
+                      src={testimonial.img}
+                      alt={testimonial.name}
+                      className="w-16 h-16 rounded-full object-cover mb-4"
+                    />
+                    <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
+                  </div>
+                ))}
+              </Marquee>
+          ):
+            (
+              <>
+              <Marquee className={`${isMobile ? "gap-4" : "gap-6"}`}>
+                {firstRow.map((testimonial, idx) => (
+                  <div
+                    key={`first-${idx}`}
+                    className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
+                  >
+                    <img
+                      src={testimonial.img}
+                      alt={testimonial.name}
+                      className="w-16 h-16 rounded-full object-cover mb-4"
+                    />
+                    <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
+                  </div>
+                ))}
+              </Marquee>
+              
+              
+              <Marquee reverse className={`${isMobile ? "gap-4" : "gap-6"}`}>
+                {secondRow.map((testimonial, idx) => (
+                  <div
+                    key={`second-${idx}`}
+                    className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
+                  >
+                    <img
+                      src={testimonial.img}
+                      alt={testimonial.name}
+                      className="w-16 h-16 rounded-full object-cover mb-4"
+                    />
+                    <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
+                  </div>
+                ))}
+              </Marquee>
+              
+              
+              <Marquee className={`${isMobile ? "gap-4" : "gap-6"}`}>
+                {thirdRow.map((testimonial, idx) => (
+                  <div
+                    key={`third-${idx}`}
+                    className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
+                  >
+                    <img
+                      src={testimonial.img}
+                      alt={testimonial.name}
+                      className="w-16 h-16 rounded-full object-cover mb-4"
+                    />
+                    <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
+                  </div>
+                ))}
+              </Marquee>
+              </>
+            )
+          }
         </div>
       </section>
 
       {/* Section 2 - Feedback Form */}
-      <section className="max-w-xl mx-auto px-4 mt-20 pb-20">
+      <section className={`${isMobile ? "px-2 mt-12" : "mt-20 max-w-xl px-4"} mx-auto pb-20`}>
         <h2 className="text-3xl font-bold text-white text-center mb-4">Share Your Feedback</h2>
         <p className="text-white text-center mb-6">
           We would love to hear about your experience!
