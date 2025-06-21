@@ -3,9 +3,10 @@ import { AuroraText } from "@/components/magicui/aurora-text";
 import { FocusCards } from "@/components/ui/focus-cards";
 import MainLoader from "@/components/loaders/MainLoader";
 import { useEffect, useState } from "react";
+import useIsMobile from "@/hooks/useIsMobile";
 const Home = () => {
   const [loading, setLoading] = useState(true);
-
+  const isMobile = useIsMobile();
   useEffect(() => {
     const navEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
     const isHardLoad = navEntry?.type === "reload" || navEntry?.type === "navigate";
@@ -27,21 +28,21 @@ const Home = () => {
   }
 
   return (
-    <div className="overflow-x-hidden w-full">
-      <AuroraBackground className="pt-36 pb-20 px-4 overflow-x-hidden w-full">
+    <div className={`overflow-x-hidden w-full ${isMobile ? "scale-95" : ""}`}>
+      <AuroraBackground className={`pt-36 pb-20 px-4 overflow-x-hidden w-full ${isMobile ? "min-h-[100dvh]" : ""}`}>
         <div className="flex flex-col items-center text-center space-y-4 mb-16 overflow-x-hidden w-full">
-          <h2 className="text-2xl md:text-4xl font-semibold mt-4">
+          <h2 className={`${isMobile ? "text-xl" : "text-2xl md:text-4xl"} font-semibold mt-4`}>
             Welcome to
           </h2>
-          <AuroraText className="text-4xl md:text-6xl mb-7.5 font-bold">
+          <AuroraText className={`${isMobile ? "text-3xl" : "text-4xl md:text-6xl"} mb-7.5 font-bold`}>
             Serenity Gardens
           </AuroraText>
-          <p className="mt-2 text-lg max-w-2xl text-center">
+          <p className={`mt-2 text-lg ${isMobile ? "px-2" : "max-w-2xl"} text-center`}>
             Discover the beauty of nature and tranquility in our serene gardens.
             Explore, relax, and rejuvenate your senses in a peaceful environment.
           </p>
         </div>
-        <section className="w-full max-w-7xl mx-auto overflow-x-hidden w-full">
+        <section className={`${isMobile ? "w-full" : "max-w-7xl"} mx-auto overflow-x-hidden w-full`}>
           <FocusCards
             redirectOnClick={true}
             cards={[

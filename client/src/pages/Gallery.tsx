@@ -1,7 +1,9 @@
 "use client";
 import Carousel from "@/components/ui/carousel";
 import { AuroraText } from "@/components/magicui/aurora-text";
+import useIsMobile from "@/hooks/useIsMobile";
 const Gallery = () => {
+  const isMobile = useIsMobile();
   const slides = [
     {
       title: "Sunset Bliss",
@@ -101,19 +103,23 @@ const Gallery = () => {
   ];
 
   return (
-    <div className="mt-30 flex flex-col items-center justify-center pb-20">
-      <div className="w-full px-1 md:px-8 mb-5 flex items-center justify-center">
-              <AuroraText className="text-4xl md:text-6xl font-bold flex items-center justify-center text-center">
-                Gallery
-              </AuroraText>
-            </div>
-      <p className="text-center text-white mb-8 max-w-xl">
+    <div className={`${isMobile ? "h-[100dvh] overflow-hidden px-4 pt-10" : "min-h-screen pb-20 mt-30"} flex flex-col items-center justify-start`}>
+      <div className="w-full mb-5 flex items-center justify-center">
+        <AuroraText className={`font-bold text-center ${isMobile ? "text-3xl" : "text-4xl md:text-6xl"}`}>
+          Gallery
+        </AuroraText>
+      </div>
+      
+      <p className={`text-center text-white mb-8 ${isMobile ? "text-base px-2" : "text-lg max-w-xl"}`}>
         Photos and videos capturing the beauty of Serenity Gardens.
       </p>
 
-      <Carousel slides={slides} />
+      <div className={`${isMobile ? "w-full max-h-[60vh] overflow-hidden" : ""}`}>
+        <Carousel slides={slides} />
+      </div>
     </div>
   );
 };
+
 
 export default Gallery;

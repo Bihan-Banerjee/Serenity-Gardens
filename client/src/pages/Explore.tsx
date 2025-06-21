@@ -1,6 +1,8 @@
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 import { AuroraText } from "@/components/magicui/aurora-text";
+import useIsMobile from "@/hooks/useIsMobile";
 const ExplorePage = () => {
+  const isMobile = useIsMobile();
   const testimonials = [
     {
       quote: "Serenity Gardens is the perfect getaway spot for family picnics. Surrounded by nature, you’ll feel rejuvenated and relaxed!",
@@ -29,17 +31,18 @@ const ExplorePage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center mt-22 px-4">
+    <div className={`min-h-screen flex flex-col items-center justify-center ${isMobile ? "mt-16 px-2 scale-90" : "mt-22 px-4"}`}>
       <div className="w-full px-1 md:px-8 flex items-center justify-center">
-          <AuroraText className="text-4xl md:text-6xl mb-10 font-bold flex items-center justify-center text-center">
+          <AuroraText className={`${isMobile ? "text-3xl" : "text-4xl md:text-6xl"} mb-10 font-bold flex items-center justify-center text-center`}>
             Explore
           </AuroraText>
       </div>
-      <p className="text-center text-white max-w-2xl mb-10">
+      <p className={`text-center text-white ${isMobile ? "max-w-sm text-sm mb-6" : "max-w-2xl mb-10 text-base"}`}>
         Discover the charm and versatility of our garden house — perfect for rentals, parties, photo sessions, and peaceful retreats.
       </p>
-
-      <AnimatedTestimonials testimonials={testimonials} autoplay />
+      <div className={`w-full ${isMobile ? "px-1" : "px-4"} overflow-hidden`}>
+        <AnimatedTestimonials testimonials={testimonials} autoplay />
+      </div>
     </div>
   );
 };

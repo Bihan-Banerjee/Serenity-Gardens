@@ -65,6 +65,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
 }
 
 h1 {
@@ -234,4 +236,6 @@ button:focus-visible {
 html {
   scrollbar-width: none; 
   -ms-overflow-style: none;  
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
 }

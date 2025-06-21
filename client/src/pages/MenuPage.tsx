@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { logout } from "@/lib/auth";
 import { toast } from "react-hot-toast";
-
+import useIsMobile from "@/hooks/useIsMobile";
 interface Product {
   _id: string;
   name: string;
@@ -21,7 +21,7 @@ export default function MenuPage() {
   const { addItem } = useCartStore();
   const [products, setProducts] = useState<Product[]>([]);
   const [hasPreviousOrder, setHasPreviousOrder] = useState(false);
-
+  const isMobile = useIsMobile();
   const fetchItems = async () => {
     try {
       const res = await axios.get("https://serenity-gardens.onrender.com/api/items");
@@ -113,7 +113,7 @@ export default function MenuPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className={`min-h-screen flex flex-col items-center justify-center ${isMobile ? "overflow-x-hidden" : ""}`}>
       <Button
         className="fixed bottom-4 left-4 z-50 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow"
         onClick={logout}
@@ -124,7 +124,7 @@ export default function MenuPage() {
       
       
       <div className="w-full px-1 md:px-12 flex items-center justify-start">
-          <AuroraText className="text-3xl md:text-5xl mb-10 font-bold text-left">
+          <AuroraText className={`${isMobile ? "text-3xl" : "text-3xl md:text-5xl"} mb-10 font-bold text-left`}>
             Shop Catalogue For This Week
           </AuroraText>          
       </div>
@@ -136,12 +136,12 @@ export default function MenuPage() {
           Repeat Last Order
         </Button>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full mb-10max-w-6xl">
+      <div className={`grid ${isMobile ? "grid-cols-1 gap-4 px-2" : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6"} w-full mb-10max-w-6xl`}>
         {products.map((product) => (
           <div
             key={product._id}
             data-ignore-outside-click
-            className="bg-white h-[340px] w-[250px] dark:bg-neutral-900 p-4 rounded-lg shadow-md hover:shadow-lg transition"
+            className={`bg-white ${isMobile ? "w-full h-[320px]" : "w-[250px] h-[340px]"} dark:bg-neutral-900 p-4 rounded-lg shadow-md hover:shadow-lg transition`}
           >
             <div data-ignore-outside-click>
               {product.image && (
