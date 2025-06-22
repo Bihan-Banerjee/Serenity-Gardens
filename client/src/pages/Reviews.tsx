@@ -128,11 +128,11 @@ const Reviews = () => {
   const [firstRow, secondRow, thirdRow] = splitTestimonials();
 
   return (
-    <div className={`w-full ${isMobile ? "pt-24 pb-8 px-2 overflow-hidden" : "pt-40 px-6 pb-20"}`}>
+    <div className={`w-full relative z-0 ${isMobile ? "pt-28 pb-12 px-3 min-h-screen overflow-hidden" : "pt-40 px-6 pb-20"}`}>
       {/* Section 1 - Marquee Testimonials */}
       
       <div className="w-full px-1 md:px-8 mt-0 mb-5 flex items-center justify-center">
-        <AuroraText className={`${isMobile ? "text-3xl" : "text-4xl md:text-6xl"} font-bold flex items-center justify-center text-center`}>
+        <AuroraText className={`${isMobile ? "text-3xl" : "flex items-center justify-center text-4xl md:text-6xl"} font-bold text-center`}>
           What People Say
         </AuroraText>
       </div>
@@ -140,7 +140,7 @@ const Reviews = () => {
         <div className={`${isMobile ? "space-y-4" : "space-y-8"}`}>
           {isMobile ? (
             
-              <Marquee className={`${isMobile ? "gap-4" : "gap-6"}`}>
+              <Marquee className={`${isMobile ? "gap-4 overflow-visible" : "gap-6"}`}>
                 {firstRow.map((testimonial, idx) => (
                   <div
                     key={`first-${idx}`}
@@ -159,7 +159,7 @@ const Reviews = () => {
           ):
             (
               <>
-              <Marquee className={`${isMobile ? "gap-4" : "gap-6"}`}>
+              <Marquee className={`overflow-visible ${isMobile ? "gap-4" : "gap-6"}`}>
                 {firstRow.map((testimonial, idx) => (
                   <div
                     key={`first-${idx}`}
@@ -177,7 +177,7 @@ const Reviews = () => {
               </Marquee>
               
               
-              <Marquee reverse className={`${isMobile ? "gap-4" : "gap-6"}`}>
+              <Marquee reverse className={`overflow-visible ${isMobile ? "gap-4" : "gap-6"}`}>
                 {secondRow.map((testimonial, idx) => (
                   <div
                     key={`second-${idx}`}
@@ -195,7 +195,7 @@ const Reviews = () => {
               </Marquee>
               
               
-              <Marquee className={`${isMobile ? "gap-4" : "gap-6"}`}>
+              <Marquee className={`overflow-visible ${isMobile ? "gap-4" : "gap-6"}`}>
                 {thirdRow.map((testimonial, idx) => (
                   <div
                     key={`third-${idx}`}
@@ -218,7 +218,7 @@ const Reviews = () => {
       </section>
 
       {/* Section 2 - Feedback Form */}
-      <section className={`${isMobile ? "px-2 mt-12" : "mt-20 max-w-xl px-4"} mx-auto pb-20`}>
+      <section className={`${isMobile ? "px-2 mt-12" : "mt-20 max-w-xl px-4"} mx-auto pb-16`}>
         <h2 className="text-3xl font-bold text-white text-center mb-4">Share Your Feedback</h2>
         <p className="text-white text-center mb-6">
           We would love to hear about your experience!
@@ -241,7 +241,7 @@ const Reviews = () => {
           ></textarea>
           <button
             type="submit"
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full transition"
+            className={`bg-green-600 hover:bg-green-700 text-white rounded transition ${isMobile ? "px-3 py-2 text-sm" : "w-full px-4 py-2 text-base"}`}
           >
             Submit
           </button>
