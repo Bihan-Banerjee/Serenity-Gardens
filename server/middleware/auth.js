@@ -1,20 +1,36 @@
 import jwt from 'jsonwebtoken';
 
-const protect = (req, res, next) => {
-  let token = req.headers.authorization;
+const protect = async (req, res, next) => {
+  let token;
 
-  if (token && token.startsWith('Bearer')) {
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
-      token = token.split(' ')[1];
+      token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded.id;
+      req.user = decoded; 
+
+      if (!req.user) {
+         return res.status(401).json({ message: 'User not found' });
+      }
+
       next();
     } catch (error) {
-      res.status(401).json({ message: 'Not authorized, invalid token' });
+      console.error(error);
+      return res.status(401).json({ message: 'Not authorized, token failed' });
     }
-  } else {
-    res.status(401).json({ message: 'Not authorized, no token' });
+  }
+
+  if (!token) {
+    return res.status(401).json({ message: 'Not authorized, no token' });
   }
 };
 
-module.exports = protect;
+const adminProtect = (req, res, next) => {
+    if (req.user && req.user.isAdmin) {
+        next(); 
+    } else {
+        res.status(403).json({ message: 'Not authorized as an admin' }); 
+    }
+};
+
+export { protect, adminProtect };
