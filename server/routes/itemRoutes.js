@@ -4,13 +4,14 @@ import multer from "multer";
 import sharp from "sharp";
 import cloudinary from "../utils/cloudinary.js";
 import streamifier from "streamifier";
+import { protect, adminProtect } from "../middleware/auth.js";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 const router = express.Router();
 
 
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", protect, adminProtect, upload.single("image"), async (req, res) => {
   try {
     const { name, price, stock, description } = req.body;
 
@@ -63,7 +64,7 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-router.patch('/finalize/:id', async (req, res) => {
+router.patch('/finalize/:id', protect, adminProtect, async (req, res) => {
   try {
     const item = await Item.findByIdAndUpdate(req.params.id, { finalized: true }, { new: true });
     if (!item) return res.status(404).json({ message: "Item not found" });
@@ -74,7 +75,7 @@ router.patch('/finalize/:id', async (req, res) => {
 });
 
 
-router.get("/all", async (req, res) => {
+router.get("/all", protect, adminProtect, async (req, res) => {
   try {
     const items = await Item.find();
     res.json(items);
@@ -84,7 +85,7 @@ router.get("/all", async (req, res) => {
 });
 
 
-router.get("/", async (req, res) => {
+router.get("/", protect, adminProtect, async (req, res) => {
   try {
     const items = await Item.find({ finalized: true });
     res.json(items);
@@ -94,7 +95,7 @@ router.get("/", async (req, res) => {
 });
 
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", protect, adminProtect, async (req, res) => {
   try {
     const { stock } = req.body;
     const updatedItem = await Item.findByIdAndUpdate(
@@ -110,7 +111,7 @@ router.patch("/:id", async (req, res) => {
 });
 
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", protect, adminProtect, async (req, res) => {
   try {
     const deletedItem = await Item.findByIdAndDelete(req.params.id);
     if (!deletedItem) return res.status(404).json({ message: "Item not found" });

@@ -3,6 +3,7 @@ import Order from "../models/Order.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import Item from "../models/Item.js";
+import { protect, adminProtect } from "../middleware/auth.js";
 dotenv.config();
 
 const router = express.Router();
@@ -24,7 +25,7 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", authMiddleware, protect, adminProtect, async (req, res) => {
   try {
     const { items, paid, razorpayPaymentId } = req.body;
 
@@ -68,7 +69,7 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", protect, adminProtect, async (req, res) => {
   try {
     const { id } = req.params;
     const { paid } = req.body;
@@ -96,7 +97,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", protect, async (req, res) => {
   try {
     const orders = await Order.find().populate("userId", "name email");
     res.json(orders);
@@ -105,7 +106,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/my", authMiddleware, async (req, res) => {
+router.get("/my", protect, authMiddleware, async (req, res) => {
   try {
     const userOrders = await Order.find({ userId: req.user.id }).sort({ createdAt: -1 });
     res.json(userOrders);
@@ -115,7 +116,7 @@ router.get("/my", authMiddleware, async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", protect, adminProtect, async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);
     res.json({ message: "Order deleted successfully" });
@@ -124,7 +125,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.get("/my-latest", authMiddleware, async (req, res) => {
+router.get("/my-latest", protect, authMiddleware, async (req, res) => {
   try {
     const order = await Order.findOne({ userId: req.user.id })
       .sort({ createdAt: -1 })
