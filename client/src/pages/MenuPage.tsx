@@ -1,4 +1,3 @@
-"use client";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { useCartStore, CartItem } from "./useCartStore";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,8 @@ import axios from "axios";
 import { logout } from "@/lib/auth";
 import { toast } from "react-hot-toast";
 import useIsMobile from "@/hooks/useIsMobile";
+import { useNavigate } from "react-router-dom";
+
 interface Product {
   _id: string;
   name: string;
@@ -22,12 +23,27 @@ export default function MenuPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [hasPreviousOrder, setHasPreviousOrder] = useState(false);
   const isMobile = useIsMobile();
+  const navigate = useNavigate(); 
+
   const fetchItems = async () => {
+    const token = localStorage.getItem("token"); 
+    if (!token) {
+      toast.error("You must be logged in to view the menu.");
+      navigate("/login"); 
+      return;
+    }
+
     try {
-      const res = await axios.get("https://serenity-gardens.onrender.com/api/items");
+      const res = await axios.get("https://serenity-gardens.onrender.com/api/items", {
+        headers: { Authorization: `Bearer ${token}` } 
+      });
       setProducts(res.data.filter((item: Product) => item.finalized));
     } catch (err) {
-      console.error("Failed to fetch items");
+      console.error("Failed to fetch items:", err);
+      toast.error("Failed to fetch items. Please log in again.");
+      if (axios.isAxiosError(err) && err.response?.status === 401) {
+        logout();
+      }
     }
   };
 
@@ -69,12 +85,20 @@ export default function MenuPage() {
         quantity: number;
       };
       previousItems.forEach((item: OrderItem) => {
-        addItem({
-          id: item.productId || item.id, 
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-        });
+        const productDetails = products.find(p => p._id === (item.productId || item.id));
+        
+        if (productDetails) {
+          addItem({
+            id: productDetails._id, 
+            name: productDetails.name,
+            price: productDetails.price, 
+            quantity: item.quantity,
+            stock: productDetails.stock,
+            image: productDetails.image
+          });
+        } else {
+          console.warn(`Product ${item.name} not found in current catalogue.`);
+        }
       });
 
       toast.success("Previous order added to cart!");
@@ -91,12 +115,12 @@ export default function MenuPage() {
     );
 
     if (isNaN(quantity) || quantity <= 0) {
-      alert("Please enter a valid quantity!");
+      toast.error("Please enter a valid quantity!");
       return;
     }
 
     if (quantity > product.stock) {
-      alert(`Only ${product.stock} items available.`);
+      toast.error(`Only ${product.stock} items available.`);
       return;
     }
 
@@ -110,6 +134,7 @@ export default function MenuPage() {
     };
 
     addItem(item);
+    toast.success(`${product.name} added to cart!`); 
   };
 
   return (
