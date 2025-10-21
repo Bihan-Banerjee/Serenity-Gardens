@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import Home from './pages/Home';
 import About from './pages/About';
 import Explore from './pages/Explore';
@@ -114,6 +115,7 @@ const App = () => {
           </Routes>
           <Toaster position="top-right" reverseOrder={false} />
         </div>
+        <SpeedInsights />
       </AuroraBackground>
     </Router>
   );

@@ -85,7 +85,7 @@ router.get("/all", protect, adminProtect, async (req, res) => {
 });
 
 
-router.get("/", protect, adminProtect, async (req, res) => {
+router.get("/", protect, async (req, res) => {
   try {
     const items = await Item.find({ finalized: true });
     res.json(items);
