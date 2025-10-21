@@ -4,9 +4,16 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import Item from "../models/Item.js";
 import { protect, adminProtect } from "../middleware/auth.js";
+import crypto from "crypto";
+import Razorpay from 'razorpay';
 dotenv.config();
 
 const router = express.Router();
+
+const razorpayInstance = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID, 
+    key_secret: process.env.RAZORPAY_KEY_SECRET, 
+});
 
 const authMiddleware = (req, res, next) => {
   let token = req.headers.authorization;
@@ -135,6 +142,93 @@ router.get("/my-latest", protect, authMiddleware, async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch previous order" });
   }
+});
+
+router.post('/create-razorpay-order', protect, async (req, res) => {
+    try {
+        const { amount, currency = 'INR', receipt } = req.body; 
+
+        if (!amount || amount <= 0) {
+            return res.status(400).json({ message: 'Invalid amount' });
+        }
+
+        const options = {
+            amount: Math.round(amount), 
+            currency,
+            receipt: receipt || `receipt_order_${Date.now()}`, 
+        };
+
+        const order = await razorpayInstance.orders.create(options);
+
+        if (!order) {
+            return res.status(500).json({ message: 'Razorpay order creation failed' });
+        }
+
+        res.json(order); 
+    } catch (error) {
+        console.error('Razorpay order creation error:', error);
+        res.status(500).json({ message: 'Server error creating Razorpay order' });
+    }
+});
+
+router.post('/verify-payment', protect, async (req, res) => {
+    const {
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+        items 
+    } = req.body;
+
+    const secret = process.env.RAZORPAY_KEY_SECRET; 
+
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !items) {
+         return res.status(400).json({ message: 'Missing payment details or items' });
+    }
+
+    try {
+        const generated_signature = crypto
+            .createHmac('sha256', secret)
+            .update(razorpay_order_id + "|" + razorpay_payment_id)
+            .digest('hex');
+
+        if (generated_signature !== razorpay_signature) {
+            return res.status(400).json({ message: 'Payment verification failed: Invalid signature' });
+        }
+
+        const totalAmount = items.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+        );
+
+        const newOrder = new Order({
+            userId: req.user.id, 
+            items: items.map(item => ({ 
+                id: item.id, 
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity
+            })),
+            totalAmount,
+            paid: true, 
+            razorpayPaymentId: razorpay_payment_id,
+        });
+
+        await newOrder.save();
+
+        for (const orderItem of newOrder.items) {
+             const product = await Item.findById(orderItem.id);
+             if (product) {
+                product.stock = Math.max(0, product.stock - orderItem.quantity);
+                await product.save();
+             }
+         }
+
+        res.status(201).json({ message: "Order placed successfully after payment verification", orderId: newOrder._id });
+
+    } catch (error) {
+        console.error('Payment verification/Order creation error:', error);
+        res.status(500).json({ message: 'Server error during payment verification or order creation' });
+    }
 });
 
 
