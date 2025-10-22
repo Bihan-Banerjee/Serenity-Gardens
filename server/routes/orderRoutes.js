@@ -10,29 +10,12 @@ dotenv.config();
 
 const router = express.Router();
 
-const razorpayInstance = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID, 
-    key_secret: process.env.RAZORPAY_KEY_SECRET, 
-});
+//const razorpayInstance = new Razorpay({
+//    key_id: process.env.RAZORPAY_KEY_ID, 
+//    key_secret: process.env.RAZORPAY_KEY_SECRET, 
+//});
 
-const authMiddleware = (req, res, next) => {
-  let token = req.headers.authorization;
-
-  if (token && token.startsWith("Bearer")) {
-    token = token.split(" ")[1];
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded;
-      next();
-    } catch (err) {
-      return res.status(401).json({ message: "Invalid token" });
-    }
-  } else {
-    return res.status(401).json({ message: "No token provided" });
-  }
-};
-
-router.post("/", authMiddleware, protect, adminProtect, async (req, res) => {
+router.post("/", protect, adminProtect, async (req, res) => {
   try {
     const { items, paid, razorpayPaymentId } = req.body;
 
@@ -113,7 +96,7 @@ router.get("/", protect, async (req, res) => {
   }
 });
 
-router.get("/my", protect, authMiddleware, async (req, res) => {
+router.get("/my", protect, async (req, res) => {
   try {
     const userOrders = await Order.find({ userId: req.user.id }).sort({ createdAt: -1 });
     res.json(userOrders);
@@ -132,7 +115,7 @@ router.delete("/:id", protect, adminProtect, async (req, res) => {
   }
 });
 
-router.get("/my-latest", protect, authMiddleware, async (req, res) => {
+router.get("/my-latest", protect, async (req, res) => {
   try {
     const order = await Order.findOne({ userId: req.user.id })
       .sort({ createdAt: -1 })
