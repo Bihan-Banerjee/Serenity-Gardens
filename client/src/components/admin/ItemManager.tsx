@@ -1,7 +1,8 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { logout } from "@/lib/auth"; 
 
 type Item = {
   _id: string;
@@ -10,6 +11,7 @@ type Item = {
   price: number;
   stock: number;
   image?: string;
+  finalized?: boolean;
 };
 
 type ItemForm = {
@@ -33,18 +35,42 @@ const ItemManager = () => {
   const [newStock, setNewStock] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const navigate = useNavigate();
 
   const fetchItems = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Authentication required for admin actions.");
+      navigate("/login"); 
+      return;
+    }
+
     try {
-      const res = await axios.get("https://serenity-gardens.onrender.com/api/items/all");
+      const res = await axios.get("https://serenity-gardens.onrender.com/api/items/all", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setItems(res.data);
     } catch (err) {
+      console.error("Error fetching items:", err); 
       toast.error("Error fetching items");
+      if (axios.isAxiosError(err) && err.response?.status === 401) {
+        toast.error("Session expired or invalid. Please log in again.");
+        logout(); 
+      } else if (axios.isAxiosError(err) && err.response?.status === 403) {
+        toast.error("You are not authorized to view all items.");
+        navigate("/menu"); 
+      }
     }
   };
 
   const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+    if (!token) {
+        toast.error("Authentication required to add items.");
+        navigate("/login");
+        return;
+    }
     const formData = new FormData();
     formData.append("name", form.name);
     formData.append("description", form.description);
@@ -54,50 +80,94 @@ const ItemManager = () => {
 
     try {
       await axios.post("https://serenity-gardens.onrender.com/api/items", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}` 
+        },
       });
       toast.success("Item added!");
       setForm({ name: "", description: "", price: "", stock: "", image: null });
-      fetchItems();
-    } catch {
-      toast.error("Error adding item");
+      fetchItems(); 
+    } catch(err) {
+       console.error("Error adding item:", err);
+       toast.error("Error adding item");
+       if (axios.isAxiosError(err) && (err.response?.status === 401 || err.response?.status === 403) ) {
+         logout(); 
+       }
     }
   };
 
   const handleDelete = async (id:string) => {
+    const token = localStorage.getItem("token");
+    if (!token) { 
+      toast.error("Authentication required."); 
+      navigate("/login"); 
+      return; 
+    }
     try {
-      await axios.delete(`https://serenity-gardens.onrender.com/api/items/${id}`);
+      await axios.delete(`https://serenity-gardens.onrender.com/api/items/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       toast.success("Item deleted!");
-      fetchItems();
-    } catch {
+      fetchItems(); 
+    } catch(err) {
+      console.error("Error deleting item:", err);
       toast.error("Error deleting item");
+       if (axios.isAxiosError(err) && (err.response?.status === 401 || err.response?.status === 403) ) {
+         logout(); 
+       }
     }
   };
 
   const handleFinalize = async (id:string) => {
+    const token = localStorage.getItem("token"); 
+    if (!token) { 
+      toast.error("Authentication required."); 
+      navigate("/login"); 
+      return; 
+    }
     try {
-      await axios.patch(`https://serenity-gardens.onrender.com/api/items/finalize/${id}`);
+      await axios.patch(`https://serenity-gardens.onrender.com/api/items/finalize/${id}`, {}, { 
+         headers: { Authorization: `Bearer ${token}` }
+      });
       toast.success("Item finalized!");
-      fetchItems();
-    } catch {
-      toast.error("Error finalizing item");
+      fetchItems(); 
+    } catch(err) {
+       console.error("Error finalizing item:", err);
+       toast.error("Error finalizing item");
+       if (axios.isAxiosError(err) && (err.response?.status === 401 || err.response?.status === 403) ) {
+         logout();
+       }
     }
   };
 
   const handleStockUpdate = async (id:string) => {
+     const token = localStorage.getItem("token"); 
+     if (!token) { 
+      toast.error("Authentication required."); 
+      navigate("/login"); 
+      return; 
+    }
+
     try {
-      await axios.patch(`https://serenity-gardens.onrender.com/api/items/${id}`, { stock: newStock });
+      await axios.patch(`https://serenity-gardens.onrender.com/api/items/${id}`, { stock: newStock }, {
+         headers: { Authorization: `Bearer ${token}` }
+      });
       toast.success("Stock updated!");
       setEditingStockId(null);
-      fetchItems();
-    } catch {
+      fetchItems(); 
+    } catch(err) {
+      console.error("Error updating stock:", err);
       toast.error("Error updating stock");
+       if (axios.isAxiosError(err) && (err.response?.status === 401 || err.response?.status === 403) ) {
+         logout(); 
+       }
     }
   };
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, []); 
 
   const totalPages = Math.ceil(items.length / itemsPerPage);
   const startIdx = (currentPage - 1) * itemsPerPage;
