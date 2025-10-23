@@ -57,7 +57,7 @@ export default function PaymentPage() {
         }
 
         const options = {
-            key: "YOUR_RAZORPAY_KEY_ID", 
+            key: "rzp_live_RWs23oG1CwD8Lb", 
             amount: razorpayOrder.amount,
             currency: "INR",
             name: "Serenity Gardens",
