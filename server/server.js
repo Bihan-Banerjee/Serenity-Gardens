@@ -19,6 +19,7 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 const allowedOrigins = [
     'https://serenity-gardens-pi.vercel.app', 
     'http://localhost:5173', 
+    "http://localhost:8080",
 ];
 
 const corsOptions = {

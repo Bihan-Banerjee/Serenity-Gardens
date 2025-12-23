@@ -29,8 +29,20 @@ const Menu = () => {
 
   const fetchItems = async () => {
     try {
-      const response = await api.get('/items/all');
-      setItems(response.data.filter((item: Item) => item.isFinalized && item.quantity > 0));
+      const response = await api.get('/items');
+      setItems(
+        response.data
+          .filter((item: any) => item.finalized && item.stock > 0)
+          .map((item: any) => ({
+            _id: item._id,
+            name: item.name,
+            price: item.price,
+            description: item.description,
+            image: item.image,
+            quantity: item.stock,       
+            isFinalized: item.finalized,
+          }))
+      );
     } catch (error) {
       toast.error('Failed to load menu');
     } finally {
