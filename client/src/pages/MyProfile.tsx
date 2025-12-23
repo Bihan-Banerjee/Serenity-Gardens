@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { logout } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+import api from "@/lib/axiosConfig";
+
 interface Order {
   _id: string;
   items: { name: string; quantity: number }[];
@@ -27,15 +29,11 @@ export default function MyProfile() {
     }
 
     try {
-      const res = await fetch("https://serenity-gardens.onrender.com/api/orders/my", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await api.get("/orders/my");
 
       if (!res.ok) throw new Error("Failed to fetch your orders");
 
-      const data = await res.json();
+      const data = await res.data;
       setOrders(data);
     } catch (err: any) {
       toast.error(err.message || "Error loading orders");
