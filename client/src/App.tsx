@@ -18,6 +18,11 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import Checkout from "./pages/Checkout";
+import Payment from "./pages/Payment";
+import AdminDashboard from './pages/AdminDashboard';
+import AdminLogin from './pages/AdminLogin';
+import ItemManager from './pages/ItemManager';
+import OrderManager from './pages/OrderManager';
 import MyProfile from './pages/MyProfile';
 
 const queryClient = new QueryClient();
@@ -42,6 +47,12 @@ const AppContent = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/payment" element={<Payment />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/items" element={<ItemManager />} />
+      <Route path="/admin/orders" element={<OrderManager />} />
+      <Route path="/profile" element={<MyProfile />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

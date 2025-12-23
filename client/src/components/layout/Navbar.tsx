@@ -27,6 +27,7 @@ export const Navbar = () => {
     name: 'Shop', 
     path: isAuthenticated ? '/menu' : '/shop'  
   },
+  { name: 'Admin', path: user?.isAdmin ? '/admin/dashboard' : '/admin/login' },
 ];
 
   useEffect(() => {
