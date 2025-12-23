@@ -17,6 +17,8 @@ import Menu from "./pages/Menu";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+import Checkout from "./pages/Checkout";
+import MyProfile from './pages/MyProfile';
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,7 @@ const AppContent = () => {
       <Route path="/menu" element={<Menu />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/checkout" element={<Checkout />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

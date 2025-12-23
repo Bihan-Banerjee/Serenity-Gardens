@@ -7,15 +7,6 @@ import { useAuthStore } from '@/hooks/useAuthStore';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-const navLinks = [
-  { name: 'Home', path: '/' },
-  { name: 'About', path: '/about' },
-  { name: 'Gallery', path: '/gallery' },
-  { name: 'Explore', path: '/explore' },
-  { name: 'Reviews', path: '/reviews' },
-  { name: 'Upcoming', path: '/upcoming' },
-  { name: 'Shop', path: '/shop' },
-];
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +15,19 @@ export const Navbar = () => {
   const { getTotalItems, openCart } = useCartStore();
   const { isAuthenticated, user, logout } = useAuthStore();
   const totalItems = getTotalItems();
+
+  const navLinks = [
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
+  { name: 'Gallery', path: '/gallery' },
+  { name: 'Explore', path: '/explore' },
+  { name: 'Reviews', path: '/reviews' },
+  { name: 'Upcoming', path: '/upcoming' },
+  { 
+    name: 'Shop', 
+    path: isAuthenticated ? '/menu' : '/shop'  
+  },
+];
 
   useEffect(() => {
     const handleScroll = () => {
