@@ -4,9 +4,8 @@ import { AuroraText } from "@/components/magicui/aurora-text";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { logout } from "@/lib/auth";
 import api from "@/lib/axiosConfig";
-
+import { useAuthStore } from "@/hooks/useAuthStore";
 interface Order {
   _id: string;
   items: { name: string; quantity: number }[];
@@ -19,7 +18,7 @@ const MyProfile = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  const { logout } = useAuthStore();
   const fetchUserOrders = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -47,10 +46,14 @@ const MyProfile = () => {
       <section className="min-h-screen pt-28 pb-16 px-4">
         <Button
           className="fixed bottom-4 left-4 z-50 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow"
-          onClick={logout}
+          onClick={() => {
+            logout();
+            navigate("/login");
+          }}
         >
           Logout
         </Button>
+
 
         <div className="container mx-auto max-w-4xl">
           <AuroraText className="text-3xl md:text-4xl font-bold mb-6">
