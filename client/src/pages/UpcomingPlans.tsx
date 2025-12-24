@@ -1,75 +1,149 @@
-import { motion } from 'framer-motion';
-import { Layout } from '@/components/layout';
-import { PolaroidStack } from '@/components/ui/draggable-card/DraggablePolaroid';
-import gardenPath from '@/assets/garden-path.jpg';
-import gardenGazebo from '@/assets/garden-gazebo.jpg';
-import gardenFountain from '@/assets/garden-fountain.jpg';
-import heroImage from '@/assets/hero-garden.jpg';
+// src/pages/UpcomingPlans.tsx
+"use client";
 
-const upcomingPlans = [
-  { image: heroImage, title: 'Butterfly Garden', description: 'Coming Spring 2025' },
-  { image: gardenPath, title: 'Night Bloom Walk', description: 'Summer 2025' },
-  { image: gardenGazebo, title: 'Tea House', description: 'Fall 2025' },
-  { image: gardenFountain, title: 'Waterfall Trail', description: 'Winter 2025' },
-  { image: heroImage, title: 'Orchid Pavilion', description: 'Spring 2026' },
+import { motion } from "framer-motion";
+import { Layout } from "@/components/layout";
+import {
+  DraggableCardBody,
+  DraggableCardContainer,
+} from "@/components/ui/draggable-card/DraggableCard";
+import { AuroraText } from "@/components/magicui/aurora-text";
+import {useIsMobile} from "@/hooks/useIsMobile";
+
+import gardenPath from "@/assets/garden-path.jpg";
+import gardenGazebo from "@/assets/garden-gazebo.jpg";
+import gardenFountain from "@/assets/garden-fountain.jpg";
+import heroImage from "@/assets/hero-garden.jpg";
+
+const items = [
+  {
+    title: "Butterfly Garden",
+    image: heroImage,
+    tag: "Coming Spring 2025",
+    className: "absolute top-6 left-[18%] rotate-[-6deg]",
+  },
+  {
+    title: "Night Bloom Walk",
+    image: gardenPath,
+    tag: "Summer 2025",
+    className: "absolute top-10 left-[40%] rotate-[5deg]",
+  },
+  {
+    title: "Tea House Gazebo",
+    image: gardenGazebo,
+    tag: "Fall 2025",
+    className: "absolute top-24 left-[60%] rotate-[9deg]",
+  },
+  {
+    title: "Waterfall Trail",
+    image: gardenFountain,
+    tag: "Winter 2025",
+    className: "absolute top-40 left-[25%] rotate-[-9deg]",
+  },
+  {
+    title: "Orchid Pavilion",
+    image: heroImage,
+    tag: "Spring 2026",
+    className: "absolute top-28 left-[50%] rotate-[2deg]",
+  },
 ];
 
 const UpcomingPlans = () => {
+  const isMobile = useIsMobile();
+
   return (
     <Layout>
-      <section className="py-20 px-4 min-h-[80vh]">
-        <div className="container mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
-          >
-            <span className="text-primary font-medium tracking-wider uppercase text-sm">
+      <section className="pt-28 pb-20 px-4 min-h-screen">
+        <div className="container mx-auto max-w-6xl">
+          {/* Heading */}
+          <div className="text-center mb-10">
+            <span className="text-primary font-medium tracking-wider uppercase text-m md:text-lg">
               Coming Soon
             </span>
-            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-2">
-              Upcoming Plans
-            </h1>
             <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
-              Exciting new additions coming to Serenity Gardens. Drag the cards to explore!
+              Drag and toss each card to explore what is blooming next at
+              Serenity Gardens.
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <PolaroidStack cards={upcomingPlans} />
-          </motion.div>
+          {/* Draggable cards */}
+          {isMobile ? (
+            <div className="flex flex-col gap-8 items-center justify-center mt-8">
+              {items.map((item) => (
+                <div
+                  key={item.title}
+                  className="w-full max-w-xs bg-card border border-border rounded-xl shadow-xl p-4"
+                >
+                  <div className="aspect-[4/3] overflow-hidden rounded-lg">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h3 className="mt-4 text-lg font-semibold text-foreground text-center">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-primary text-center mt-1">
+                    {item.tag}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <DraggableCardContainer className="mt-10">
+              <p className="absolute top-1/2 left-1/2 max-w-sm -translate-x-1/2 -translate-y-2/3 text-center text-xl md:text-3xl font-semibold text-muted-foreground/70 pointer-events-none">
+                Drag the plans around and see how your future garden will grow.
+              </p>
+              {items.map((item) => (
+                <DraggableCardBody key={item.title} className={item.className}>
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    className="pointer-events-none relative z-10 h-64 w-64 md:h-72 md:w-72 object-cover rounded-lg"
+                  />
+                  <h3 className="mt-4 text-center text-lg md:text-2xl font-bold text-foreground">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs md:text-sm text-primary text-center mt-1">
+                    {item.tag}
+                  </p>
+                </DraggableCardBody>
+              ))}
+            </DraggableCardContainer>
+          )}
 
           {/* Timeline */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mt-32 max-w-3xl mx-auto"
+            className="mt-20 max-w-3xl mx-auto"
           >
             <h2 className="font-serif text-2xl font-bold text-foreground text-center mb-12">
               Development Timeline
             </h2>
-            
+
             <div className="space-y-8">
-              {upcomingPlans.map((plan, index) => (
+              {items.map((plan, index) => (
                 <motion.div
                   key={plan.title}
                   initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: index * 0.08 }}
                   className="flex items-center gap-4"
                 >
-                  <div className="w-24 text-right text-sm text-primary font-medium">
-                    {plan.description}
+                  <div className="w-28 text-right text-sm text-primary font-medium">
+                    {plan.tag}
                   </div>
                   <div className="w-4 h-4 rounded-full bg-primary flex-shrink-0" />
                   <div className="flex-1 bg-card border border-border rounded-lg p-4">
-                    <h3 className="font-semibold text-foreground">{plan.title}</h3>
+                    <h3 className="font-semibold text-foreground">
+                      {plan.title}
+                    </h3>
                   </div>
                 </motion.div>
               ))}
