@@ -15,7 +15,7 @@ const razorpayInstance = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET, 
 });
 
-router.post("/", protect, adminProtect, async (req, res) => {
+router.post("/", protect, async (req, res) => {
   try {
     const { items, paid, razorpayPaymentId } = req.body;
 

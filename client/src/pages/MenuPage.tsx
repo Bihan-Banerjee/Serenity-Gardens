@@ -7,6 +7,7 @@ import { logout } from "@/lib/auth";
 import { toast } from "react-hot-toast";
 import useIsMobile from "@/hooks/useIsMobile";
 import { useNavigate } from "react-router-dom";
+import api from "@/lib/axiosConfig";
 
 interface Product {
   _id: string;
@@ -34,9 +35,7 @@ export default function MenuPage() {
     }
 
     try {
-      const res = await axios.get("https://serenity-gardens.onrender.com/api/items", {
-        headers: { Authorization: `Bearer ${token}` } 
-      });
+      const res = await api.get("/items"); // auth header is added by interceptor
       setProducts(res.data.filter((item: Product) => item.finalized));
     } catch (err) {
       console.error("Failed to fetch items:", err);
@@ -58,9 +57,7 @@ export default function MenuPage() {
     if (!token) return;
 
     try {
-      const res = await axios.get("https://serenity-gardens.onrender.com/api/orders/my-latest", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await api.get("/orders/my-latest");
       if (res.data) setHasPreviousOrder(true);
     } catch (err) {
       setHasPreviousOrder(false); 
@@ -72,10 +69,7 @@ export default function MenuPage() {
     if (!token) return;
 
     try {
-      const res = await axios.get("https://serenity-gardens.onrender.com/api/orders/my-latest", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
+      const res = await api.get("/orders/my-latest");
       const previousItems = res.data.items;
       type OrderItem = {
         id: string;

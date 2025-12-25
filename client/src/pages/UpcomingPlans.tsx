@@ -1,100 +1,174 @@
+// src/pages/UpcomingPlans.tsx
+"use client";
+
+import { motion } from "framer-motion";
+import { Layout } from "@/components/layout";
 import {
   DraggableCardBody,
   DraggableCardContainer,
-} from "@/components/ui/draggable-card";
-import { AuroraText } from "@/components/magicui/aurora-text";
-import useIsMobile from "@/hooks/useIsMobile";
+} from "@/components/ui/draggable-card/DraggableCard";
+import {useIsMobile} from "@/hooks/useIsMobile";
+
+import greenhouse from "@/assets/greenhouse.jpg";
+import solar from "@/assets/solar.jpg";
+import rainwater from "@/assets/rainwater.jpg";
+import vermiculture from "@/assets/worm.png";
+import pisciculture from "@/assets/pisciculture.jpg";
+import mushroom from "@/assets/mushroom.jpg";
+import nursery from "@/assets/nursery.jpg";
+
+const items = [
+  {
+    title: "Pisciculture",
+    image: pisciculture,
+    tag: "Coming Spring 2026",
+    className: "absolute top-6 left-[18%] rotate-[-6deg]",
+  },
+  {
+    title: "Nursery",
+    image: nursery,
+    tag: "Summer 2026",
+    className: "absolute top-10 left-[40%] rotate-[5deg]",
+  },
+  {
+    title: "Mushroom Farming",
+    image: mushroom,
+    tag: "Fall 2026",
+    className: "absolute top-24 left-[60%] rotate-[9deg]",
+  },
+  {
+    title: "Greenhouse Agriculture",
+    image: greenhouse,
+    tag: "Winter 2026",
+    className: "absolute top-40 left-[25%] rotate-[-9deg]",
+  },
+  {
+    title: "Solar Integration",
+    image: solar,
+    tag: "Spring 2027",
+    className: "absolute top-28 left-[50%] rotate-[2deg]",
+  },
+  {
+    title: "Rainwater Harvesting",
+    image: rainwater,
+    tag: "Spring 2027",
+    className: "absolute top-28 left-[50%] rotate-[2deg]",
+  },
+  {
+    title: "Eco Workshop on Vermiculture",
+    image: vermiculture,
+    tag: "Spring 2028",
+    className: "absolute top-28 left-[50%] rotate-[2deg]",
+  },
+];
 
 const UpcomingPlans = () => {
   const isMobile = useIsMobile();
-  const items = [
-    {
-      title: "Solar Integration",
-      image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484638/solar_coulby.jpg",
-      className: "absolute top-5 left-[40%] rotate-[8deg]",
-    },
-    {
-      title: "Rainwater Harvesting",
-      image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484636/rainwater-harvesting-in-india_zf0qyf.jpg",
-      className: "absolute top-32 left-[55%] rotate-[10deg]",
-    },
-    {
-      title: "Eco Workshop on Vermiculture",
-      image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484635/vermiculture_tm3cbx.jpg",
-      className: "absolute top-20 right-[35%] rotate-[2deg]",
-    },
-    {
-      title: "Greenhouse Agriculture",
-      image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484636/greenhouse_ypk0zo.jpg",
-      className: "absolute top-24 left-[45%] rotate-[-7deg]",
-    },
-    {
-      title: "Mushroom Farming",
-      image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484635/mushroom_jtfxp8.jpg",
-      className: "absolute top-8 left-[30%] rotate-[4deg]",
-    },{
-      title: "Nursery",
-      image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484638/nursery_uvbrfl.jpg",
-      className: "absolute top-10 left-[20%] rotate-[-5deg]",
-    },
-    {
-      title: "Pisciculture",
-      image:
-        "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748484635/pisciculture_i25l1s.webp",
-      className: "absolute top-40 left-[25%] rotate-[-7deg]",
-    },
-  ];
+
   return (
-    <div className={`min-h-screen pt-32 px-6 ${isMobile ? "min-w-full" : "min-w-[100rem]"} mx-auto overflow-x-hidden w-full`}>
-        <div className="w-full px-1 md:px-8 flex items-center justify-center">
-            <AuroraText className="text-4xl md:text-6xl mb-10 font-bold flex items-center justify-center text-center">
-                Upcoming Plans
-            </AuroraText>   
-        </div>
-      <p className="text-lg text-center text-white dark:text-gray-300 mb-10 max-w-2xl mx-auto">
-        Stay tuned for exciting updates!<br /> Here’s a glimpse of what's coming soon at Serenity Gardens.
-      </p>
-      {isMobile ? (
-        <div className="flex flex-col gap-10 items-center justify-center pb-10">
-          {items.map((item, idx) => (
-            <div key={idx} className="flex flex-col items-center">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="h-60 w-60 object-cover rounded-lg shadow-lg"
-                loading="lazy"
-              />
-              <h3 className="mt-3 text-lg font-semibold text-neutral-300 text-center">{item.title}</h3>
+    <Layout>
+      <section className="pt-20 pb-20 px-4 min-h-screen">
+        <div className="container mx-auto max-w-6xl">
+          {/* Heading */}
+          <div className="text-center mb-10">
+            <span className="text-primary font-medium tracking-wider uppercase text-m md:text-lg">
+              Coming Soon
+            </span>
+            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-2">
+              Upcoming Plans
+            </h1>
+            <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
+              Drag and toss each card to explore what is blooming next at
+              Serenity Gardens.
+            </p>
+          </div>
+
+          {/* Draggable cards */}
+          {isMobile ? (
+            <div className="flex flex-col gap-8 items-center justify-center mt-8">
+              {items.map((item) => (
+                <div
+                  key={item.title}
+                  className="w-full max-w-xs bg-card border border-border rounded-xl shadow-xl p-4"
+                >
+                  <div className="aspect-[4/3] overflow-hidden rounded-lg">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h3 className="mt-4 text-lg font-semibold text-foreground text-center">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-primary text-center mt-1">
+                    {item.tag}
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            <DraggableCardContainer className="mt-10">
+              <p className="absolute top-1/2 left-1/2 max-w-sm -translate-x-1/2 -translate-y-2/3 text-center text-xl md:text-3xl font-semibold text-muted-foreground/70 pointer-events-none">
+                Drag the plans around and see how your future garden will grow.
+              </p>
+              {items.map((item) => (
+                <DraggableCardBody key={item.title} className={item.className}>
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    className="pointer-events-none relative z-10 h-64 w-64 md:h-72 md:w-72 object-cover rounded-lg"
+                  />
+                  <h3 className="mt-4 text-center text-lg md:text-2xl font-bold text-foreground">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs md:text-sm text-primary text-center mt-1">
+                    {item.tag}
+                  </p>
+                </DraggableCardBody>
+              ))}
+            </DraggableCardContainer>
+          )}
+
+          {/* Timeline */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-20 max-w-3xl mx-auto"
+          >
+            <h2 className="font-serif text-2xl font-bold text-foreground text-center mb-12">
+              Development Timeline
+            </h2>
+
+            <div className="space-y-8">
+              {items.map((plan, index) => (
+                <motion.div
+                  key={plan.title}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08 }}
+                  className="flex items-center gap-4"
+                >
+                  <div className="w-28 text-right text-sm text-primary font-medium">
+                    {plan.tag}
+                  </div>
+                  <div className="w-4 h-4 rounded-full bg-primary flex-shrink-0" />
+                  <div className="flex-1 bg-card border border-border rounded-lg p-4">
+                    <h3 className="font-semibold text-foreground">
+                      {plan.title}
+                    </h3>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
-      ) : (
-        <DraggableCardContainer className="relative flex min-h-screen w-full items-center justify-center overflow-clip">
-        <p className="absolute top-1/2 mx-auto max-w-sm -translate-y-3/4 text-center text-2xl font-black text-neutral-400 md:text-4xl dark:text-neutral-800">
-          And much much more!!!
-        </p>
-        {items.map((item) => (
-          <DraggableCardBody className={item.className}>
-            <img
-              src={item.image}
-              alt={item.title}
-              loading="lazy"
-              className="pointer-events-none relative z-10 h-80 w-80 object-cover"
-            />
-            <h3 className="mt-4 text-center text-2xl font-bold text-neutral-700 dark:text-neutral-300">
-              {item.title}
-            </h3>
-          </DraggableCardBody>
-        ))}
-      </DraggableCardContainer>
-      )}
-    </div>
+      </section>
+    </Layout>
   );
 };
 

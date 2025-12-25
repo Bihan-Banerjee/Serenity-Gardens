@@ -1,125 +1,113 @@
-"use client";
-import Carousel from "@/components/ui/carousel";
-import { AuroraText } from "@/components/magicui/aurora-text";
-import useIsMobile from "@/hooks/useIsMobile";
+import { motion } from 'framer-motion';
+import { Layout } from '@/components/layout';
+import { ImageCarousel } from '@/components/ui/carousel/ImageCarousel';
+import heroImage from '@/assets/hero-garden.jpg';
+import wall from '@/assets/wall.png';
+import harvest from '@/assets/harvest.png';
+import bench from '@/assets/bench.jpg';
+import rose from '@/assets/rose.png';
+import aerial from '@/assets/aerial.png';
+import closeup from '@/assets/closeup.jpg';
+import pond from '@/assets/pond.jpg';
+import corridor from '@/assets/corridor.jpg';
+import chhad from '@/assets/chhad.jpg';
+import gazebo from '@/assets/gazebo.jpg';
+import lane from '@/assets/lane.jpg';
+import stairs from '@/assets/stairs.jpg';
+import swing from '@/assets/swing.jpg';
+import ghat from '@/assets/ghat.jpg';
+import view from '@/assets/view.jpg';
+import tile from '@/assets/tile.jpg';
+import pond2 from '@/assets/pond2.jpg';
+import bigcrop from '@/assets/bigcrop.png';
+import bigflower from '@/assets/bigflower.png';
+import lilypad from '@/assets/lilypad.png';
+import lawn from '@/assets/lawn.png';
+import cabbage from '@/assets/cabbage.png';
+import corner from '@/assets/corner.png';
+
+const galleryImages = [
+  { src: heroImage, alt: 'Serenity Gardens Main View' },
+  { src: wall, alt: 'Beautiful Garden Path' },
+  { src: harvest, alt: 'Peaceful Gazebo Retreat' },
+  { src: bench, alt: 'Ornamental Garden Fountain' },
+  { src: rose, alt: 'Beautiful Garden Path' },
+  { src: aerial, alt: 'Peaceful Gazebo Retreat' },
+  { src: closeup, alt: 'Ornamental Garden Fountain' },
+  { src: pond, alt: 'Beautiful Garden Path' },
+  { src: corridor, alt: 'Peaceful Gazebo Retreat' },
+  { src: chhad, alt: 'Ornamental Garden Fountain' },
+  { src: stairs, alt: 'Beautiful Garden Path' },
+  { src: gazebo, alt: 'Peaceful Gazebo Retreat' },
+  { src: lane, alt: 'Ornamental Garden Fountain' },
+  { src: ghat, alt: 'Beautiful Garden Path' },
+  { src: swing, alt: 'Peaceful Gazebo Retreat' },
+  { src: view, alt: 'Ornamental Garden Fountain' },
+  { src: tile, alt: 'Beautiful Garden Path' },
+  { src: pond2, alt: 'Peaceful Gazebo Retreat' },
+  { src: bigcrop, alt: 'Ornamental Garden Fountain' },
+  { src: bigflower, alt: 'Beautiful Garden Path' },
+  { src: lilypad, alt: 'Peaceful Gazebo Retreat' },
+  { src: lawn, alt: 'Ornamental Garden Fountain' },
+  { src: cabbage, alt: 'Beautiful Garden Path' },
+  { src: corner, alt: 'Peaceful Gazebo Retreat' },
+];
+
 const Gallery = () => {
-  const isMobile = useIsMobile();
-  const slides = [
-    {
-      title: "Sunset Bliss",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/pg04ahdxekzcrtajcuwz.jpg",
-    },
-    {
-      title: "Colorful Blooms",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/nxg3svvd6hqg4jxcounn.jpg",
-    },
-    {
-      title: "Blooming Gardens",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/awl2oyxrj9ahhpgdnpvr.jpg",
-    },
-    {
-      title: "Blooming Gardens",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jjvvthkzp2ychq8n5bhl.jpg",
-    },
-    {
-      title: "Harvest Season",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/jllt6lujrz0oqdblbjni.jpg",
-    },
-    {
-      title: "Sunset Bliss",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/ahlagwda7qxmn6bu0eg6.jpg",
-    },
-    {
-      title: "Colorful Blooms",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/snuootxbedmhpy09lzie.jpg",
-    },
-    {
-      title: "Blooming Gardens",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/d5t0eg5tq584yzooycem.jpg",
-    },
-    {
-      title: "Harvest Season",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/ibdeyxi3jveyr3haywum.jpg",
-    },
-    {
-      title: "Harvest Season",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/lhzvekih300i7eucypyo.jpg",
-    },
-    {
-      title: "Sunset Bliss",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/zww1tqnxhcxqj3kvipbc.jpg",
-    },
-    {
-      title: "Colorful Blooms",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/hr8dz5acvwvdpa427txt.jpg",
-    },
-    {
-      title: "Blooming Gardens",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/gxjkyg7yaz25qrv3ietb.jpg",
-    },
-    {
-      title: "Harvest Season",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/ve16mdjatbtj5ml1elrs.jpg",
-    },
-    {
-      title: "Sunset Bliss",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/qzb7kxjiaubde9wy3ebb.jpg",
-    },
-    {
-      title: "Colorful Blooms",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/ktkh0k9sc8gxncrrqkui.jpg",
-    },
-    {
-      title: "Blooming Gardens",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/uktojhjpvwvbchczjcax.jpg",
-    },
-    {
-      title: "Harvest Season",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/zppnz7fi70kxufeuwy7a.jpg",
-    },
-    {
-      title: "Sunset Bliss",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/xuqza6sx3fvlvu7ctyrn.jpg",
-    },
-    {
-      title: "Colorful Blooms",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/nxg3svvd6hqg4jxcounn.jpg",
-    },{
-      title: "Blooming Gardens",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/yqagkpovtdx5vb84bmgr.jpg",
-    },
-    {
-      title: "Harvest Season",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/ztej7qikgddcvdme1b3y.jpg",
-    },
-    {
-      title: "Sunset Bliss",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/zi2znwbqllsfazamxkty.jpg",
-    },
-    {
-      title: "Colorful Blooms",
-      src: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747575957/serenity/images/fcrmznksntlzxqg0hswn.jpg",
-    },
-  ];
-
   return (
-    <div className={`${isMobile ? "h-[100dvh] overflow-hidden px-4 pt-10" : "min-h-screen pb-20 mt-30"} flex flex-col items-center justify-start`}>
-      <div className="w-full mb-5 flex items-center justify-center">
-        <AuroraText className={`font-bold text-center ${isMobile ? "text-3xl" : "text-4xl md:text-6xl"}`}>
-          Gallery
-        </AuroraText>
-      </div>
-      
-      <p className={`text-center text-white mb-8 ${isMobile ? "text-base px-2" : "text-lg max-w-xl"}`}>
-        Photos and videos capturing the beauty of Serenity Gardens.
-      </p>
+    <Layout>
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-12"
+          >
+            <span className="text-primary font-medium tracking-wider uppercase text-sm">
+              Visual Journey
+            </span>
+            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-2">
+              Our Gallery
+            </h1>
+            <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
+              Explore the beauty of Serenity Gardens through our curated collection of photographs.
+            </p>
+          </motion.div>
 
-      <div className={`${isMobile ? "w-full max-h-[60vh] overflow-hidden" : ""}`}>
-        <Carousel slides={slides} />
-      </div>
-    </div>
+          {/* Main Carousel */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mb-16"
+          >
+            <ImageCarousel images={galleryImages} />
+          </motion.div>
+
+          {/* Image Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {galleryImages.map((image, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                className="aspect-square rounded-2xl overflow-hidden border border-border shadow-lg"
+              >
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </Layout>
   );
 };
-
 
 export default Gallery;
