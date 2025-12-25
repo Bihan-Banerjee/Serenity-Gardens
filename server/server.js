@@ -19,6 +19,7 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 const allowedOrigins = [
     'https://serenity-gardens-pi.vercel.app', 
+    'https://serenity-gardens-7wu4k27kn-bihan-banerjees-projects.vercel.app',
     'http://localhost:5173', 
     'https://serenity-gardens.onrender.com',
     "http://localhost:8080",
