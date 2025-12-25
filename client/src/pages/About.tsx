@@ -1,95 +1,216 @@
-import { FocusCards } from "@/components/ui/focus-cards";
-import { AuroraText } from "@/components/magicui/aurora-text";
-import { Compare } from "@/components/ui/compare";
-import useIsMobile from "@/hooks/useIsMobile";
+import { motion } from 'framer-motion';
+import { Layout } from '@/components/layout';
+import { Compare } from '@/components/ui/compare';
+import broken from '@/assets/broken.png';
+import bigGarden from '@/assets/hero-garden6.jpg';
+import ma from '@/assets/ma.png';
+import baba from '@/assets/baba.png';
+import me from '@/assets/me.png';
+import jeja from '@/assets/jeja.png';
+import jemma from '@/assets/jemma.png';
+import titi from '@/assets/titi.png';
+import trash from '@/assets/trash.jpg';
+import lawn from '@/assets/lawn.png';
+
+const familyMembers = [
+  { name: 'Dipankar Bandyopadhyay', role: 'Founder & Head Gardener', image: jeja },
+  { name: 'Nandita Bandyopadhyay', role: 'Co-Founder & Botanist', image: jemma },
+  { name: 'Ahana Bandyopadhyay', role: 'Landscape Architect', image: titi },
+  { name: 'Subhankar Bandyopadhyay', role: 'Operations Manager', image: baba },
+  { name: 'Deepa Banerjee', role: 'Horticulture Expert', image: ma },
+  { name: 'Bihan Banerjee', role: 'Customer Relations', image: me },
+];
 
 const About = () => {
-  const isMobile = useIsMobile();
-
   return (
-    <div className={`mx-auto mt-40 ${isMobile ? "px-4 overflow-x-hidden" : "max-w-7xl px-6"}`}>
-      <div className={`${isMobile ? "max-w-full" : "max-w-2xl"} mx-auto mb-12`}>
-        <div className={`w-full flex items-center justify-center ${isMobile ? "px-2" : "px-1 md:px-8"}`}>
-          <AuroraText className={`font-bold text-center ${isMobile ? "text-3xl mb-6" : "text-4xl md:text-6xl mb-10"}`}>
-            About Us
-          </AuroraText>
-        </div>
-        <p className={`${isMobile ? "text-base" : "text-lg"} text-white`}>
-          What began as parents’ wish to see a combined venture between the brothers, ‘Serenity Gardens’ has become a reflection of the close familial ties and much more...
-        </p>
-      </div>
+    <Layout>
+      {/* Hero Section */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-12"
+          >
+            <span className="text-primary font-medium tracking-wider uppercase text-sm">
+              Our Story
+            </span>
+            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-2">
+              About Serenity Gardens
+            </h1>
+          </motion.div>
 
-      <div className={`w-full flex items-center justify-center ${isMobile ? "px-2" : "px-1 md:px-8"}`}>
-        <AuroraText className={`font-bold text-center ${isMobile ? "text-3xl" : "text-4xl md:text-6xl"}`}>
-          Meet the Family
-        </AuroraText>
-      </div>
-      <div className={`mx-auto ${isMobile ? "mt-10 mb-14" : "w-5xl mb-20 mt-30 px-4"}`}>
-        <FocusCards
-          redirectOnClick={false}
-          cards={[
-            { title: "Jeja", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262436/IMG-20250105-WA0358_s951gn.jpg" },
-            { title: "Jemma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262437/IMG-20250607-WA0003_idmwey.jpg" },
-            { title: "Titi Didi", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262437/IMG-20250327-WA0010_vkvozh.jpg" },
-            { title: "Baba", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262437/IMG-20240909-WA0044_hyishp.jpg" },
-            { title: "Ma", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262437/IMG-20250607-WA0004_ubpv1x.jpg" },
-            { title: "Gablu", src: "https://res.cloudinary.com/drj7t97rd/image/upload/v1749262437/IMG-20250521-WA0198_db36hz.jpg" },
-          ]}
-        />
-      </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="max-w-3xl mx-auto text-center mb-16"
+          >
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              What began as parents' wish to see a combined venture between the brothers, 'Serenity Gardens' has become a reflection of the close familial ties and much more. Nestling amongst the Tematha farm lands, it speaks volumes about supporting a biosustainable economy in form of pisciculture, organic farm produce and green house resources.
+            </p>
+            <p className="text-lg text-muted-foreground leading-relaxed mt-4">
+              The project of 'Serenity Gardens' commenced and still continues in the hands of the locals and provides an inspiration to give back to the community in form of free medical and teaching services. This sanctum is a quest to serve Mother Nature while respecting family values and preserving our roots in its every spectrum.
+            </p>
+          </motion.div>
 
-      <div className={`w-full flex items-center justify-center ${isMobile ? "px-2" : "px-1 md:px-8"}`}>
-        <AuroraText className={`font-bold text-center ${isMobile ? "text-3xl" : "text-4xl md:text-6xl"}`}>
-          Before VS After
-        </AuroraText>
-      </div>
-
-      <div className={`space-y-12 mb-20 ${isMobile ? "px-2" : "px-4"}`}>
-        {[
-          {
-            before: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433093/oldhouse_gfbe4s.jpg",
-            after: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433090/bhalochobi_wffpic.jpg",
-            caption: "Transformation of the house area over time.",
-          },
-          {
-            before: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433093/oldground_vhlxeo.jpg",
-            after: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433090/beforestorm_udqr99.jpg",
-            caption: "Evolution of the lawn.",
-          },
-          {
-            before: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433092/oldgreenhouse_wfri5x.jpg",
-            after: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1748433094/greenhouse_d4pwwu.jpg",
-            caption: "Greenhouse area evolving across monsoons.",
-          },
-        ].map((item, idx) => (
-          <div key={idx} className="flex flex-col items-center">
-            <div className={`w-full ${isMobile ? " h-[40vh]" : " h-[70vh]"} px-1 md:px-8 flex items-center justify-center [perspective:800px] [transform-style:preserve-3d]`}>
-              <div
-                style={{
-                  transform: "rotateX(15deg) translateZ(80px)",
-                }}
-                className={`p-2 md:p-4 border rounded-3xl dark:bg-neutral-900 bg-neutral-100 border-neutral-200 dark:border-neutral-800 mx-auto ${
-                  isMobile ? "w-[95%] h-[30vh]" : "w-[90%] h-[40vh] md:w-[70%] md:h-[50vh]"
-                }`}
-              >
-                <Compare
-                  firstImage={item.before}
-                  secondImage={item.after}
-                  firstImageClassName="object-cover object-left-top w-full"
-                  secondImageClassname="object-cover object-left-top w-full"
-                  className="w-full h-full rounded-[22px] md:rounded-lg"
-                  slideMode="hover"
-                  autoplay={true}
-                />
+          {/* Compare Slider with Labels */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+            className="max-w-4xl mx-auto mb-20"
+          >
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground text-center mb-8">
+              Our Transformation Journey
+            </h2>
+            <div className="relative flex items-center justify-center">
+              <Compare
+                firstImage={broken}
+                secondImage={bigGarden}
+                className="w-full h-[300px] md:h-[500px] lg:h-[600px] rounded-2xl"
+                firstImageClassName="object-cover"
+                secondImageClassname="object-cover"
+                slideMode="drag"
+                autoplay={true}
+                autoplayDuration={3000}
+              />
+              {/* Labels */}
+              <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white px-4 py-2 rounded-lg font-semibold text-sm md:text-base pointer-events-none z-50">
+                2021 - Before
+              </div>
+              <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-sm text-white px-4 py-2 rounded-lg font-semibold text-sm md:text-base pointer-events-none z-50">
+                2025 - After
               </div>
             </div>
-            <p className="text-white text-base text-center mt-2 max-w-xl">
-              {item.caption}
+            <p className="text-center text-muted-foreground mt-6 text-sm md:text-base">
+              The transformation of the main house over time.
             </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+            className="max-w-4xl mx-auto mb-20"
+          >
+            <div className="relative flex items-center justify-center">
+              <Compare
+                firstImage={trash}
+                secondImage={lawn}
+                className="w-full h-[300px] md:h-[500px] lg:h-[600px] rounded-2xl"
+                firstImageClassName="object-cover"
+                secondImageClassname="object-cover"
+                slideMode="drag"
+                autoplay={true}
+                autoplayDuration={3000}
+              />
+              {/* Labels */}
+              <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white px-4 py-2 rounded-lg font-semibold text-sm md:text-base pointer-events-none z-50">
+                2021 - Before
+              </div>
+              <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-sm text-white px-4 py-2 rounded-lg font-semibold text-sm md:text-base pointer-events-none z-50">
+                2025 - After
+              </div>
+            </div>
+            <p className="text-center text-muted-foreground mt-6 text-sm md:text-base">
+              The lawn getting made over the years.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Family Section */}
+      <section className="py-20 bg-card">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <span className="text-primary font-medium tracking-wider uppercase text-sm">
+              Our Team
+            </span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mt-2">
+              Meet the Family
+            </h2>
+            <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
+              The passionate people behind Serenity Gardens who make the magic happen.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {familyMembers.map((member, index) => (
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="bg-background rounded-2xl overflow-hidden border border-border shadow-lg"
+              >
+                <div className="aspect-square overflow-hidden">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-6 text-center">
+                  <h3 className="font-serif text-xl font-semibold text-foreground">
+                    {member.name}
+                  </h3>
+                  <p className="text-primary text-sm mt-1">{member.role}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <span className="text-primary font-medium tracking-wider uppercase text-sm">
+              What We Believe
+            </span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mt-2">
+              Our Values
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {[
+              { title: 'Sustainability', desc: 'We prioritize eco-friendly practices in everything we do.' },
+              { title: 'Community', desc: 'Building connections through shared love of nature.' },
+              { title: 'Education', desc: 'Teaching the next generation about plant care and conservation.' },
+              { title: 'Beauty', desc: 'Creating spaces that inspire awe and tranquility.' },
+            ].map((value, index) => (
+              <motion.div
+                key={value.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="text-center p-6"
+              >
+                <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
+                  {value.title}
+                </h3>
+                <p className="text-muted-foreground text-sm">{value.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </Layout>
   );
 };
 

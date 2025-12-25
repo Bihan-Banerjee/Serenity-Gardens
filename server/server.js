@@ -6,6 +6,7 @@ import itemRoutes from "./routes/itemRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import compression from "compression"; 
+import adminRoutes from "./routes/adminRoutes.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -19,6 +20,9 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 const allowedOrigins = [
     'https://serenity-gardens-pi.vercel.app', 
     'http://localhost:5173', 
+    'https://serenity-gardens.onrender.com',
+    "http://localhost:8080",
+    'http://localhost:8080'
 ];
 
 const corsOptions = {
@@ -41,7 +45,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/orders", orderRoutes);
-
+app.use("/api/admin", adminRoutes);
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected");

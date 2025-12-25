@@ -53,14 +53,10 @@ export function CartSidebar() {
   }, [setOpen]);
   
   const handleProceedToBuy = () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("You must be logged in to proceed!");
-      navigate("/login");
-      return;
-    }
-    navigate("/checkout")
-  };
+  setOpen(false); // Close cart first
+  navigate("/checkout");
+};
+
 
   return (
     <>

@@ -85,19 +85,16 @@ router.get("/all", protect, adminProtect, async (req, res) => {
 });
 
 
-router.get("/", protect, async (req, res) => { 
+router.get("/", async (req, res) => {
   try {
-     if (!req.user || !req.user.id) {
-       console.error("User not authenticated in GET /api/items");
-       return res.status(401).json({ message: "Not authorized, user data missing" });
-     }
     const items = await Item.find({ finalized: true });
     res.json(items);
   } catch (err) {
-     console.error("Error fetching finalized items:", err);
+    console.error("Error fetching finalized items:", err);
     res.status(500).json({ message: "Error fetching finalized items" });
   }
 });
+
 
 
 router.patch("/:id", protect, adminProtect, async (req, res) => {
