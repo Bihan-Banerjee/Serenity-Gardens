@@ -6,52 +6,54 @@ import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { FocusCard } from '@/components/ui/cards/FocusCard';
 import heroImage from '@/assets/hero-garden.jpg';
-import gardenPath from '@/assets/garden-path.jpg';
-import gardenGazebo from '@/assets/garden-gazebo.jpg';
-import gardenFountain from '@/assets/garden-fountain.jpg';
-
+import harvest from '@/assets/harvest.png';
+import peace from '@/assets/peace.png';
+import aboutUs from '@/assets/about-us.jpg';
+import wall from '@/assets/wall.png';
+import bench from '@/assets/bench.jpg';
+import rose from '@/assets/rose.png';
 const focusCards = [
   {
     title: 'About Us',
     description: 'Discover the story behind Serenity Gardens and our passion for nature.',
     icon: Leaf,
     href: '/about',
-    image: gardenPath,
+    image: aboutUs,
   },
   {
     title: 'Gallery',
     description: 'Explore stunning visuals of our beautiful garden landscapes.',
     icon: Camera,
     href: '/gallery',
-    image: gardenGazebo,
+    image: rose,
   },
   {
     title: 'Explore',
     description: 'Take a virtual tour through our enchanting garden features.',
     icon: Compass,
     href: '/explore',
-    image: gardenFountain,
+    image: bench,
   },
   {
     title: 'Reviews',
     description: 'See what our visitors have to say about their experience.',
     icon: Star,
     href: '/reviews',
-    image: gardenPath,
+    image: peace,
   },
   {
     title: 'Upcoming Plans',
     description: 'Exciting new additions coming soon to the gardens.',
     icon: Calendar,
     href: '/upcoming',
-    image: gardenGazebo,
+    image: wall,
   },
   {
     title: 'Shop',
     description: 'Browse our collection of plants, seeds, and garden accessories.',
     icon: ShoppingBag,
     href: '/shop',
-    image: gardenFountain,
+    image: harvest,
   },
 ];
 
@@ -106,8 +108,7 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="text-lg md:text-xl text-background/90 max-w-2xl mx-auto mb-8"
           >
-            Experience the tranquility of nature in our meticulously crafted 
-            garden sanctuary. A perfect escape from the everyday hustle.
+            Discover the beauty of nature and tranquility in our serene gardens. Explore, relax, and rejuvenate your senses in a peaceful environment.
           </motion.p>
 
           <motion.div
@@ -245,7 +246,7 @@ const Home = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
-                <Link to="/menu">Browse Plants</Link>
+                <Link to="/menu">Browse Produce</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <Link to="/reviews">Read Reviews</Link>

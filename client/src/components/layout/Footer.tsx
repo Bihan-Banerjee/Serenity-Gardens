@@ -19,8 +19,7 @@ export const Footer = () => {
               <span className="font-serif text-xl font-bold">Serenity Gardens</span>
             </div>
             <p className="text-muted text-sm leading-relaxed">
-              Experience the tranquility of nature at our beautiful garden sanctuary. 
-              A perfect escape from the everyday hustle.
+              Discover the beauty of nature and tranquility in our serene gardens. Explore, relax, and rejuvenate your senses in a peaceful environment.
             </p>
             <div className="flex gap-4">
               <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-primary hover:text-foreground transition-colors">
@@ -70,15 +69,15 @@ export const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-muted text-sm">
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <span>123 Garden Lane, Serenity Valley, Nature State 12345</span>
+                <span>Chakbaria, Baruipur, West Bengal 743330, India</span>
               </li>
               <li className="flex items-center gap-3 text-muted text-sm">
                 <Phone className="w-4 h-4 flex-shrink-0" />
-                <span>+1 (555) 123-4567</span>
+                <span>+91 9830414950 | +91 9830020452</span>
               </li>
               <li className="flex items-center gap-3 text-muted text-sm">
                 <Mail className="w-4 h-4 flex-shrink-0" />
-                <span>hello@serenitygardens.com</span>
+                <span>bihanbanerjee04@gmail.com</span>
               </li>
             </ul>
           </motion.div>
@@ -95,15 +94,15 @@ export const Footer = () => {
             <ul className="space-y-2 text-muted text-sm">
               <li className="flex justify-between">
                 <span>Monday - Friday</span>
-                <span>9:00 AM - 6:00 PM</span>
+                <span>8:00 AM - 5:00 PM</span>
               </li>
               <li className="flex justify-between">
                 <span>Saturday</span>
-                <span>10:00 AM - 5:00 PM</span>
+                <span>9:00 AM - 5:00 PM</span>
               </li>
               <li className="flex justify-between">
                 <span>Sunday</span>
-                <span>11:00 AM - 4:00 PM</span>
+                <span>9:00 AM - 6:00 PM</span>
               </li>
             </ul>
           </motion.div>

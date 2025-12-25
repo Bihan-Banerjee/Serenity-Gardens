@@ -1,18 +1,22 @@
 import { motion } from 'framer-motion';
 import { Layout } from '@/components/layout';
 import { CompareSlider } from '@/components/ui/compare/CompareSlider';
-import gardenPath from '@/assets/garden-path.jpg';
-import gardenGazebo from '@/assets/garden-gazebo.jpg';
-import gardenFountain from '@/assets/garden-fountain.jpg';
-import heroImage from '@/assets/hero-garden.jpg';
+import broken from '@/assets/broken.png';
+import bigGarden from '@/assets/hero-garden6.jpg';
+import ma from '@/assets/ma.png';
+import baba from '@/assets/baba.png';
+import me from '@/assets/me.png'
+import jeja from '@/assets/jeja.png';
+import jemma from '@/assets/jemma.png';
+import titi from '@/assets/titi.png';
 
 const familyMembers = [
-  { name: 'Robert Green', role: 'Founder & Head Gardener', image: gardenPath },
-  { name: 'Sarah Green', role: 'Co-Founder & Botanist', image: gardenGazebo },
-  { name: 'Michael Green', role: 'Landscape Architect', image: gardenFountain },
-  { name: 'Emma Green', role: 'Operations Manager', image: gardenPath },
-  { name: 'David Green', role: 'Horticulture Expert', image: gardenGazebo },
-  { name: 'Lisa Green', role: 'Customer Relations', image: gardenFountain },
+  { name: 'Dipankar Bandyopadhyay', role: 'Founder & Head Gardener', image: jeja },
+  { name: 'Nandita Bandyopadhyay', role: 'Co-Founder & Botanist', image: jemma },
+  { name: 'Ahana Bandyopadhyay', role: 'Landscape Architect', image: titi },
+  { name: 'Subhankar Bandyopadhyay', role: 'Operations Manager', image: baba },
+  { name: 'Deepa Banerjee', role: 'Horticulture Expert', image: ma },
+  { name: 'Bihan Banerjee', role: 'Customer Relations', image: me },
 ];
 
 const About = () => {
@@ -41,15 +45,10 @@ const About = () => {
             className="max-w-3xl mx-auto text-center mb-16"
           >
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Founded in 2010, Serenity Gardens began as a small family project born from a deep 
-              love for nature and a dream to create a peaceful sanctuary where people could 
-              reconnect with the natural world. What started as a modest backyard garden has 
-              blossomed into one of the region's most beloved botanical destinations.
+              What began as parents’ wish to see a combined venture between the brothers, ‘Serenity Gardens’ has become a reflection of the close familial ties and much more. Nestling amongst the Tematha farm lands, it speaks volumes about supporting a biosustainable economy in form of pisciculture , organic farm produce and green house resources. 
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed mt-4">
-              Our mission is simple: to inspire a love for nature while providing a tranquil 
-              escape from the hustle of everyday life. Every plant, pathway, and water feature 
-              is carefully curated to create an atmosphere of peace and wonder.
+              The project of ‘Serenity Gardens’ commenced and still continues in the hands of the locals and provides an inspiration to give back to the community in form of free medical and teaching services. This sanctum is a quest to serve Mother Nature while respecting family values and preserving our roots in its every spectrum.
             </p>
           </motion.div>
 
@@ -64,10 +63,10 @@ const About = () => {
               Our Transformation
             </h2>
             <CompareSlider
-              beforeImage={gardenPath}
-              afterImage={heroImage}
-              beforeLabel="2010"
-              afterLabel="Today"
+              beforeImage={broken}
+              afterImage={bigGarden}
+              beforeLabel="2021"
+              afterLabel="2025"
             />
           </motion.div>
         </div>
