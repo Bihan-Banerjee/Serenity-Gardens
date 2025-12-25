@@ -1,66 +1,48 @@
 import { motion } from 'framer-motion';
-import { Flower2, TreePine, Bird, Droplets, Sunrise, Mountain } from 'lucide-react';
+import { Worm, TreePine, Bird, Droplet, Sunrise, Camera } from 'lucide-react';
 import { Layout } from '@/components/layout';
-import { AnimatedTestimonials } from '@/components/ui/animated-testimonials/AnimatedTestimonials';
-import heroImage from '@/assets/hero-garden.jpg';
-import gardenPath from '@/assets/garden-path.jpg';
-import gardenGazebo from '@/assets/garden-gazebo.jpg';
-import gardenFountain from '@/assets/garden-fountain.jpg';
-
+import worm from '@/assets/worm.png';
+import heroGarden from '@/assets/hero-garden.jpg';
+import pond from '@/assets/pond.jpg';
+import picnic from '@/assets/picnic.jpg';
+import lawn from '@/assets/lawn.png';
+import bird from '@/assets/bird1.jpg';
 const features = [
   {
-    title: 'Rose Garden',
-    description: 'Over 500 varieties of roses from around the world, blooming in a spectacular display of colors.',
-    icon: Flower2,
-    image: gardenPath,
-  },
-  {
-    title: 'Pine Forest Trail',
-    description: 'A serene walking path through ancient pine trees, perfect for meditation and reflection.',
-    icon: TreePine,
-    image: gardenGazebo,
-  },
-  {
-    title: 'Bird Sanctuary',
-    description: 'Home to over 100 species of birds, with observation decks and feeding stations.',
-    icon: Bird,
-    image: heroImage,
-  },
-  {
-    title: 'Koi Ponds',
-    description: 'Beautiful Japanese-style koi ponds with bridges and peaceful sitting areas.',
-    icon: Droplets,
-    image: gardenFountain,
-  },
-  {
-    title: 'Sunrise Pavilion',
-    description: 'The perfect spot to witness breathtaking sunrises over the garden landscape.',
+    title: 'Family Picnic',
+    description: 'Serenity Gardens is the perfect getaway spot for family picnics. Surrounded by nature, you’ll feel rejuvenated and relaxed!',
     icon: Sunrise,
-    image: gardenPath,
+    image: picnic,
   },
   {
-    title: 'Rock Garden',
-    description: 'A stunning arrangement of natural rocks and alpine plants from mountainous regions.',
-    icon: Mountain,
-    image: gardenGazebo,
-  },
-];
-
-const testimonials = [
-  {
-    name: 'Emily Thompson',
-    role: 'Nature Enthusiast',
-    content: 'Serenity Gardens is truly a slice of paradise. Every visit feels like a meditation retreat. The attention to detail in every corner is remarkable.',
+    title: 'Evening Escape',
+    description: 'Escape the city buzz and enjoy an evening under the stars at Serenity Gardens. Unwind, relax, and make memories. ',
+    icon: TreePine,
+    image: lawn,
   },
   {
-    name: 'James Wilson',
-    role: 'Photographer',
-    content: 'As a landscape photographer, I\'ve visited many gardens, but Serenity Gardens stands out. The variety of flora and the thoughtful design make it a photographer\'s dream.',
+    title: 'Bird Haven',
+    description: 'Home to over 30 species of birds, with regular sightings of colorful songbirds, cormorants and majestic kingfishers.',
+    icon: Bird,
+    image: bird,
   },
   {
-    name: 'Priya Sharma',
-    role: 'Yoga Instructor',
-    content: 'I bring my yoga classes here every weekend. The peaceful atmosphere and fresh air create the perfect environment for mindfulness practice.',
+    title: 'Pond of Life',
+    description: 'A tranquil pond teeming with fish, crabs, etc. offering a serene spot for reflection and nature observation.',
+    icon: Droplet,
+    image: pond,
+  },
+  {
+    title: 'Vermicompost Area',
+    description: 'Vermicompost area where organic waste is broken down into nutrient rich compost by earthworms.',
+    icon: Worm,
+    image: worm,
+  },
+  {
+    title: 'Photoshoot Spot',
+    description: 'A picturesque gazebo, lawn, and pond surrounded by vibrant flowers, ideal for memorable photoshoots.',
+    icon: Camera,
+    image: heroGarden,
   },
 ];
 
@@ -123,27 +105,6 @@ const Explore = () => {
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-20 bg-card">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <span className="text-primary font-medium tracking-wider uppercase text-sm">
-              Testimonials
-            </span>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mt-2">
-              What Visitors Say
-            </h2>
-          </motion.div>
-
-          <AnimatedTestimonials testimonials={testimonials} />
         </div>
       </section>
     </Layout>

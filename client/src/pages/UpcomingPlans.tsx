@@ -7,43 +7,57 @@ import {
   DraggableCardBody,
   DraggableCardContainer,
 } from "@/components/ui/draggable-card/DraggableCard";
-import { AuroraText } from "@/components/magicui/aurora-text";
 import {useIsMobile} from "@/hooks/useIsMobile";
 
-import gardenPath from "@/assets/garden-path.jpg";
-import gardenGazebo from "@/assets/garden-gazebo.jpg";
-import gardenFountain from "@/assets/garden-fountain.jpg";
-import heroImage from "@/assets/hero-garden.jpg";
+import greenhouse from "@/assets/greenhouse.jpg";
+import solar from "@/assets/solar.jpg";
+import rainwater from "@/assets/rainwater.jpg";
+import vermiculture from "@/assets/worm.png";
+import pisciculture from "@/assets/pisciculture.jpg";
+import mushroom from "@/assets/mushroom.jpg";
+import nursery from "@/assets/nursery.jpg";
 
 const items = [
   {
-    title: "Butterfly Garden",
-    image: heroImage,
-    tag: "Coming Spring 2025",
+    title: "Pisciculture",
+    image: pisciculture,
+    tag: "Coming Spring 2026",
     className: "absolute top-6 left-[18%] rotate-[-6deg]",
   },
   {
-    title: "Night Bloom Walk",
-    image: gardenPath,
-    tag: "Summer 2025",
+    title: "Nursery",
+    image: nursery,
+    tag: "Summer 2026",
     className: "absolute top-10 left-[40%] rotate-[5deg]",
   },
   {
-    title: "Tea House Gazebo",
-    image: gardenGazebo,
-    tag: "Fall 2025",
+    title: "Mushroom Farming",
+    image: mushroom,
+    tag: "Fall 2026",
     className: "absolute top-24 left-[60%] rotate-[9deg]",
   },
   {
-    title: "Waterfall Trail",
-    image: gardenFountain,
-    tag: "Winter 2025",
+    title: "Greenhouse Agriculture",
+    image: greenhouse,
+    tag: "Winter 2026",
     className: "absolute top-40 left-[25%] rotate-[-9deg]",
   },
   {
-    title: "Orchid Pavilion",
-    image: heroImage,
-    tag: "Spring 2026",
+    title: "Solar Integration",
+    image: solar,
+    tag: "Spring 2027",
+    className: "absolute top-28 left-[50%] rotate-[2deg]",
+  },
+  {
+    title: "Rainwater Harvesting",
+    image: rainwater,
+    tag: "Spring 2027",
+    className: "absolute top-28 left-[50%] rotate-[2deg]",
+  },
+  {
+    title: "Eco Workshop on Vermiculture",
+    image: vermiculture,
+    tag: "Spring 2028",
     className: "absolute top-28 left-[50%] rotate-[2deg]",
   },
 ];
@@ -53,13 +67,16 @@ const UpcomingPlans = () => {
 
   return (
     <Layout>
-      <section className="pt-28 pb-20 px-4 min-h-screen">
+      <section className="pt-20 pb-20 px-4 min-h-screen">
         <div className="container mx-auto max-w-6xl">
           {/* Heading */}
           <div className="text-center mb-10">
             <span className="text-primary font-medium tracking-wider uppercase text-m md:text-lg">
               Coming Soon
             </span>
+            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-2">
+              Upcoming Plans
+            </h1>
             <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
               Drag and toss each card to explore what is blooming next at
               Serenity Gardens.
