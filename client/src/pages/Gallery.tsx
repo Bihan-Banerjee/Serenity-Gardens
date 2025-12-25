@@ -2,15 +2,55 @@ import { motion } from 'framer-motion';
 import { Layout } from '@/components/layout';
 import { ImageCarousel } from '@/components/ui/carousel/ImageCarousel';
 import heroImage from '@/assets/hero-garden.jpg';
-import gardenPath from '@/assets/garden-path.jpg';
-import gardenGazebo from '@/assets/garden-gazebo.jpg';
-import gardenFountain from '@/assets/garden-fountain.jpg';
+import wall from '@/assets/wall.png';
+import harvest from '@/assets/harvest.png';
+import bench from '@/assets/bench.jpg';
+import rose from '@/assets/rose.png';
+import aerial from '@/assets/aerial.png';
+import closeup from '@/assets/closeup.jpg';
+import pond from '@/assets/pond.jpg';
+import corridor from '@/assets/corridor.jpg';
+import chhad from '@/assets/chhad.jpg';
+import gazebo from '@/assets/gazebo.jpg';
+import lane from '@/assets/lane.jpg';
+import stairs from '@/assets/stairs.jpg';
+import swing from '@/assets/swing.jpg';
+import ghat from '@/assets/ghat.jpg';
+import view from '@/assets/view.jpg';
+import tile from '@/assets/tile.jpg';
+import pond2 from '@/assets/pond2.jpg';
+import bigcrop from '@/assets/bigcrop.png';
+import bigflower from '@/assets/bigflower.png';
+import lilypad from '@/assets/lilypad.png';
+import lawn from '@/assets/lawn.png';
+import cabbage from '@/assets/cabbage.png';
+import corner from '@/assets/corner.png';
 
 const galleryImages = [
   { src: heroImage, alt: 'Serenity Gardens Main View' },
-  { src: gardenPath, alt: 'Beautiful Garden Path' },
-  { src: gardenGazebo, alt: 'Peaceful Gazebo Retreat' },
-  { src: gardenFountain, alt: 'Ornamental Garden Fountain' },
+  { src: wall, alt: 'Beautiful Garden Path' },
+  { src: harvest, alt: 'Peaceful Gazebo Retreat' },
+  { src: bench, alt: 'Ornamental Garden Fountain' },
+  { src: rose, alt: 'Beautiful Garden Path' },
+  { src: aerial, alt: 'Peaceful Gazebo Retreat' },
+  { src: closeup, alt: 'Ornamental Garden Fountain' },
+  { src: pond, alt: 'Beautiful Garden Path' },
+  { src: corridor, alt: 'Peaceful Gazebo Retreat' },
+  { src: chhad, alt: 'Ornamental Garden Fountain' },
+  { src: stairs, alt: 'Beautiful Garden Path' },
+  { src: gazebo, alt: 'Peaceful Gazebo Retreat' },
+  { src: lane, alt: 'Ornamental Garden Fountain' },
+  { src: ghat, alt: 'Beautiful Garden Path' },
+  { src: swing, alt: 'Peaceful Gazebo Retreat' },
+  { src: view, alt: 'Ornamental Garden Fountain' },
+  { src: tile, alt: 'Beautiful Garden Path' },
+  { src: pond2, alt: 'Peaceful Gazebo Retreat' },
+  { src: bigcrop, alt: 'Ornamental Garden Fountain' },
+  { src: bigflower, alt: 'Beautiful Garden Path' },
+  { src: lilypad, alt: 'Peaceful Gazebo Retreat' },
+  { src: lawn, alt: 'Ornamental Garden Fountain' },
+  { src: cabbage, alt: 'Beautiful Garden Path' },
+  { src: corner, alt: 'Peaceful Gazebo Retreat' },
 ];
 
 const Gallery = () => {
