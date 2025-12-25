@@ -1,14 +1,16 @@
 import { motion } from 'framer-motion';
 import { Layout } from '@/components/layout';
-import { CompareSlider } from '@/components/ui/compare/CompareSlider';
+import { Compare } from '@/components/ui/compare';
 import broken from '@/assets/broken.png';
 import bigGarden from '@/assets/hero-garden6.jpg';
 import ma from '@/assets/ma.png';
 import baba from '@/assets/baba.png';
-import me from '@/assets/me.png'
+import me from '@/assets/me.png';
 import jeja from '@/assets/jeja.png';
 import jemma from '@/assets/jemma.png';
 import titi from '@/assets/titi.png';
+import trash from '@/assets/trash.jpg';
+import lawn from '@/assets/lawn.png';
 
 const familyMembers = [
   { name: 'Dipankar Bandyopadhyay', role: 'Founder & Head Gardener', image: jeja },
@@ -45,29 +47,74 @@ const About = () => {
             className="max-w-3xl mx-auto text-center mb-16"
           >
             <p className="text-lg text-muted-foreground leading-relaxed">
-              What began as parents’ wish to see a combined venture between the brothers, ‘Serenity Gardens’ has become a reflection of the close familial ties and much more. Nestling amongst the Tematha farm lands, it speaks volumes about supporting a biosustainable economy in form of pisciculture , organic farm produce and green house resources. 
+              What began as parents' wish to see a combined venture between the brothers, 'Serenity Gardens' has become a reflection of the close familial ties and much more. Nestling amongst the Tematha farm lands, it speaks volumes about supporting a biosustainable economy in form of pisciculture, organic farm produce and green house resources.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed mt-4">
-              The project of ‘Serenity Gardens’ commenced and still continues in the hands of the locals and provides an inspiration to give back to the community in form of free medical and teaching services. This sanctum is a quest to serve Mother Nature while respecting family values and preserving our roots in its every spectrum.
+              The project of 'Serenity Gardens' commenced and still continues in the hands of the locals and provides an inspiration to give back to the community in form of free medical and teaching services. This sanctum is a quest to serve Mother Nature while respecting family values and preserving our roots in its every spectrum.
             </p>
           </motion.div>
 
-          {/* Compare Slider */}
+          {/* Compare Slider with Labels */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4 }}
             className="max-w-4xl mx-auto mb-20"
           >
-            <h2 className="font-serif text-2xl font-bold text-foreground text-center mb-6">
-              Our Transformation
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground text-center mb-8">
+              Our Transformation Journey
             </h2>
-            <CompareSlider
-              beforeImage={broken}
-              afterImage={bigGarden}
-              beforeLabel="2021"
-              afterLabel="2025"
-            />
+            <div className="relative flex items-center justify-center">
+              <Compare
+                firstImage={broken}
+                secondImage={bigGarden}
+                className="w-full h-[300px] md:h-[500px] lg:h-[600px] rounded-2xl"
+                firstImageClassName="object-cover"
+                secondImageClassname="object-cover"
+                slideMode="drag"
+                autoplay={true}
+                autoplayDuration={3000}
+              />
+              {/* Labels */}
+              <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white px-4 py-2 rounded-lg font-semibold text-sm md:text-base pointer-events-none z-50">
+                2021 - Before
+              </div>
+              <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-sm text-white px-4 py-2 rounded-lg font-semibold text-sm md:text-base pointer-events-none z-50">
+                2025 - After
+              </div>
+            </div>
+            <p className="text-center text-muted-foreground mt-6 text-sm md:text-base">
+              The transformation of the main house over time.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+            className="max-w-4xl mx-auto mb-20"
+          >
+            <div className="relative flex items-center justify-center">
+              <Compare
+                firstImage={trash}
+                secondImage={lawn}
+                className="w-full h-[300px] md:h-[500px] lg:h-[600px] rounded-2xl"
+                firstImageClassName="object-cover"
+                secondImageClassname="object-cover"
+                slideMode="drag"
+                autoplay={true}
+                autoplayDuration={3000}
+              />
+              {/* Labels */}
+              <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white px-4 py-2 rounded-lg font-semibold text-sm md:text-base pointer-events-none z-50">
+                2021 - Before
+              </div>
+              <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-sm text-white px-4 py-2 rounded-lg font-semibold text-sm md:text-base pointer-events-none z-50">
+                2025 - After
+              </div>
+            </div>
+            <p className="text-center text-muted-foreground mt-6 text-sm md:text-base">
+              The lawn getting made over the years.
+            </p>
           </motion.div>
         </div>
       </section>
