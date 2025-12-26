@@ -35,7 +35,7 @@ export default function MenuPage() {
     }
 
     try {
-      const res = await api.get("/items"); // auth header is added by interceptor
+      const res = await api.get("/items"); 
       setProducts(res.data.filter((item: Product) => item.finalized));
     } catch (err) {
       console.error("Failed to fetch items:", err);

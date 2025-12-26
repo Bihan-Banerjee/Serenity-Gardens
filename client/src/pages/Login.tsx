@@ -26,7 +26,7 @@ const Login = () => {
 
     try {
       const response = await authService.login(formData.email, formData.password);
-      authService.saveAuth(response.token, response.user);  // ← ADDED THIS LINE
+      authService.saveAuth(response.token, response.user);
       setAuth(response.token, response.user);
       toast.success('Welcome back!');
       navigate('/');
