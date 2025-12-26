@@ -98,7 +98,6 @@ const Reviews = () => {
     rating: 5,
   });
 
-  // Fetch DB reviews
   useEffect(() => {
     fetchReviews();
   }, []);
@@ -122,7 +121,7 @@ const Reviews = () => {
       await api.post('/reviews/submit', formData);
       toast.success('Thank you for your review! 🌟');
       setFormData({ name: '', review: '', rating: 5 });
-      fetchReviews(); // Refresh DB reviews
+      fetchReviews(); 
     } catch (error) {
       toast.error('Failed to submit review');
     } finally {
@@ -130,7 +129,6 @@ const Reviews = () => {
     }
   };
 
-  // Split logic for 3 rows
   const chunkSize = Math.ceil(hardcodedTestimonials.length / 3);
   const firstRow = hardcodedTestimonials.slice(0, chunkSize);
   const secondRow = hardcodedTestimonials.slice(chunkSize, chunkSize * 2);

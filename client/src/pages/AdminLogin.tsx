@@ -1,9 +1,7 @@
-"use client";
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Shield, Leaf } from 'lucide-react';
+import { Eye, EyeOff, Shield} from 'lucide-react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

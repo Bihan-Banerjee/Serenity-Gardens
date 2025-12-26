@@ -11,7 +11,6 @@ import { useCartStore } from "./useCartStore";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
-import toast from "react-hot-toast";
 
 export function CartSidebar() {
   const { cart, removeItem, updateQuantity } = useCartStore();
@@ -53,7 +52,7 @@ export function CartSidebar() {
   }, [setOpen]);
   
   const handleProceedToBuy = () => {
-  setOpen(false); // Close cart first
+  setOpen(false);
   navigate("/checkout");
 };
 

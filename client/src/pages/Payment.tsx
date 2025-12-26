@@ -13,7 +13,7 @@ declare global {
 }
 
 export default function PaymentPage() {
-  const { items: cart } = useCartStore();  // ✅ Matches your store
+  const { items: cart } = useCartStore();  
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
 
