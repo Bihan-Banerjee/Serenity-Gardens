@@ -24,10 +24,10 @@ const allowedOrigins = [
     'https://serenity-gardens.onrender.com',
     "http://localhost:8080",
     'http://localhost:8080',
-    'https://serenitygardens.online/',
-    'https://www.serenitygardens.online/',
-    'http://serenitygardens.online/',
-    'http://www.serenitygardens.online/'
+    'https://serenitygardens.online',
+    'https://www.serenitygardens.online',
+    'http://serenitygardens.online',
+    'http://www.serenitygardens.online'
 ];
 
 const corsOptions = {
@@ -57,3 +57,4 @@ mongoose.connect(process.env.MONGO_URI)
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch((err) => console.error(err));
+
