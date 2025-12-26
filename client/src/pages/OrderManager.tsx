@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Layout } from '@/components/layout';
@@ -8,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuthStore } from '@/hooks/useAuthStore';
 import api from '@/lib/axiosConfig';
 import toast from 'react-hot-toast';
-import { Package, User, DollarSign, Trash2, CheckCircle } from 'lucide-react';
+import { Package, Trash2, CheckCircle } from 'lucide-react';
 
 interface OrderItem {
   id?: string;

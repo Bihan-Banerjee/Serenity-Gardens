@@ -1,6 +1,3 @@
-// src/pages/UpcomingPlans.tsx
-"use client";
-
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout";
 import {
