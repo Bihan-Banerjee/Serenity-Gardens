@@ -23,7 +23,11 @@ const allowedOrigins = [
     'http://localhost:5173', 
     'https://serenity-gardens.onrender.com',
     "http://localhost:8080",
-    'http://localhost:8080'
+    'http://localhost:8080',
+    'https://serenitygardens.online/',
+    'https://www.serenitygardens.online/',
+    'http://serenitygardens.online/',
+    'http://www.serenitygardens.online/'
 ];
 
 const corsOptions = {

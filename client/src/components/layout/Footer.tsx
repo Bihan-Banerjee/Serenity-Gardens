@@ -22,13 +22,13 @@ export const Footer = () => {
               Discover the beauty of nature and tranquility in our serene gardens. Explore, relax, and rejuvenate your senses in a peaceful environment.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-primary hover:text-foreground transition-colors">
+              <a href="https://www.instagram.com/serenity__gardens?igsh=MWZrN2t0YW1naHRjYg==" className="p-2 rounded-full bg-background/10 hover:bg-primary hover:text-foreground transition-colors">
                 <Instagram className="w-4 h-4" />
               </a>
-              <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-primary hover:text-foreground transition-colors">
+              <a href="https://www.facebook.com/profile.php?id=61585491844132" className="p-2 rounded-full bg-background/10 hover:bg-primary hover:text-foreground transition-colors">
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-primary hover:text-foreground transition-colors">
+              <a href="https://x.com/SerenityTematha" className="p-2 rounded-full bg-background/10 hover:bg-primary hover:text-foreground transition-colors">
                 <Twitter className="w-4 h-4" />
               </a>
             </div>
