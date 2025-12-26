@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuthStore } from '@/hooks/useAuthStore';
 import api from '@/lib/axiosConfig';
 import toast from 'react-hot-toast';
-import { ShoppingBag, Trash2, CheckCircle, Edit3 } from 'lucide-react';
+import { ShoppingBag, Trash2, CheckCircle, Edit3, X } from 'lucide-react';
 
 interface Item {
   _id: string;
@@ -29,8 +29,10 @@ const ItemManager = () => {
     stock: '',
     image: null as File | null,
   });
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingStockId, setEditingStockId] = useState<string | null>(null);
+  const [editingPriceId, setEditingPriceId] = useState<string | null>(null);
   const [newStock, setNewStock] = useState('');
+  const [newPrice, setNewPrice] = useState('');
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
 
@@ -91,13 +93,41 @@ const ItemManager = () => {
   };
 
   const handleStockUpdate = async (id: string) => {
+    const stockValue = parseInt(newStock);
+    if (isNaN(stockValue) || stockValue < 0) {
+      toast.error('Please enter a valid stock number');
+      return;
+    }
+    
     try {
-      await api.patch(`/items/${id}`, { stock: parseInt(newStock) });
+      await api.patch(`/items/${id}`, { stock: stockValue });
       toast.success('Stock updated!');
-      setEditingId(null);
-      fetchItems();
-    } catch (err) {
-      toast.error('Error updating stock');
+      setEditingStockId(null);
+      setNewStock('');
+      await fetchItems();
+    } catch (err: any) {
+      console.error('Stock update error:', err);
+      toast.error(err.response?.data?.message || 'Error updating stock');
+    }
+  };
+
+  const handlePriceUpdate = async (id: string) => {
+    const priceValue = parseFloat(newPrice);
+    if (isNaN(priceValue) || priceValue <= 0) {
+      toast.error('Please enter a valid price');
+      return;
+    }
+
+    try {
+      const response = await api.patch(`/items/${id}`, { price: priceValue });
+      console.log('Price update response:', response.data);
+      toast.success('Price updated!');
+      setEditingPriceId(null);
+      setNewPrice('');
+      await fetchItems();
+    } catch (err: any) {
+      console.error('Price update error:', err);
+      toast.error(err.response?.data?.message || 'Error updating price');
     }
   };
 
@@ -216,18 +246,52 @@ const ItemManager = () => {
                           <td className="p-4 font-medium text-foreground max-w-xs truncate">
                             {item.name}
                           </td>
-                          <td className="p-4 font-mono font-semibold text-lg">
-                            ₹{item.price}
+                          <td className="p-4">
+                            {editingPriceId === item._id ? (
+                              <div className="flex gap-2 items-center">
+                                <Input
+                                  type="number"
+                                  step="0.01"
+                                  value={newPrice}
+                                  onChange={(e) => setNewPrice(e.target.value)}
+                                  className="w-24 h-10"
+                                  placeholder="₹"
+                                  autoFocus
+                                />
+                                <Button
+                                  size="sm"
+                                  onClick={() => handlePriceUpdate(item._id)}
+                                  className="h-10"
+                                >
+                                  Save
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => {
+                                    setEditingPriceId(null);
+                                    setNewPrice('');
+                                  }}
+                                  className="h-10"
+                                >
+                                  <X className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            ) : (
+                              <span className="font-mono font-semibold text-lg">
+                                ₹{item.price}
+                              </span>
+                            )}
                           </td>
                           <td className="p-4">
-                            {editingId === item._id ? (
+                            {editingStockId === item._id ? (
                               <div className="flex gap-2 items-center">
                                 <Input
                                   type="number"
                                   value={newStock}
                                   onChange={(e) => setNewStock(e.target.value)}
                                   className="w-20 h-10"
-                                  size={4}
+                                  autoFocus
                                 />
                                 <Button
                                   size="sm"
@@ -235,6 +299,17 @@ const ItemManager = () => {
                                   className="h-10"
                                 >
                                   Save
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => {
+                                    setEditingStockId(null);
+                                    setNewStock('');
+                                  }}
+                                  className="h-10"
+                                >
+                                  <X className="w-4 h-4" />
                                 </Button>
                               </div>
                             ) : (
@@ -263,9 +338,22 @@ const ItemManager = () => {
                               size="sm"
                               variant="outline"
                               onClick={() => {
-                                setEditingId(item._id);
+                                setEditingPriceId(item._id);
+                                setNewPrice(item.price.toString());
+                              }}
+                              disabled={editingPriceId === item._id}
+                            >
+                              <Edit3 className="w-4 h-4 mr-1" />
+                              Price
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setEditingStockId(item._id);
                                 setNewStock(item.stock.toString());
                               }}
+                              disabled={editingStockId === item._id}
                             >
                               <Edit3 className="w-4 h-4 mr-1" />
                               Stock
