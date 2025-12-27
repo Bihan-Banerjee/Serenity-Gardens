@@ -13,12 +13,12 @@ import trash from '@/assets/trash.jpg';
 import lawn from '@/assets/lawn.png';
 
 const familyMembers = [
-  { name: 'Dipankar Bandyopadhyay', role: 'Founder & Head Gardener', image: jeja },
-  { name: 'Nandita Bandyopadhyay', role: 'Co-Founder & Botanist', image: jemma },
-  { name: 'Ahana Bandyopadhyay', role: 'Landscape Architect', image: titi },
-  { name: 'Subhankar Bandyopadhyay', role: 'Operations Manager', image: baba },
-  { name: 'Deepa Banerjee', role: 'Horticulture Expert', image: ma },
-  { name: 'Bihan Banerjee', role: 'Customer Relations', image: me },
+  { name: 'Dipankar Bandyopadhyay', role: 'Senior Executive Vice President, Reliance Industries Ltd', image: jeja },
+  { name: 'Nandita Bandyopadhyay', role: 'Former Teacher', image: jemma },
+  { name: 'Ahana Bandyopadhyay', role: 'Plastic Surgeon', image: titi },
+  { name: 'Subhankar Bandyopadhyay', role: 'Dental Surgeon & Director, Glitter Dental Clinic', image: baba },
+  { name: 'Deepa Banerjee', role: 'Writer and Former Teacher', image: ma },
+  { name: 'Bihan Banerjee', role: 'Computer Science and Engineering Student', image: me },
 ];
 
 const About = () => {

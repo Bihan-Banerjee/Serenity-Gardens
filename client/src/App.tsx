@@ -25,6 +25,7 @@ import AdminLogin from './pages/AdminLogin';
 import ItemManager from './pages/ItemManager';
 import OrderManager from './pages/OrderManager';
 import MyProfile from './pages/MyProfile';
+import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient();
 
@@ -79,6 +80,7 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <Analytics />
         <HotToaster 
           position="top-center" 
           toastOptions={{ 
