@@ -119,6 +119,11 @@ const hardcodedTestimonials: Array<{ name: string; review: string; rating: numbe
     review: "Honestly, this place is a hidden gem! Perfectly planned and decorated, it's the ultimate chill spot just outside Kolkata 😊. Unmatched hospitality is there strength...", 
     rating: 5 
   },
+  { 
+    name: "DR ARINDAM MANDAL", 
+    review: "What a wonderful place surrounded by nature,play ground ,water body and a beautiful bunglow❤️", 
+    rating: 5 
+  },
 ];
 
 // ReviewCard component
