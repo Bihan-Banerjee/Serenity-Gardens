@@ -15,40 +15,52 @@ const razorpayInstance = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET, 
 });
 
-router.post("/", protect, adminProtect, async (req, res) => {
+router.post("/", protect, async (req, res) => {
   try {
-    const { items, paid, razorpayPaymentId } = req.body;
+    const { items } = req.body;
 
-    if (!items || items.length === 0) {
+    if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ message: "No items provided" });
     }
 
-    const totalAmount = items.reduce(
+    const orderItems = [];
+
+    for (const item of items) {
+      const quantity = Number(item.quantity);
+
+      if (!Number.isInteger(quantity) || quantity <= 0) {
+        return res.status(400).json({ message: "Invalid quantity" });
+      }
+
+      const product = await Item.findById(item.id).catch(() => null);
+
+      if (!product) {
+        return res
+          .status(400)
+          .json({ message: "One or more items are no longer available" });
+      }
+
+      orderItems.push({
+        id: product._id.toString(),
+        name: product.name,
+        price: product.price,
+        quantity,
+      });
+    }
+
+    const totalAmount = orderItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0
     );
 
     const newOrder = new Order({
       userId: req.user.id,
-      items,
+      items: orderItems,
       totalAmount,
-      paid,
-      razorpayPaymentId: razorpayPaymentId || null,
+      paid: false,
     });
 
     await newOrder.save();
-
-    if (paid) {
-      for (const orderItem of items) {
-        const product = await import("../models/Item.js").then((m) =>
-          m.default.findById(orderItem.id)
-        );
-        if (product) {
-          product.stock = Math.max(0, product.stock - orderItem.quantity);
-          await product.save();
-        }
-      }
-    }
 
     res
       .status(201)
