@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button"; 
 import { useCartStore } from "./useCartStore"; 
 import axios from "axios"; 
-import { toast } from "react-hot-toast"; 
+import { toast } from "react-hot-toast";
+import { getTokenEmail } from "@/lib/auth";
 
 declare global {
   interface Window { Razorpay: any; }
@@ -83,10 +84,7 @@ export default function PaymentPage() {
                 }
             },
             prefill: {
-                // Optional: Prefill user details if available
-                name: "Test User",
-                email: "test@example.com", 
-                contact: "9999999999",
+                email: getTokenEmail() ?? undefined,
             },
             theme: {
                 color: "#3399cc",
