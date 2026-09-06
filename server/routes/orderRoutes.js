@@ -81,10 +81,17 @@ router.patch("/:id", protect, adminProtect, async (req, res) => {
 
     if (paid && !order.paid) {
       for (const orderItem of order.items) {
-        const product = await Item.findById(orderItem.id);
-        if (product) {
-          product.stock = Math.max(0, product.stock - orderItem.quantity);
-          await product.save();
+        const reserved = await Item.findOneAndUpdate(
+          { _id: orderItem.id, stock: { $gte: orderItem.quantity } },
+          { $inc: { stock: -orderItem.quantity } }
+        ).catch(() => null);
+
+        if (!reserved) {
+          console.error("Stock could not be reserved when marking an order paid", {
+            orderId: order._id.toString(),
+            itemId: orderItem.id,
+            quantity: orderItem.quantity,
+          });
         }
       }
     }
