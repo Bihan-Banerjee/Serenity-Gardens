@@ -87,7 +87,7 @@ router.patch("/:id", protect, adminProtect, async (req, res) => {
   }
 });
 
-router.get("/", protect, async (req, res) => {
+router.get("/", protect, adminProtect, async (req, res) => {
   try {
     const orders = await Order.find().populate("userId", "name email");
     res.json(orders);
