@@ -1,43 +1,50 @@
 import express from "express";
 import Review from "../models/Review.js";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import { protect } from "../middleware/auth.js";
 
-dotenv.config();
 const router = express.Router();
 
-
-const authMiddleware = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ message: "No token provided" });
-
+router.get("/", async (req, res) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch {
-    return res.status(401).json({ message: "Invalid token" });
+    const reviews = await Review.find()
+      .sort({ createdAt: -1 })
+      .limit(50)
+      .select("name review createdAt");
+    res.json(reviews);
+  } catch (err) {
+    console.error("Failed to fetch reviews:", err);
+    res.status(500).json({ message: "Failed to fetch reviews" });
   }
-};
+});
 
-
-router.post("/submit", authMiddleware, async (req, res) => {
+router.post("/submit", protect, async (req, res) => {
   const { name, review } = req.body;
 
-  if (!name || !review) {
+  if (typeof name !== "string" || typeof review !== "string") {
     return res.status(400).json({ message: "Name and review required" });
   }
 
+  const trimmedName = name.trim();
+  const trimmedReview = review.trim();
+
+  if (!trimmedName || !trimmedReview) {
+    return res.status(400).json({ message: "Name and review required" });
+  }
+
+  if (trimmedName.length > 100 || trimmedReview.length > 2000) {
+    return res.status(400).json({ message: "Name or review is too long" });
+  }
+
   try {
-    const newReview = new Review({
-      name,
+    await Review.create({
+      name: trimmedName,
       email: req.user.email,
-      review,
+      review: trimmedReview,
     });
 
-    await newReview.save();
     res.status(201).json({ message: "Review submitted successfully" });
   } catch (err) {
+    console.error("Failed to submit review:", err);
     res.status(500).json({ message: "Failed to submit review" });
   }
 });
