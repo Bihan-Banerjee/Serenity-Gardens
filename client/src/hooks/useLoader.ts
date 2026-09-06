@@ -1,7 +1,17 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function useLoader(minDuration = 1500) {
   const [loading, setLoading] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const runWithLoader = async (asyncFn: () => Promise<any>) => {
     setLoading(true);
@@ -16,8 +26,10 @@ export function useLoader(minDuration = 1500) {
       const remaining = minDuration - elapsed;
 
       if (remaining > 0) {
-        setTimeout(() => setLoading(false), remaining);
-      } else {
+        timeoutRef.current = setTimeout(() => {
+          if (mountedRef.current) setLoading(false);
+        }, remaining);
+      } else if (mountedRef.current) {
         setLoading(false);
       }
     }

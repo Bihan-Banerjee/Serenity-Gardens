@@ -1,5 +1,7 @@
 # Ignore environment variables
 .env
+.env.*
+!.env.example
 
 # Ignore node_modules
 node_modules/

@@ -76,7 +76,13 @@ export function CartSidebar() {
                   <p>₹{item.price} x {item.quantity}</p>
                   <div className="flex gap-2 mt-1">
                     <Button size="sm" onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1}>-</Button>
-                    <Button size="sm" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</Button>
+                    <Button
+                      size="sm"
+                      disabled={item.stock !== undefined && item.quantity >= item.stock}
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    >
+                      +
+                    </Button>
                     <Button size="sm" variant="destructive" onClick={() => removeItem(item.id)}>Remove</Button>
                   </div>
                 </div>

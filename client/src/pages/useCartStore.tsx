@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type CartItem = {
   id: string;
@@ -17,7 +18,9 @@ interface CartState {
   clearCart: () => void;
 }
 
-export const useCartStore = create<CartState>((set) => ({
+export const useCartStore = create<CartState>()(
+  persist(
+    (set) => ({
   cart: [],
   addItem: (item) =>
     set((state) => {
@@ -46,4 +49,10 @@ export const useCartStore = create<CartState>((set) => ({
     })),
 
   clearCart: () => set({ cart: [] }),
-}));
+    }),
+    {
+      name: "serenity-cart",
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+);

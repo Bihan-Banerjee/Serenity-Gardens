@@ -35,7 +35,7 @@ const Register = () => {
       localStorage.setItem("token", data.token);
 
       toast.success("Registration successful!");
-      navigate("/login");
+      navigate("/menu");
     }).catch((err: any) => {
       setError(err.message);
       toast.error(err.message || "Registration failed");
