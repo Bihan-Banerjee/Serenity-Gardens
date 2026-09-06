@@ -1,8 +1,8 @@
 import express from "express";
 import Order from "../models/Order.js";
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import Item from "../models/Item.js";
+import PendingOrder from "../models/PendingOrder.js";
 import { protect, adminProtect } from "../middleware/auth.js";
 import crypto from "crypto";
 import Razorpay from 'razorpay';
@@ -141,25 +141,70 @@ router.get("/my-latest", protect, async (req, res) => {
 
 router.post('/create-razorpay-order', protect, async (req, res) => {
     try {
-        const { amount, currency = 'INR', receipt } = req.body; 
+        const { items } = req.body;
 
-        if (!amount || amount <= 0) {
-            return res.status(400).json({ message: 'Invalid amount' });
+        if (!Array.isArray(items) || items.length === 0) {
+            return res.status(400).json({ message: 'No items provided' });
         }
 
-        const options = {
-            amount: Math.round(amount), 
-            currency,
-            receipt: receipt || `receipt_order_${Date.now()}`, 
-        };
+        const pricedItems = [];
 
-        const order = await razorpayInstance.orders.create(options);
+        for (const item of items) {
+            const quantity = Number(item.quantity);
+
+            if (!Number.isInteger(quantity) || quantity <= 0) {
+                return res.status(400).json({ message: 'Invalid quantity' });
+            }
+
+            const product = await Item.findById(item.id).catch(() => null);
+
+            if (!product) {
+                return res
+                    .status(400)
+                    .json({ message: 'One or more items are no longer available' });
+            }
+
+            if (product.stock < quantity) {
+                return res.status(400).json({
+                    message: `Only ${product.stock} of ${product.name} left in stock`,
+                });
+            }
+
+            pricedItems.push({
+                id: product._id.toString(),
+                name: product.name,
+                price: product.price,
+                quantity,
+            });
+        }
+
+        const expectedAmount = pricedItems.reduce(
+            (sum, item) => sum + Math.round(item.price * 100) * item.quantity,
+            0
+        );
+
+        if (expectedAmount <= 0) {
+            return res.status(400).json({ message: 'Invalid order total' });
+        }
+
+        const order = await razorpayInstance.orders.create({
+            amount: expectedAmount,
+            currency: 'INR',
+            receipt: `receipt_order_${Date.now()}`,
+        });
 
         if (!order) {
             return res.status(500).json({ message: 'Razorpay order creation failed' });
         }
 
-        res.json(order); 
+        await PendingOrder.create({
+            razorpayOrderId: order.id,
+            userId: req.user.id,
+            items: pricedItems,
+            expectedAmount,
+        });
+
+        res.json({ id: order.id, amount: order.amount, currency: order.currency });
     } catch (error) {
         console.error('Razorpay order creation error:', error);
         res.status(500).json({ message: 'Server error creating Razorpay order' });
@@ -171,52 +216,100 @@ router.post('/verify-payment', protect, async (req, res) => {
         razorpay_order_id,
         razorpay_payment_id,
         razorpay_signature,
-        items 
     } = req.body;
 
-    const secret = process.env.RAZORPAY_KEY_SECRET; 
-
-    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !items) {
-         return res.status(400).json({ message: 'Missing payment details or items' });
+    if (
+        typeof razorpay_order_id !== 'string' ||
+        typeof razorpay_payment_id !== 'string' ||
+        typeof razorpay_signature !== 'string'
+    ) {
+         return res.status(400).json({ message: 'Missing payment details' });
     }
 
     try {
-        const generated_signature = crypto
-            .createHmac('sha256', secret)
+        const expectedSignature = crypto
+            .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
             .update(razorpay_order_id + "|" + razorpay_payment_id)
-            .digest('hex');
+            .digest();
+        const providedSignature = Buffer.from(razorpay_signature, 'hex');
 
-        if (generated_signature !== razorpay_signature) {
+        if (
+            expectedSignature.length !== providedSignature.length ||
+            !crypto.timingSafeEqual(expectedSignature, providedSignature)
+        ) {
             return res.status(400).json({ message: 'Payment verification failed: Invalid signature' });
         }
 
-        const totalAmount = items.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0
+        const existingOrder = await Order.findOne({ razorpayPaymentId: razorpay_payment_id });
+
+        if (existingOrder) {
+            return res.json({
+                message: "Order already recorded",
+                orderId: existingOrder._id,
+            });
+        }
+
+        const pending = await PendingOrder.findOne({
+            razorpayOrderId: razorpay_order_id,
+            userId: req.user.id,
+        });
+
+        if (!pending) {
+            return res.status(400).json({ message: 'Unknown payment reference' });
+        }
+
+        const payment = await razorpayInstance.payments.fetch(razorpay_payment_id);
+
+        if (
+            !payment ||
+            payment.order_id !== razorpay_order_id ||
+            payment.amount !== pending.expectedAmount ||
+            !['authorized', 'captured'].includes(payment.status)
+        ) {
+            console.error('Razorpay payment did not match the expected order or amount', {
+                razorpayOrderId: razorpay_order_id,
+                razorpayPaymentId: razorpay_payment_id,
+                expectedAmount: pending.expectedAmount,
+                actualAmount: payment && payment.amount,
+                actualOrderId: payment && payment.order_id,
+                status: payment && payment.status,
+            });
+            return res.status(400).json({ message: 'Payment verification failed' });
+        }
+
+        const claimed = await PendingOrder.findOneAndUpdate(
+            { _id: pending._id, consumed: false },
+            { $set: { consumed: true } }
         );
 
+        if (!claimed) {
+            return res.status(400).json({ message: 'Payment has already been processed' });
+        }
+
         const newOrder = new Order({
-            userId: req.user.id, 
-            items: items.map(item => ({ 
-                id: item.id, 
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity
-            })),
-            totalAmount,
-            paid: true, 
+            userId: pending.userId,
+            items: pending.items,
+            totalAmount: pending.expectedAmount / 100,
+            paid: true,
             razorpayPaymentId: razorpay_payment_id,
         });
 
         await newOrder.save();
 
-        for (const orderItem of newOrder.items) {
-             const product = await Item.findById(orderItem.id);
-             if (product) {
-                product.stock = Math.max(0, product.stock - orderItem.quantity);
-                await product.save();
-             }
-         }
+        for (const orderItem of pending.items) {
+            const reserved = await Item.findOneAndUpdate(
+                { _id: orderItem.id, stock: { $gte: orderItem.quantity } },
+                { $inc: { stock: -orderItem.quantity } }
+            );
+
+            if (!reserved) {
+                console.error('Stock could not be reserved for a paid order', {
+                    orderId: newOrder._id.toString(),
+                    itemId: orderItem.id,
+                    quantity: orderItem.quantity,
+                });
+            }
+        }
 
         res.status(201).json({ message: "Order placed successfully after payment verification", orderId: newOrder._id });
 
