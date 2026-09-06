@@ -4,6 +4,7 @@ import { useCartStore } from "./useCartStore";
 import axios from "axios"; 
 import { toast } from "react-hot-toast";
 import { getTokenEmail } from "@/lib/auth";
+import { API_BASE_URL } from "@/lib/api";
 
 declare global {
   interface Window { Razorpay: any; }
@@ -23,7 +24,7 @@ export default function PaymentPage() {
     }
     try {
         await axios.post( 
-            "https://serenity-gardens.onrender.com/api/orders", 
+            `${API_BASE_URL}/orders`, 
             { items: cart, paid: false }, 
             {
               headers: { Authorization: `Bearer ${token}` }, 
@@ -48,7 +49,7 @@ export default function PaymentPage() {
     try {
         const orderAmountInPaisa = total * 100; 
         const { data: razorpayOrder } = await axios.post(
-            "https://serenity-gardens.onrender.com/api/orders/create-razorpay-order", 
+            `${API_BASE_URL}/orders/create-razorpay-order`, 
             { amount: orderAmountInPaisa },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -66,7 +67,7 @@ export default function PaymentPage() {
             order_id: razorpayOrder.id, 
             handler: async function (response: any) {
                 try {
-                    await axios.post("https://serenity-gardens.onrender.com/api/orders/verify-payment", { 
+                    await axios.post(`${API_BASE_URL}/orders/verify-payment`, { 
                         razorpay_order_id: response.razorpay_order_id,
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_signature: response.razorpay_signature,
@@ -133,4 +134,4 @@ export default function PaymentPage() {
       </Button>
     </div>
   );
-}
+}

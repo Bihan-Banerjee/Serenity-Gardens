@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom"; 
 import { logout } from "@/lib/auth"; 
+import { API_BASE_URL } from "@/lib/api";
 
 type OrderItem = {
   _id?: string; 
@@ -39,7 +40,7 @@ const OrderManager = () => {
      }
 
     try {
-      const res = await axios.get("https://serenity-gardens.onrender.com/api/orders", {
+      const res = await axios.get(`${API_BASE_URL}/orders`, {
           headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(res.data);
@@ -61,7 +62,7 @@ const OrderManager = () => {
     if (!token) { toast.error("Authentication required."); navigate("/login"); return; }
 
     try {
-      await axios.patch(`https://serenity-gardens.onrender.com/api/orders/${id}`, { paid: true }, {
+      await axios.patch(`${API_BASE_URL}/orders/${id}`, { paid: true }, {
          headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Order marked as paid!");
@@ -83,7 +84,7 @@ const OrderManager = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`https://serenity-gardens.onrender.com/api/orders/${id}`, {
+      await axios.delete(`${API_BASE_URL}/orders/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Order deleted successfully");

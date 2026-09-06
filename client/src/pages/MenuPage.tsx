@@ -7,6 +7,7 @@ import { logout } from "@/lib/auth";
 import { toast } from "react-hot-toast";
 import useIsMobile from "@/hooks/useIsMobile";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "@/lib/api";
 
 interface Product {
   _id: string;
@@ -34,7 +35,7 @@ export default function MenuPage() {
     }
 
     try {
-      const res = await axios.get("https://serenity-gardens.onrender.com/api/items", {
+      const res = await axios.get(`${API_BASE_URL}/items`, {
         headers: { Authorization: `Bearer ${token}` } 
       });
       setProducts(res.data.filter((item: Product) => item.finalized));
@@ -58,7 +59,7 @@ export default function MenuPage() {
     if (!token) return;
 
     try {
-      const res = await axios.get("https://serenity-gardens.onrender.com/api/orders/my-latest", {
+      const res = await axios.get(`${API_BASE_URL}/orders/my-latest`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.data) setHasPreviousOrder(true);
@@ -72,7 +73,7 @@ export default function MenuPage() {
     if (!token) return;
 
     try {
-      const res = await axios.get("https://serenity-gardens.onrender.com/api/orders/my-latest", {
+      const res = await axios.get(`${API_BASE_URL}/orders/my-latest`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -193,4 +194,4 @@ export default function MenuPage() {
       </div>
     </div>
   );
-}
+}
