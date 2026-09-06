@@ -1,35 +1,32 @@
 import jwt from 'jsonwebtoken';
 
-const protect = async (req, res, next) => {
-  let token;
+const protect = (req, res, next) => {
+  const header = req.headers.authorization;
 
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    try {
-      token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded; 
-
-      if (!req.user) {
-         return res.status(401).json({ message: 'User not found' });
-      }
-
-      next();
-    } catch (error) {
-      console.error(error);
-      return res.status(401).json({ message: 'Not authorized, token failed' });
-    }
+  if (!header || !header.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Not authorized, no token' });
   }
+
+  const token = header.split(' ')[1];
 
   if (!token) {
     return res.status(401).json({ message: 'Not authorized, no token' });
   }
+
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (error) {
+    return res.status(401).json({ message: 'Not authorized, token failed' });
+  }
+
+  next();
 };
 
 const adminProtect = (req, res, next) => {
     if (req.user && req.user.isAdmin) {
-        next(); 
+        next();
     } else {
-        res.status(403).json({ message: 'Not authorized as an admin' }); 
+        res.status(403).json({ message: 'Not authorized as an admin' });
     }
 };
 
