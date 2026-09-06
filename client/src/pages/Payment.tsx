@@ -13,7 +13,18 @@ declare global {
 export default function PaymentPage() {
   const navigate = useNavigate(); 
   const { cart, clearCart } = useCartStore(); 
-  const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0); 
+  const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const orderItems = () =>
+    cart.map((item) => ({ id: item.id, quantity: item.quantity }));
+
+  const serverMessage = (err: unknown): string | null => {
+    if (axios.isAxiosError(err)) {
+      const message = err.response?.data?.message;
+      if (typeof message === "string") return message;
+    }
+    return null;
+  };
 
   const handleCOD = async () => { 
     const token = localStorage.getItem("token"); 
@@ -24,8 +35,8 @@ export default function PaymentPage() {
     }
     try {
         await axios.post( 
-            `${API_BASE_URL}/orders`, 
-            { items: cart, paid: false }, 
+            `${API_BASE_URL}/orders`,
+            { items: orderItems() },
             {
               headers: { Authorization: `Bearer ${token}` }, 
             }
@@ -34,7 +45,7 @@ export default function PaymentPage() {
       toast.success("Order placed as Cash on Delivery!"); 
       navigate("/menu"); 
     } catch (err) {
-      toast.error("Failed to place COD order. Please try again."); 
+      toast.error(serverMessage(err) ?? "Failed to place COD order. Please try again.");
     }
   };
 
@@ -47,10 +58,9 @@ export default function PaymentPage() {
     }
 
     try {
-        const orderAmountInPaisa = total * 100; 
         const { data: razorpayOrder } = await axios.post(
-            `${API_BASE_URL}/orders/create-razorpay-order`, 
-            { amount: orderAmountInPaisa },
+            `${API_BASE_URL}/orders/create-razorpay-order`,
+            { items: orderItems() },
             { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -67,11 +77,10 @@ export default function PaymentPage() {
             order_id: razorpayOrder.id, 
             handler: async function (response: any) {
                 try {
-                    await axios.post(`${API_BASE_URL}/orders/verify-payment`, { 
+                    await axios.post(`${API_BASE_URL}/orders/verify-payment`, {
                         razorpay_order_id: response.razorpay_order_id,
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_signature: response.razorpay_signature,
-                        items: cart, 
                     }, {
                         headers: { Authorization: `Bearer ${token}` },
                     });
@@ -103,7 +112,9 @@ export default function PaymentPage() {
 
     } catch (err: any) {
         console.error("Razorpay initiation failed:", err);
-        toast.error(err.message || "Could not initiate payment. Please try again.");
+        toast.error(
+            serverMessage(err) ?? "Could not initiate payment. Please try again."
+        );
     }
   };
 
