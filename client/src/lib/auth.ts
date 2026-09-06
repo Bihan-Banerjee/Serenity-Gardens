@@ -14,6 +14,7 @@ export const getTokenEmail = (): string | null => {
 
 export const logout = () => {
   localStorage.removeItem("token");
+  sessionStorage.removeItem("serenity-cart");
   if (window.location.pathname !== "/login") {
     window.location.replace("/login");
   }

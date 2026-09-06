@@ -24,7 +24,7 @@ type Order = {
   paid: boolean;
   userId: UserInfo | null; 
   items: OrderItem[];
-  totalAmount: number; 
+  totalAmount?: number;
   createdAt: string; 
 };
 
@@ -122,7 +122,7 @@ const OrderManager = () => {
             Status: {order.paid ? "✅ Paid" : "❌ Unpaid"}
             </p>
            <p className="text-sm text-gray-700 dark:text-gray-200">
-             Total: ₹{order.totalAmount.toFixed(2)} {/* Added formatting */}
+             Total: ₹{order.totalAmount?.toFixed(2) ?? 'N/A'} {/* Added formatting */}
            </p>
           <ul className="list-disc ml-6 mt-2 space-y-1">
             {order.items.map((item, idx) => (

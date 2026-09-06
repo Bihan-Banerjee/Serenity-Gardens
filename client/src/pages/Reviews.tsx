@@ -1,13 +1,36 @@
 import { Marquee } from "@/components/magicui/marquee"; 
 import React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import useIsMobile from "@/hooks/useIsMobile";
 import { API_BASE_URL } from "@/lib/api";
+type SubmittedReview = {
+  _id: string;
+  name: string;
+  review: string;
+  createdAt?: string;
+};
+
 const Reviews = () => {
   const isMobile = useIsMobile();
   const [form, setForm] = useState({ name: "", review: "" });
+  const [submitted, setSubmitted] = useState<SubmittedReview[]>([]);
+
+  const loadReviews = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/reviews`);
+      if (!res.ok) return;
+      const data = await res.json();
+      if (Array.isArray(data)) setSubmitted(data);
+    } catch {
+      // the curated testimonials above are still shown if this fails
+    }
+  };
+
+  useEffect(() => {
+    loadReviews();
+  }, []);
 
   const handleFeedbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,6 +57,7 @@ const Reviews = () => {
     
       toast.success("Thank you for your feedback!");
       setForm({ name: "", review: "" });
+      loadReviews();
     } catch (err: any) {
       toast.error(err.message || "Error submitting feedback");
     }
@@ -247,6 +271,36 @@ const Reviews = () => {
             Submit
           </button>
         </form>
+
+        {submitted.length > 0 && (
+          <div className="mt-12">
+            <h3 className="text-2xl font-bold text-white text-center mb-6">
+              Recent Visitor Reviews
+            </h3>
+            <div className="space-y-4">
+              {submitted.map((entry) => (
+                <div
+                  key={entry._id}
+                  className="bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg"
+                >
+                  <div className="flex items-baseline justify-between gap-3">
+                    <h4 className="font-semibold text-gray-800 dark:text-gray-200">
+                      {entry.name}
+                    </h4>
+                    {entry.createdAt && (
+                      <span className="text-xs text-gray-400 shrink-0">
+                        {new Date(entry.createdAt).toLocaleDateString()}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mt-2 whitespace-pre-line">
+                    {entry.review}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );
