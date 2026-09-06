@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Loader from "@/components/loaders/RainbowLoader";
 import { useLoader } from "@/hooks/useLoader";
+import { API_BASE_URL } from "@/lib/api";
 const Register = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -19,7 +20,7 @@ const Register = () => {
     e.preventDefault();
     setError("");
     await runWithLoader(async () => {
-      const res = await fetch("https://serenity-gardens.onrender.com/api/auth/register", {
+      const res = await fetch(`${API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

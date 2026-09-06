@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { logout } from "@/lib/auth"; 
+import { API_BASE_URL } from "@/lib/api";
 
 type Item = {
   _id: string;
@@ -46,7 +47,7 @@ const ItemManager = () => {
     }
 
     try {
-      const res = await axios.get("https://serenity-gardens.onrender.com/api/items/all", {
+      const res = await axios.get(`${API_BASE_URL}/items/all`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setItems(res.data);
@@ -79,7 +80,7 @@ const ItemManager = () => {
     if (form.image) formData.append("image", form.image);
 
     try {
-      await axios.post("https://serenity-gardens.onrender.com/api/items", formData, {
+      await axios.post(`${API_BASE_URL}/items`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}` 
@@ -105,7 +106,7 @@ const ItemManager = () => {
       return; 
     }
     try {
-      await axios.delete(`https://serenity-gardens.onrender.com/api/items/${id}`, {
+      await axios.delete(`${API_BASE_URL}/items/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Item deleted!");
@@ -127,7 +128,7 @@ const ItemManager = () => {
       return; 
     }
     try {
-      await axios.patch(`https://serenity-gardens.onrender.com/api/items/finalize/${id}`, {}, { 
+      await axios.patch(`${API_BASE_URL}/items/finalize/${id}`, {}, { 
          headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Item finalized!");
@@ -150,7 +151,7 @@ const ItemManager = () => {
     }
 
     try {
-      await axios.patch(`https://serenity-gardens.onrender.com/api/items/${id}`, { stock: newStock }, {
+      await axios.patch(`${API_BASE_URL}/items/${id}`, { stock: newStock }, {
          headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Stock updated!");

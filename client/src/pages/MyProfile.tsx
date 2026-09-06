@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { logout } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+import { API_BASE_URL } from "@/lib/api";
 interface Order {
   _id: string;
   items: { name: string; quantity: number }[];
@@ -27,7 +28,7 @@ export default function MyProfile() {
     }
 
     try {
-      const res = await fetch("https://serenity-gardens.onrender.com/api/orders/my", {
+      const res = await fetch(`${API_BASE_URL}/orders/my`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -4,6 +4,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import useIsMobile from "@/hooks/useIsMobile";
+import { API_BASE_URL } from "@/lib/api";
 const Reviews = () => {
   const isMobile = useIsMobile();
   const [form, setForm] = useState({ name: "", review: "" });
@@ -18,7 +19,7 @@ const Reviews = () => {
     }
   
     try {
-      const res = await fetch("https://serenity-gardens.onrender.com/api/reviews/submit", {
+      const res = await fetch(`${API_BASE_URL}/reviews/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
