@@ -1,308 +1,362 @@
-import { Marquee } from "@/components/magicui/marquee"; 
-import React from "react";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { AuroraText } from "@/components/magicui/aurora-text";
-import useIsMobile from "@/hooks/useIsMobile";
-import { API_BASE_URL } from "@/lib/api";
-type SubmittedReview = {
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Star, Send } from 'lucide-react';
+import { Layout } from '@/components/layout';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Marquee } from '@/components/magicui/marquee';
+import api from '@/lib/axiosConfig';
+import toast from 'react-hot-toast';
+
+interface Review {
   _id: string;
   name: string;
   review: string;
-  createdAt?: string;
-};
+  rating: number;
+  createdAt: string;
+}
+
+const hardcodedTestimonials: Array<{ name: string; review: string; rating: number }> = [
+  {
+    name: "Suvankar Chakraborty",
+    review: "We visited this Serenity gardens for our get together with old friends. The ambience is too good. The hospitality by the caretaker was amazing and food served was tasty and hygienic.",
+    rating: 5,
+  },
+  {
+    name: "Soma Gupta",
+    review: "Excellent farm house with lot of places for children to play, colorful snaps and adda. Food and hospitality served needs special mention... really too tasty.",
+    rating: 5,
+  },
+  {
+    name: "Parna Banerjee",
+    review: "My recent visit at Serenity Gardens was delightful. Nestled in serene green environment, perfect escape from daily life. Blend of modern amenities with tranquil nature.",
+    rating: 5,
+  },
+  {
+    name: "Kankani Mukherjee",
+    review: "Mesmerising atmosphere, eye soothing greenery with fruits, vegetables and flower plants. Ideal place for get together with all amenities. Must visit!",
+    rating: 5,
+  },
+  {
+    name: "Sutreyi",
+    review: "It is B-E-A-U-T-I-F-U-L...💚",
+    rating: 5,
+  },
+  {
+    name: "Madhumita Chatterjee",
+    review: "Serenity Garden - huge tranquil plot beautified with flowers, fruits, vegetables and decorative planters. Worth spending a whole day for relaxation.",
+    rating: 5,
+  },
+  {
+    name: "SRABANI CHAKRABORTY",
+    review: "The scenic beauty of this place is amazing, every part full of greenery.",
+    rating: 5,
+  },
+  {
+    name: "Paramita Roy",
+    review: "Aesthetically decorated, neat and well maintained Farm House. Food was amazing. Worth a visit.",
+    rating: 5,
+  },
+  { 
+    name: "Moupriya Das", 
+    review: "Excellent place to spend quality time with friends and family... Great space for picnic... Organic veggies to fishing ...clean ac room... Amazing food... We had a great time....", 
+    rating: 5 
+  },
+  { 
+    name: "Rana Paul", 
+    review: "Nice place", 
+    rating: 5 
+  },
+  { 
+    name: "Amarnath Mahalanobish", 
+    review: "Nice place, clean rooms, homely but tasty food. Good place for family/friends hangout.", 
+    rating: 4 
+  },
+  { 
+    name: "Kamal Chattopadhyay", 
+    review: "We Active Seniors of our closely held club of Greenwood had a wonderful time y'tday out at Deepa-Shubhankar's calm cool sunny Serenity Gardens. Amidst greens & colorful environ we enjoyed thoroughly, with snacks, wholesome lunch & endless adda that put the 'spirits'high! A few snaps of the day..", 
+    rating: 5 
+  },
+  { 
+    name: "Arup Chakraborty", 
+    review: "This place is amazing...quite and calm, and overall the hospitality is quite appreciable", 
+    rating: 5 
+  },
+  { 
+    name: "Xpert Dental Clinic", 
+    review: "Very nice garden and feels like close to nature ..keep it subhankar sir ....very nice and beautiful farm house", 
+    rating: 5 
+  },
+  { 
+    name: "Soma Dasgupta", 
+    review: "Very nice place & very large area. I would highly recommend it for a family picnic . Enjoyed a lot with my buddies.", 
+    rating: 5 
+  },
+  { 
+    name: "Tamali Ghosh", 
+    review: "I wanted to take a moment to express my heartfelt gratitude for hosting us at your beautiful farmhouse. The entire experience was absolutely wonderful and truly unforgettable! From the moment we arrived, we were captivated by the picturesque surroundings. The serene landscape, lush greenery, and charming farmhouse created the perfect setting for a relaxing day out. It felt like a hidden gem tucked away from the hustle and bustle of everyday life. The food was simply delightful! Every dish was prepared with such care and love, and it showed. The flavors were exceptional, and we couldn't stop raving about the delicious spread you provided. It was clear that a lot of thought and effort went into making sure we had the best dining experience possible. Your farmhouse is truly a haven of peace and beauty. Whether it was lounging by the garden, exploring the scenic trails, or simply enjoying each other's company in such a welcoming space, every moment was a joy. It’s the perfect place for a day out with family and friends. Thank you once again for your incredible hospitality. Your farmhouse is a treasure, and I can't wait to share our wonderful experience with others. I highly recommend it to anyone looking for a memorable and relaxing getaway.", 
+    rating: 5 
+  },
+  { 
+    name: "Munmun Basu", 
+    review: "Excellent food,superb hospitality, beauty and peace of nature prevail everywhere in this place", 
+    rating: 5 
+  },
+  { 
+    name: "Dola Ray", 
+    review: "A fantastic experience at Serenity Gardens. Exceptional arrangements and tasty food, surrounded by pristine greens. A walk down the gardens and pond was pure joy. An island of peace and serenity indeed.", 
+    rating: 5 
+  },
+  { 
+    name: "Arun Thakur", 
+    review: "Very good place...", 
+    rating: 5 
+  },
+  { 
+    name: "Soumen Chakraborty", 
+    review: "Honestly, this place is a hidden gem! Perfectly planned and decorated, it's the ultimate chill spot just outside Kolkata 😊. Unmatched hospitality is there strength...", 
+    rating: 5 
+  },
+  { 
+    name: "DR ARINDAM MANDAL", 
+    review: "What a wonderful place surrounded by nature,play ground ,water body and a beautiful bunglow❤️", 
+    rating: 5 
+  },
+];
+
+// ReviewCard component
+const ReviewCard = ({ name, review, rating }: { name: string; review: string; rating: number }) => (
+  <div className="flex flex-col items-center justify-center bg-card/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl min-w-[280px] max-w-sm text-center border border-border/50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+    {/* Rating Stars */}
+    <div className="flex mb-4">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          className={`w-5 h-5 transition-all ${
+            i < rating ? 'text-yellow-400 fill-yellow-400 drop-shadow-lg' : 'text-muted-foreground/70'
+          }`}
+        />
+      ))}
+    </div>
+    
+    {/* Name */}
+    <h3 className="font-serif font-semibold text-xl text-foreground mb-3 tracking-tight">
+      {name}
+    </h3>
+    
+    {/* Review */}
+    <p className="text-muted-foreground leading-relaxed text-sm line-clamp-5">
+      "{review}"
+    </p>
+  </div>
+);
 
 const Reviews = () => {
-  const isMobile = useIsMobile();
-  const [form, setForm] = useState({ name: "", review: "" });
-  const [submitted, setSubmitted] = useState<SubmittedReview[]>([]);
-
-  const loadReviews = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/reviews`);
-      if (!res.ok) return;
-      const data = await res.json();
-      if (Array.isArray(data)) setSubmitted(data);
-    } catch {
-      // the curated testimonials above are still shown if this fails
-    }
-  };
+  const [dbReviews, setDbReviews] = useState<Review[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    review: '',
+    rating: 5,
+  });
 
   useEffect(() => {
-    loadReviews();
+    fetchReviews();
   }, []);
 
-  const handleFeedbackSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("You must be logged in to submit feedback.");
-      return;
-    }
-  
+  const fetchReviews = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/reviews/submit`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(form),
-      });
-    
-      const data = await res.json();
-    
-      if (!res.ok) throw new Error(data.message || "Failed to submit feedback");
-    
-      toast.success("Thank you for your feedback!");
-      setForm({ name: "", review: "" });
-      loadReviews();
-    } catch (err: any) {
-      toast.error(err.message || "Error submitting feedback");
+      const response = await api.get('/reviews/all');
+      setDbReviews(response.data);
+    } catch (error) {
+      console.error('Failed to fetch reviews:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const testimonials = [
-    {
-      name: "Suvankar Chakraborty",
-      review: "We visited this Serenity gardens for our get together with old friends on 22/12/24. The ambience of the garden is too good. The hospitality by the caretaker,Laltu was amazing and food served was tasty and hygienic, thanks to Swarup and his brother Arup. I would highly recommend this place to for family get together.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/bda4vmw4mehswejygvor.png",
-    },
-    {
-      name: "Soma Gupta",
-      review: "It is an excellent farm house with lot of places for the children to play, for taking colourful snaps and lot of adda. The food and the hospitality served there by Laltu & his wife, needs special mention... really they were too tasty👌",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/zlqgjt3lm6b7jalhveah.png",
-    },
-    {
-      name: "Parna Banerjee",
-      review: "My recent visit at Serenity Gardens in Baruipur was nothing short of delightful. Nestled in a serene and green environment, the retreat offered the perfect escape from the bustle of daily life. The blend of modern amenities with a tranquil, nature-filled atmosphere truly set it apart...",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/unypd2i70nlq0imyafmo.png",
-    },
-    {
-      name: "Kankani Mukherjee",
-      review: "Mesmerising atmosphere,eye soothing greenery with various fruits,vegetable and flower plants.A place which keeps away all the stress and rejuvenates everybody.Ideal place for get together with all the amenities. A must visit place to feel the nature very near to the city.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/jxh7deq1ujr89ujs02zq.png",
-    },
-    {
-      name: "Sutreyi",
-      review: "It is B-E-A-U-T-I-F-U-L...💚",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/dfshdxpysbmpulync8s1.png",
-    },
-    {
-      name: "Madhumita Chatterjee",
-      review: "Serenity Garden , what an appropriate and significant name of this huge tranquil plot of land one can only gaze with appreciation. Much effort has been taken by the owners to beautify this area with various flowers, fruits and vegetables, and is also ornamented with lovely painting and decorative planter. Worth spending a whole day for relaxation...",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/vibfhfnc2nvxn4gnmi0m.png",
-    },
-    {
-      name: "SRABANI CHAKRABORTY",
-      review: "The scenic beauty of this place is amezing,every part is full of greenery.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/qnv8b492tbgew4fkq8au.png",
-    },
-    {
-      name: "Paramita Roy",
-      review: "I along with my friends visited Serenity Gardens on last Sunday. It’s an aesthetically decorated, very neat and well maintained Farm House. Food was also very amazing . Worth a visit.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/mrutcikbaf7ldtxktpvy.png",
-    },
-    {
-      name: "soma dasgupta",
-      review: "Very nice place & very large area. I would highly recommend it for a family picnic . Enjoyed a lot with my buddies.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/tilrklmafxa4qllchpqw.png",
-    },
-    {
-      name: "Tamali Ghosh",
-      review: "I wanted to take a moment to express my heartfelt gratitude for hosting us at your beautiful farmhouse. The entire experience was absolutely wonderful and truly unforgettable! From the moment we arrived, we were captivated by the picturesque surroundings. The serene landscape, lush greenery, and charming farmhouse created the perfect setting for a relaxing day out...",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/o9iu64o306czn9as8nxf.png",
-    },
-    {
-      name: "Munmun Basu",
-      review: "Excellent food,superb hospitality, beauty and peace of nature prevail everywhere in this place",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/xutld21di7lvbslmskkb.png",
-    },
-    {
-      name: "Dola Ray",
-      review: "A fantastic experience at Serenity Gardens. Exceptional arrangements and tasty food, surrounded by pristine greens. A walk down the gardens and pond was pure joy. An island of peace and serenity indeed.",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/l06eh1wgorrc4d8rmecj.png",
-    },
-    {
-      name: "dipankar bandyopadhyay",
-      review: "Open up to Mother Nature for tranquility and peace",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/mpmnbt7dnrmyy1ranskx.png",
-    },
-    {
-      name: "Arun Thakur",
-      review: "Very good place...",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/bnaooludw4aofky58zon.png",
-    },
-    {
-      name: "DR ARINDAM MANDAL",
-      review: "What a wonderful place surrounded by nature,play ground ,water body and a beautiful bunglow❤️",
-      img: "https://res.cloudinary.com/drj7t97rd/image/upload/f_auto,q_auto/v1747576918/serenity/reviews/xgepuv0e5fxkh3omfjod.png",
-    },
-  ];
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
-  const splitTestimonials = () => {
-    const chunkSize = Math.ceil(testimonials.length / 3);
-    const chunks = [];
-    for (let i = 0; i < testimonials.length; i += chunkSize) {
-      chunks.push(testimonials.slice(i, i + chunkSize));
+    try {
+      await api.post('/reviews/submit', formData);
+      toast.success('Thank you for your review! 🌟');
+      setFormData({ name: '', review: '', rating: 5 });
+      fetchReviews(); 
+    } catch (error) {
+      toast.error('Failed to submit review');
+    } finally {
+      setIsSubmitting(false);
     }
-    return chunks;
   };
 
-  const [firstRow, secondRow, thirdRow] = splitTestimonials();
+  const chunkSize = Math.ceil(hardcodedTestimonials.length / 3);
+  const firstRow = hardcodedTestimonials.slice(0, chunkSize);
+  const secondRow = hardcodedTestimonials.slice(chunkSize, chunkSize * 2);
+  const thirdRow = hardcodedTestimonials.slice(chunkSize * 2);
 
   return (
-    <div className={`w-full relative z-0 ${isMobile ? "pt-28 pb-12 px-3 min-h-screen overflow-hidden" : "pt-40 px-6 pb-20"}`}>
-      {/* Section 1 - Marquee Testimonials */}
-      
-      <div className="w-full px-1 md:px-8 mt-0 mb-5 flex items-center justify-center">
-        <AuroraText className={`${isMobile ? "text-3xl" : "flex items-center justify-center text-4xl md:text-6xl"} font-bold text-center`}>
-          What People Say
-        </AuroraText>
-      </div>
-      <section className={`w-full max-w-7xl px-2 ${isMobile ? "mx-auto" : ""}`}>
-        <div className={`${isMobile ? "space-y-4" : "space-y-8"}`}>
-          {isMobile ? (
-            
-              <Marquee className={`${isMobile ? "gap-4 overflow-visible" : "gap-6"}`}>
-                {firstRow.map((testimonial, idx) => (
-                  <div
-                    key={`first-${idx}`}
-                    className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
-                  >
-                    <img
-                      src={testimonial.img}
-                      alt={testimonial.name}
-                      className="w-16 h-16 rounded-full object-cover mb-4"
-                    />
-                    <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
-                  </div>
-                ))}
-              </Marquee>
-          ):
-            (
-              <>
-              <Marquee className={`overflow-visible ${isMobile ? "gap-4" : "gap-6"}`}>
-                {firstRow.map((testimonial, idx) => (
-                  <div
-                    key={`first-${idx}`}
-                    className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
-                  >
-                    <img
-                      src={testimonial.img}
-                      alt={testimonial.name}
-                      className="w-16 h-16 rounded-full object-cover mb-4"
-                    />
-                    <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
-                  </div>
-                ))}
-              </Marquee>
-              
-              
-              <Marquee reverse className={`overflow-visible ${isMobile ? "gap-4" : "gap-6"}`}>
-                {secondRow.map((testimonial, idx) => (
-                  <div
-                    key={`second-${idx}`}
-                    className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
-                  >
-                    <img
-                      src={testimonial.img}
-                      alt={testimonial.name}
-                      className="w-16 h-16 rounded-full object-cover mb-4"
-                    />
-                    <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
-                  </div>
-                ))}
-              </Marquee>
-              
-              
-              <Marquee className={`overflow-visible ${isMobile ? "gap-4" : "gap-6"}`}>
-                {thirdRow.map((testimonial, idx) => (
-                  <div
-                    key={`third-${idx}`}
-                    className="flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg min-w-[250px] max-w-xs text-center"
-                  >
-                    <img
-                      src={testimonial.img}
-                      alt={testimonial.name}
-                      className="w-16 h-16 rounded-full object-cover mb-4"
-                    />
-                    <h3 className="font-semibold text-lg text-gray-600 dark:text-gray-300">{testimonial.name}</h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{testimonial.review}</p>
-                  </div>
-                ))}
-              </Marquee>
-              </>
-            )
-          }
+    <Layout>
+      {/* Hero Section */}
+      <section className="py-20 px-4 md:py-12">
+        <div className="container mx-auto text-center max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="text-primary font-medium tracking-wider uppercase text-sm mb-4 inline-block">
+              Reviews
+            </span>
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
+              What Our Visitors Say
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-2">
+              Discover why guests love Serenity Gardens through their heartfelt experiences.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Section 2 - Feedback Form */}
-      <section className={`${isMobile ? "px-2 mt-12" : "mt-20 max-w-xl px-4"} mx-auto pb-16`}>
-        <h2 className="text-3xl font-bold text-white text-center mb-4">Share Your Feedback</h2>
-        <p className="text-white text-center mb-6">
-          We would love to hear about your experience!
-        </p>
-        <form onSubmit={handleFeedbackSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Your Name"
-            className="w-full p-2 border rounded"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            required
-          />
-          <textarea
-            placeholder="Your Review"
-            className="w-full p-2 border rounded h-24"
-            value={form.review}
-            onChange={(e) => setForm({ ...form, review: e.target.value })}
-            required
-          ></textarea>
-          <button
-            type="submit"
-            className={`bg-green-600 hover:bg-green-700 text-white rounded transition ${isMobile ? "px-3 py-2 text-sm" : "w-full px-4 py-2 text-base"}`}
-          >
-            Submit
-          </button>
-        </form>
-
-        {submitted.length > 0 && (
-          <div className="mt-12">
-            <h3 className="text-2xl font-bold text-white text-center mb-6">
-              Recent Visitor Reviews
-            </h3>
-            <div className="space-y-4">
-              {submitted.map((entry) => (
-                <div
-                  key={entry._id}
-                  className="bg-white dark:bg-neutral-900 p-4 rounded-xl shadow-lg"
-                >
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h4 className="font-semibold text-gray-800 dark:text-gray-200">
-                      {entry.name}
-                    </h4>
-                    {entry.createdAt && (
-                      <span className="text-xs text-gray-400 shrink-0">
-                        {new Date(entry.createdAt).toLocaleDateString()}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm mt-2 whitespace-pre-line">
-                    {entry.review}
-                  </p>
-                </div>
+      {/* 3-Row Marquee Section - MINIMAL TOP PADDING */}
+      <section className="py-4 md:py-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="space-y-8 md:space-y-12">
+            {/* Row 1 - Left to Right */}
+            <Marquee 
+              className="overflow-visible [--gap:2rem] [--duration:40s] gap-8 md:gap-12"
+              pauseOnHover
+            >
+              {firstRow.map((testimonial, idx) => (
+                <ReviewCard
+                  key={`row1-${idx}`}
+                  name={testimonial.name}
+                  review={testimonial.review}
+                  rating={testimonial.rating}
+                />
               ))}
-            </div>
+            </Marquee>
+
+            {/* Row 2 - Right to Left (Reverse) */}
+            <Marquee 
+              reverse
+              className="overflow-visible [--gap:2rem] [--duration:45s] gap-8 md:gap-12"
+              pauseOnHover
+            >
+              {secondRow.map((testimonial, idx) => (
+                <ReviewCard
+                  key={`row2-${idx}`}
+                  name={testimonial.name}
+                  review={testimonial.review}
+                  rating={testimonial.rating}
+                />
+              ))}
+            </Marquee>
+
+            {/* Row 3 - Left to Right */}
+            <Marquee 
+              className="overflow-visible [--gap:2rem] [--duration:35s] gap-8 md:gap-12"
+              pauseOnHover
+            >
+              {thirdRow.map((testimonial, idx) => (
+                <ReviewCard
+                  key={`row3-${idx}`}
+                  name={testimonial.name}
+                  review={testimonial.review}
+                  rating={testimonial.rating}
+                />
+              ))}
+            </Marquee>
           </div>
-        )}
+        </div>
       </section>
-    </div>
+
+      {/* Recent DB Reviews Count */}
+      {dbReviews.length > 0 && (
+        <div className="text-center py-8">
+          <p className="text-muted-foreground">
+            + {dbReviews.length} more recent reviews from our guests
+          </p>
+        </div>
+      )}
+
+      {/* Review Form Section - OLDER VERSION STYLE */}
+      <section className="py-20 bg-card">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-lg mx-auto"
+          >
+            <div className="text-center mb-8">
+              <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground">
+                Share Your Experience
+              </h2>
+              <p className="text-muted-foreground mt-2">
+                We'd love to hear about your visit
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="bg-background border border-border rounded-2xl p-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Your Name</Label>
+                <Input
+                  id="name"
+                  placeholder="John Doe"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Rating</Label>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, rating: star })}
+                      className="p-1"
+                    >
+                      <Star
+                        className={`w-6 h-6 transition-colors ${
+                          star <= formData.rating
+                            ? 'text-yellow-500 fill-yellow-500'
+                            : 'text-muted'
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="review">Your Review</Label>
+                <Textarea
+                  id="review"
+                  placeholder="Tell us about your experience..."
+                  rows={4}
+                  value={formData.review}
+                  onChange={(e) => setFormData({ ...formData, review: e.target.value })}
+                  required
+                />
+              </div>
+
+              <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
+                <Send className="w-4 h-4" />
+                {isSubmitting ? 'Submitting...' : 'Submit Review'}
+              </Button>
+            </form>
+          </motion.div>
+        </div>
+      </section>
+    </Layout>
   );
 };
 

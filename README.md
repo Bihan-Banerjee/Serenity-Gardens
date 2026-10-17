@@ -1,83 +1,41 @@
 # Serenity Gardens
 
-Serenity Gardens is a full-stack MERN web application designed to showcase a tranquil farmhouse retreat, offering users an interactive experience to explore, review, and purchase products such as fresh produce and fish directly from the source.
+A full-stack web application for Serenity Gardens farmhouse - a nature retreat venue in Baruipur offering bookings, catering services, and event hosting.
 
----
+## About
 
-## 🌿 Overview
+This project started as a way to bring our family-owned garden online. What began as a simple landing page evolved into a complete booking and management system. The site showcases our transformation from barren land in 2021 to a thriving garden space today.
 
-The project combines dynamic frontend components, secure authentication, admin functionality, and database-driven item management to deliver an engaging and functional user experience. Users can browse media, submit feedback, register and log in, view their past orders, and place new orders. Admins can manage catalog items and monitor orders through a dedicated dashboard.
+## Tech Stack
 
----
+**Frontend**
+- React 18 with TypeScript
+- Vite for build tooling
+- Tailwind CSS + shadcn/ui components
+- Framer Motion for animations
+- React Router for navigation
+- Axios for API calls
+- Zustand for state management
 
-## 🔧 Tech Stack
+**Backend**
+- Node.js + Express
+- MongoDB with Mongoose
+- JWT authentication
+- Bcrypt for password hashing
+- CORS enabled for cross-origin requests
 
-### Frontend
-- **React** with **Vite**
-- **TypeScript** and **JavaScript**
-- **TailwindCSS** for styling
-- **react-router-dom** for routing
-- **react-hot-toast** for notifications
-- **Cloudinary** for image storage
-- **Sharp** for image optimization
-- **styled-components** for styled animations and loaders
+## Features
 
-### Backend
-- **Node.js** with **Express**
-- **MongoDB** with **Mongoose**
-- **JWT (JSON Web Tokens)** for authentication
-- **Bcrypt** for password hashing
-- **Razorpay** for payment integration
-- **Multer** for file uploads
-- **Sharp** for image compression
-- **Cloudinary SDK** for uploads
+- Public gallery and about pages
+- Customer authentication and profiles
+- Menu browsing and order placement
+- Review submission system with marquee display
+- Admin dashboard for order and item management
+- Custom animated leaf cursor
+- Responsive design for all devices
+- Before/after image comparison slider
 
----
 
-## 🔑 Features
+## License
 
-### General User Features
-- **Landing Page with Loader Animation**
-- **About Us Page** — with Focus Cards and Compare sliders
-- **Explore Page** — dynamically displays fauna and flora
-- **Gallery Page** — curated images and videos from Cloudinary
-- **Reviews Page** — marquee-style testimonials and feedback form (stored in DB)
-- **Shop/Login/Register** — Authentication system with JWT
-- **Menu Page**:
-  - View all available catalog items
-  - Add to Cart and modify quantity
-  - Repeat Last Order (if logged in)
-  - Checkout page with multiple payment methods
-- **My Profile Page**:
-  - View past orders
-  - Track payment status
-
-### Admin Features
-- **Admin Login Check** with persisted `isAdmin` state
-- **Admin Panel**:
-  - Toggle between Item Manager and Order Manager
-  - Item Manager:
-    - Add/Edit/Delete/Finalize items
-    - Upload images with compression and Cloudinary integration
-  - Order Manager:
-    - View all orders
-    - Mark orders as Paid
-    - Delete unwanted orders
-
----
-
-## 🔐 Authentication & Authorization
-
-- JWT tokens stored in localStorage
-- Admin panel protected with route-based checks and dynamic decoding
-- Auth state managed globally using Context API for reliability
-
----
-
-## 📝 Future Enhancements
-
-- Razorpay payment gateway integration
-- Admin analytics dashboard
-- OTP-based login or Google Auth
-- Enhanced search and filtering in menu
-- Mobile-first design improvements
+MIT

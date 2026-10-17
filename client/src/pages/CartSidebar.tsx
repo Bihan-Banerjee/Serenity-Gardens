@@ -11,7 +11,6 @@ import { useCartStore } from "./useCartStore";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
-import toast from "react-hot-toast";
 
 export function CartSidebar() {
   const { cart, removeItem, updateQuantity } = useCartStore();
@@ -53,14 +52,10 @@ export function CartSidebar() {
   }, [setOpen]);
   
   const handleProceedToBuy = () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("You must be logged in to proceed!");
-      navigate("/login");
-      return;
-    }
-    navigate("/checkout")
-  };
+  setOpen(false);
+  navigate("/checkout");
+};
+
 
   return (
     <>
@@ -76,13 +71,7 @@ export function CartSidebar() {
                   <p>₹{item.price} x {item.quantity}</p>
                   <div className="flex gap-2 mt-1">
                     <Button size="sm" onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1}>-</Button>
-                    <Button
-                      size="sm"
-                      disabled={item.stock !== undefined && item.quantity >= item.stock}
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    >
-                      +
-                    </Button>
+                    <Button size="sm" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</Button>
                     <Button size="sm" variant="destructive" onClick={() => removeItem(item.id)}>Remove</Button>
                   </div>
                 </div>

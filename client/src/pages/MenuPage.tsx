@@ -7,7 +7,7 @@ import { logout } from "@/lib/auth";
 import { toast } from "react-hot-toast";
 import useIsMobile from "@/hooks/useIsMobile";
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "@/lib/api";
+import api from "@/lib/axiosConfig";
 
 interface Product {
   _id: string;
@@ -23,7 +23,6 @@ export default function MenuPage() {
   const { addItem } = useCartStore();
   const [products, setProducts] = useState<Product[]>([]);
   const [hasPreviousOrder, setHasPreviousOrder] = useState(false);
-  const [quantities, setQuantities] = useState<Record<string, number>>({});
   const isMobile = useIsMobile();
   const navigate = useNavigate(); 
 
@@ -36,9 +35,7 @@ export default function MenuPage() {
     }
 
     try {
-      const res = await axios.get(`${API_BASE_URL}/items`, {
-        headers: { Authorization: `Bearer ${token}` } 
-      });
+      const res = await api.get("/items"); 
       setProducts(res.data.filter((item: Product) => item.finalized));
     } catch (err) {
       console.error("Failed to fetch items:", err);
@@ -60,9 +57,7 @@ export default function MenuPage() {
     if (!token) return;
 
     try {
-      const res = await axios.get(`${API_BASE_URL}/orders/my-latest`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await api.get("/orders/my-latest");
       if (res.data) setHasPreviousOrder(true);
     } catch (err) {
       setHasPreviousOrder(false); 
@@ -74,10 +69,7 @@ export default function MenuPage() {
     if (!token) return;
 
     try {
-      const res = await axios.get(`${API_BASE_URL}/orders/my-latest`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
+      const res = await api.get("/orders/my-latest");
       const previousItems = res.data.items;
       type OrderItem = {
         id: string;
@@ -111,9 +103,12 @@ export default function MenuPage() {
   
 
   const handleAddToCart = (product: Product) => {
-    const quantity = quantities[product._id] ?? 1;
+    const quantity = parseInt(
+      prompt(`Enter quantity (Available: ${product.stock})`) || "0",
+      10
+    );
 
-    if (!Number.isInteger(quantity) || quantity <= 0) {
+    if (isNaN(quantity) || quantity <= 0) {
       toast.error("Please enter a valid quantity!");
       return;
     }
@@ -183,37 +178,13 @@ export default function MenuPage() {
                 ₹{product.price}
               </p>
               <p className="text-sm text-gray-400 mb-2">Stock: {product.stock}</p>
-              <div className="flex items-center gap-2">
-                <label className="sr-only" htmlFor={`qty-${product._id}`}>
-                  Quantity for {product.name}
-                </label>
-                <input
-                  id={`qty-${product._id}`}
-                  type="number"
-                  min={1}
-                  max={product.stock}
-                  value={quantities[product._id] ?? 1}
-                  disabled={product.stock < 1}
-                  onChange={(e) =>
-                    setQuantities((prev) => ({
-                      ...prev,
-                      [product._id]: Math.max(1, Number(e.target.value) || 1),
-                    }))
-                  }
-                  className="w-16 rounded border px-2 py-1 text-black dark:text-white dark:bg-neutral-800"
-                />
-                <Button
-                  className="flex-1"
-                  disabled={product.stock < 1}
-                  onClick={() => handleAddToCart(product)}
-                >
-                  {product.stock < 1 ? "Out of stock" : "Add to Cart"}
-                </Button>
-              </div>
+              <Button className="w-full" onClick={() => handleAddToCart(product)}>
+                Add to Cart
+              </Button>
             </div>
           </div>
         ))}
       </div>
     </div>
   );
-}
+}

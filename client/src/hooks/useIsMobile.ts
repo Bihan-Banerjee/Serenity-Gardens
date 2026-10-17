@@ -1,16 +1,37 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from 'react';
 
-const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+export const useIsMobile = (breakpoint: number = 768) => {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < breakpoint : false
+  );
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < breakpoint);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [breakpoint]);
 
   return isMobile;
 };
 
-export default useIsMobile;
+export const useIsTablet = () => {
+  const [isTablet, setIsTablet] = useState(
+    typeof window !== 'undefined' 
+      ? window.innerWidth >= 768 && window.innerWidth < 1024 
+      : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return isTablet;
+};

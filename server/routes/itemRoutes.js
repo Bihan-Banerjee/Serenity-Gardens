@@ -28,7 +28,6 @@ const uploadImage = (req, res, next) => {
   });
 };
 
-
 router.post("/", protect, adminProtect, uploadImage, async (req, res) => {
   try {
     const { name, price, stock, description } = req.body;
@@ -62,7 +61,7 @@ router.post("/", protect, adminProtect, uploadImage, async (req, res) => {
       };
 
       const result = await uploadFromBuffer(buffer);
-      imageUrl = result.secure_url || "https://res.cloudinary.com/drj7t97rd/image/upload/v1748499034/placeholder-images-image_large_pnwitd.webp";;
+      imageUrl = result.secure_url || "https://res.cloudinary.com/drj7t97rd/image/upload/v1748499034/placeholder-images-image_large_pnwitd.webp";
     }
 
     const item = new Item({
@@ -84,7 +83,11 @@ router.post("/", protect, adminProtect, uploadImage, async (req, res) => {
 
 router.patch('/finalize/:id', protect, adminProtect, async (req, res) => {
   try {
-    const item = await Item.findByIdAndUpdate(req.params.id, { finalized: true }, { new: true });
+    const item = await Item.findByIdAndUpdate(
+      req.params.id,
+      { finalized: true },
+      { new: true }
+    );
     if (!item) return res.status(404).json({ message: "Item not found" });
     res.json(item);
   } catch (err) {
@@ -93,48 +96,65 @@ router.patch('/finalize/:id', protect, adminProtect, async (req, res) => {
   }
 });
 
-
 router.get("/all", protect, adminProtect, async (req, res) => {
   try {
     const items = await Item.find();
     res.json(items);
   } catch (err) {
+    console.error("Error fetching items:", err);
     res.status(500).json({ message: "Error fetching items" });
   }
 });
 
-
-router.get("/", protect, async (req, res) => { 
+router.get("/", async (req, res) => {
   try {
-     if (!req.user || !req.user.id) {
-       console.error("User not authenticated in GET /api/items");
-       return res.status(401).json({ message: "Not authorized, user data missing" });
-     }
     const items = await Item.find({ finalized: true });
     res.json(items);
   } catch (err) {
-     console.error("Error fetching finalized items:", err);
+    console.error("Error fetching finalized items:", err);
     res.status(500).json({ message: "Error fetching finalized items" });
   }
 });
 
-
 router.patch("/:id", protect, adminProtect, async (req, res) => {
   try {
-    const { stock } = req.body;
+    const { stock, price } = req.body;
+    const updateData = {};
+
+    if (stock !== undefined) {
+      const parsedStock = Number(stock);
+      if (!Number.isInteger(parsedStock) || parsedStock < 0) {
+        return res.status(400).json({ message: "Stock must be a whole number" });
+      }
+      updateData.stock = parsedStock;
+    }
+
+    if (price !== undefined) {
+      const parsedPrice = Number(price);
+      if (!Number.isFinite(parsedPrice) || parsedPrice < 0) {
+        return res.status(400).json({ message: "Price must be a positive number" });
+      }
+      updateData.price = parsedPrice;
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ message: "Nothing to update" });
+    }
+
     const updatedItem = await Item.findByIdAndUpdate(
       req.params.id,
-      { stock },
-      { new: true }
+      updateData,
+      { new: true, runValidators: true }
     );
+
     if (!updatedItem) return res.status(404).json({ message: "Item not found" });
+
     res.json(updatedItem);
   } catch (err) {
-    console.error("Failed to update stock:", err);
-    res.status(400).json({ message: "Failed to update stock" });
+    console.error("Failed to update item:", err);
+    res.status(400).json({ message: "Failed to update item" });
   }
 });
-
 
 router.delete("/:id", protect, adminProtect, async (req, res) => {
   try {

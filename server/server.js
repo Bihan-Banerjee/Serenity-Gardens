@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.js";
 import itemRoutes from "./routes/itemRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 import compression from "compression";
 import dotenv from "dotenv";
 dotenv.config();
@@ -23,7 +24,14 @@ app.use(compression());
 
 const allowedOrigins = [
     'https://serenity-gardens-pi.vercel.app',
+    'https://serenity-gardens-7wu4k27kn-bihan-banerjees-projects.vercel.app',
     'http://localhost:5173',
+    'https://serenity-gardens.onrender.com',
+    'http://localhost:8080',
+    'https://serenitygardens.online',
+    'https://www.serenitygardens.online',
+    'http://serenitygardens.online',
+    'http://www.serenitygardens.online'
 ];
 
 const corsOptions = {
@@ -51,14 +59,19 @@ const apiLimiter = rateLimit({
   message: { message: "Too many requests, please try again later" },
 });
 
-const authLimiter = rateLimit({
+const authLimiterOptions = {
   windowMs: 15 * 60 * 1000,
   max: 20,
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: true,
   message: { message: "Too many attempts, please try again later" },
-});
+};
+
+// Separate instances so that hammering customer login cannot exhaust the
+// bucket for admin login and lock the owner out.
+const authLimiter = rateLimit(authLimiterOptions);
+const adminAuthLimiter = rateLimit(authLimiterOptions);
 
 const paymentLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -76,7 +89,13 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api", apiLimiter);
-app.use("/api/auth", authLimiter);
+
+// Only the credential-checking endpoints get the strict bucket. /api/auth/me is
+// called on every page load to restore the session, so it stays on apiLimiter.
+app.use("/api/auth/login", authLimiter);
+app.use("/api/auth/register", authLimiter);
+app.use("/api/auth/admin/login", authLimiter);
+app.use("/api/admin/login", adminAuthLimiter);
 app.use("/api/orders/create-razorpay-order", paymentLimiter);
 app.use("/api/orders/verify-payment", paymentLimiter);
 
@@ -84,6 +103,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
