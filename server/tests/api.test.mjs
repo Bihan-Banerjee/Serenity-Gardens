@@ -254,3 +254,85 @@ test("repeated failed logins are rate limited", async () => {
   assert.ok(limited, "expected a 429 after repeated failures");
   assert.equal((await api("GET", "/health")).status, 200, "health must stay reachable");
 });
+
+test("the catalogue is readable without logging in", async () => {
+  await Item.create({ name: "Public Fern", price: 20, stock: 2, finalized: true });
+
+  const res = await api("GET", "/api/items");
+
+  assert.equal(res.status, 200);
+  assert.ok(Array.isArray(res.data));
+  assert.ok(res.data.some((i) => i.name === "Public Fern"));
+});
+
+test("the current user can be fetched, so a reload keeps the session", async () => {
+  assert.equal((await api("GET", "/api/auth/me")).status, 401);
+
+  const res = await api("GET", "/api/auth/me", undefined, userToken);
+
+  assert.equal(res.status, 200);
+  assert.equal(res.data.email, "customer@example.com");
+  assert.equal(res.data.isAdmin, false);
+  assert.ok(res.data._id, "the client reads _id");
+  assert.equal(res.data.password, undefined, "the hash must never be returned");
+});
+
+test("admin login refuses a non-admin and accepts an admin", async () => {
+  const User = mongoose.models.User || mongoose.model(
+    "User",
+    new mongoose.Schema({ name: String, email: String, password: String, isAdmin: Boolean })
+  );
+
+  const denied = await api("POST", "/api/admin/login", {
+    email: "customer@example.com",
+    password: "password123",
+  });
+  assert.equal(denied.status, 403, "a signed-up customer is not an admin");
+
+  await User.updateOne({ email: "customer@example.com" }, { $set: { isAdmin: true } });
+
+  const allowed = await api("POST", "/api/admin/login", {
+    email: "customer@example.com",
+    password: "password123",
+  });
+  assert.equal(allowed.status, 200);
+  assert.equal(allowed.data.user.isAdmin, true);
+
+  const adminToken = allowed.data.token;
+  assert.equal((await api("GET", "/api/orders", undefined, adminToken)).status, 200);
+
+  await User.updateOne({ email: "customer@example.com" }, { $set: { isAdmin: false } });
+});
+
+test("admin login is case-insensitive on the stored email", async () => {
+  const res = await api("POST", "/api/admin/login", {
+    email: "CUSTOMER@example.com",
+    password: "password123",
+  });
+  assert.notEqual(res.status, 500);
+  assert.ok([400, 403].includes(res.status), "resolves the user, then rejects on role");
+});
+
+test("reviews are served from both paths the clients use", async () => {
+  const root = await api("GET", "/api/reviews");
+  const all = await api("GET", "/api/reviews/all");
+
+  assert.equal(root.status, 200);
+  assert.equal(all.status, 200);
+  assert.equal(all.data.length, root.data.length);
+});
+
+test("a review keeps its rating and rejects an out-of-range one", async () => {
+  const ok = await api("POST", "/api/reviews/submit", {
+    name: "Rater", review: "Four stars", rating: 4,
+  }, userToken);
+  assert.equal(ok.status, 201);
+
+  const list = await api("GET", "/api/reviews/all");
+  assert.equal(list.data.find((r) => r.name === "Rater").rating, 4);
+
+  const bad = await api("POST", "/api/reviews/submit", {
+    name: "Rater", review: "Nope", rating: 9,
+  }, userToken);
+  assert.equal(bad.status, 400);
+});

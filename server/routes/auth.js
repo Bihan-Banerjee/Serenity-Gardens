@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import { protect } from '../middleware/auth.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,10 +12,18 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const signToken = (user) =>
   jwt.sign(
-    { id: user._id, email: user.email, isAdmin: user.isAdmin },
+    { id: user._id, email: user.email, isAdmin: user.isAdmin || false },
     process.env.JWT_SECRET,
     { expiresIn: '7d' }
   );
+
+const publicUser = (user) => ({
+  _id: user._id,
+  id: user._id,
+  name: user.name,
+  email: user.email,
+  isAdmin: user.isAdmin || false,
+});
 
 router.post('/register', async (req, res) => {
   try {
@@ -53,11 +62,12 @@ router.post('/register', async (req, res) => {
       name: trimmedName,
       email: trimmedEmail,
       password: hashedPassword,
+      isAdmin: false,
     });
 
     res.status(201).json({
       token: signToken(newUser),
-      user: { id: newUser._id, name: newUser.name, email: newUser.email },
+      user: publicUser(newUser),
     });
   } catch (err) {
     if (err && err.code === 11000) {
@@ -85,11 +95,57 @@ router.post('/login', async (req, res) => {
 
     res.json({
       token: signToken(user),
-      user: { id: user._id, name: user.name, email: user.email },
+      user: publicUser(user),
     });
   } catch (err) {
     console.error('Login failed:', err);
     res.status(500).json({ message: 'Login failed' });
+  }
+});
+
+
+router.get('/me', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) return res.status(401).json({ message: 'Not authorized' });
+
+    res.json(publicUser(user));
+  } catch (err) {
+    console.error('Failed to load current user:', err);
+    res.status(500).json({ message: 'Failed to load current user' });
+  }
+});
+
+
+router.post('/admin/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (typeof email !== 'string' || typeof password !== 'string') {
+      return res.status(400).json({ message: 'Invalid admin credentials' });
+    }
+
+    const user = await User.findOne({ email: email.trim() });
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid admin credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid admin credentials' });
+    }
+
+    if (!user.isAdmin) {
+      return res.status(403).json({ message: 'Admin access required' });
+    }
+
+    res.json({
+      token: signToken(user),
+      user: publicUser(user),
+    });
+  } catch (err) {
+    console.error('Admin login error:', err);
+    res.status(500).json({ message: 'Admin login failed' });
   }
 });
 
