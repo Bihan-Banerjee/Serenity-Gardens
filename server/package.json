@@ -36,5 +36,10 @@
     "mongodbMemoryServer": {
       "disablePostinstall": true
     }
+  },
+  "overrides": {
+    "nodemon": {
+      "minimatch": "^11.0.5"
+    }
   }
 }
