@@ -3,6 +3,11 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { protect } from '../middleware/auth.js';
+import {
+  ADDRESS_MAX_LENGTH,
+  sanitiseOptionalText,
+  sanitisePhone,
+} from '../utils/orderFields.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -22,12 +27,14 @@ const publicUser = (user) => ({
   id: user._id,
   name: user.name,
   email: user.email,
+  phone: user.phone || '',
+  address: user.address || '',
   isAdmin: user.isAdmin || false,
 });
 
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone, address } = req.body;
 
     if (
       typeof name !== 'string' ||
@@ -52,6 +59,12 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'Password must be at least 8 characters' });
     }
 
+    const parsedPhone = sanitisePhone(phone);
+    if (!parsedPhone.ok) return res.status(400).json({ message: parsedPhone.message });
+
+    const parsedAddress = sanitiseOptionalText(address, 'address', ADDRESS_MAX_LENGTH);
+    if (!parsedAddress.ok) return res.status(400).json({ message: parsedAddress.message });
+
     const userExists = await User.findOne({ email: trimmedEmail });
     if (userExists) return res.status(400).json({ message: 'User already exists' });
 
@@ -62,6 +75,8 @@ router.post('/register', async (req, res) => {
       name: trimmedName,
       email: trimmedEmail,
       password: hashedPassword,
+      phone: parsedPhone.value,
+      address: parsedAddress.value,
       isAdmin: false,
     });
 
@@ -113,6 +128,46 @@ router.get('/me', protect, async (req, res) => {
   } catch (err) {
     console.error('Failed to load current user:', err);
     res.status(500).json({ message: 'Failed to load current user' });
+  }
+});
+
+
+// Updates contact details only. There is deliberately no code path here that
+// can write isAdmin, email, password or _id: the update object is built from a
+// fixed whitelist, so unknown and $-prefixed keys in the body are ignored.
+router.patch('/me', protect, async (req, res) => {
+  try {
+    const { phone, address } = req.body;
+
+    const updates = {};
+
+    if (phone !== undefined) {
+      const parsedPhone = sanitisePhone(phone);
+      if (!parsedPhone.ok) return res.status(400).json({ message: parsedPhone.message });
+      updates.phone = parsedPhone.value === undefined ? '' : parsedPhone.value;
+    }
+
+    if (address !== undefined) {
+      const parsedAddress = sanitiseOptionalText(address, 'address', ADDRESS_MAX_LENGTH);
+      if (!parsedAddress.ok) return res.status(400).json({ message: parsedAddress.message });
+      updates.address = parsedAddress.value === undefined ? '' : parsedAddress.value;
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ message: 'Nothing to update' });
+    }
+
+    const user = await User.findByIdAndUpdate(req.user.id, updates, {
+      new: true,
+      runValidators: true,
+    }).select('-password');
+
+    if (!user) return res.status(401).json({ message: 'Not authorized' });
+
+    res.json(publicUser(user));
+  } catch (err) {
+    console.error('Failed to update profile:', err);
+    res.status(500).json({ message: 'Failed to update profile' });
   }
 });
 

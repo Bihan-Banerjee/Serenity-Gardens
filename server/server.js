@@ -72,6 +72,9 @@ const authLimiterOptions = {
 // bucket for admin login and lock the owner out.
 const authLimiter = rateLimit(authLimiterOptions);
 const adminAuthLimiter = rateLimit(authLimiterOptions);
+// Also separate, so a login brute-force cannot block new sign-ups from an IP
+// that many legitimate customers may share behind NAT.
+const registerLimiter = rateLimit(authLimiterOptions);
 
 const paymentLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -88,16 +91,24 @@ app.get("/health", (req, res) => {
   });
 });
 
+// Registered before the rate limiter: the mobile app pings this to keep the
+// Render instance awake, and a liveness probe that can be throttled into
+// failure is worse than useless. No database access, no information disclosed.
+app.get("/api/health", (req, res) => {
+  res.json({ ok: true });
+});
+
 app.use("/api", apiLimiter);
 
 // Only the credential-checking endpoints get the strict bucket. /api/auth/me is
 // called on every page load to restore the session, so it stays on apiLimiter.
 app.use("/api/auth/login", authLimiter);
-app.use("/api/auth/register", authLimiter);
+app.use("/api/auth/register", registerLimiter);
 app.use("/api/auth/admin/login", authLimiter);
 app.use("/api/admin/login", adminAuthLimiter);
 app.use("/api/orders/create-razorpay-order", paymentLimiter);
 app.use("/api/orders/verify-payment", paymentLimiter);
+app.use("/api/orders/verify", paymentLimiter);
 
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/auth", authRoutes);
