@@ -5,6 +5,10 @@ import sharp from "sharp";
 import cloudinary from "../utils/cloudinary.js";
 import streamifier from "streamifier";
 import { protect, adminProtect } from "../middleware/auth.js";
+import { sanitiseOptionalText } from "../utils/orderFields.js";
+
+const CATEGORY_MAX_LENGTH = 60;
+const UNIT_MAX_LENGTH = 20;
 
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -30,10 +34,20 @@ const uploadImage = (req, res, next) => {
 
 router.post("/", protect, adminProtect, uploadImage, async (req, res) => {
   try {
-    const { name, price, stock, description } = req.body;
+    const { name, price, stock, description, category, unit } = req.body;
 
     if (!name || !price || !stock) {
       return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const parsedCategory = sanitiseOptionalText(category, "category", CATEGORY_MAX_LENGTH);
+    if (!parsedCategory.ok) {
+      return res.status(400).json({ message: parsedCategory.message });
+    }
+
+    const parsedUnit = sanitiseOptionalText(unit, "unit", UNIT_MAX_LENGTH);
+    if (!parsedUnit.ok) {
+      return res.status(400).json({ message: parsedUnit.message });
     }
 
     let imageUrl = "";
@@ -69,6 +83,9 @@ router.post("/", protect, adminProtect, uploadImage, async (req, res) => {
       price: Number(price),
       stock: Number(stock),
       description,
+      category: parsedCategory.value,
+      // Left undefined so the schema default applies.
+      unit: parsedUnit.value || undefined,
       image: imageUrl,
       finalized: false,
     });
@@ -108,7 +125,14 @@ router.get("/all", protect, adminProtect, async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const items = await Item.find({ finalized: true });
+    const filter = { finalized: true };
+
+    // Only a plain string is accepted, so ?category[$ne]= cannot inject an operator.
+    if (typeof req.query.category === "string" && req.query.category.trim()) {
+      filter.category = req.query.category.trim();
+    }
+
+    const items = await Item.find(filter);
     res.json(items);
   } catch (err) {
     console.error("Error fetching finalized items:", err);
@@ -116,9 +140,25 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Registered after "/all" so that path is not swallowed by ":id".
+router.get("/:id", async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id).catch(() => null);
+
+    if (!item || !item.finalized) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    res.json(item);
+  } catch (err) {
+    console.error("Error fetching item:", err);
+    res.status(500).json({ message: "Error fetching item" });
+  }
+});
+
 router.patch("/:id", protect, adminProtect, async (req, res) => {
   try {
-    const { stock, price } = req.body;
+    const { stock, price, category, unit } = req.body;
     const updateData = {};
 
     if (stock !== undefined) {
@@ -135,6 +175,22 @@ router.patch("/:id", protect, adminProtect, async (req, res) => {
         return res.status(400).json({ message: "Price must be a positive number" });
       }
       updateData.price = parsedPrice;
+    }
+
+    if (category !== undefined) {
+      const parsedCategory = sanitiseOptionalText(category, "category", CATEGORY_MAX_LENGTH);
+      if (!parsedCategory.ok) {
+        return res.status(400).json({ message: parsedCategory.message });
+      }
+      updateData.category = parsedCategory.value === undefined ? "" : parsedCategory.value;
+    }
+
+    if (unit !== undefined) {
+      const parsedUnit = sanitiseOptionalText(unit, "unit", UNIT_MAX_LENGTH);
+      if (!parsedUnit.ok) {
+        return res.status(400).json({ message: parsedUnit.message });
+      }
+      updateData.unit = parsedUnit.value || "pc";
     }
 
     if (Object.keys(updateData).length === 0) {

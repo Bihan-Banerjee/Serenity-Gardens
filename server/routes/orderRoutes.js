@@ -4,6 +4,12 @@ import dotenv from "dotenv";
 import Item from "../models/Item.js";
 import PendingOrder from "../models/PendingOrder.js";
 import { protect, adminProtect } from "../middleware/auth.js";
+import {
+  MAX_ITEMS_PER_ORDER,
+  isOnlinePaymentMethod,
+  isRecognisedPaymentMethod,
+  sanitiseDeliveryAddress,
+} from "../utils/orderFields.js";
 import crypto from "crypto";
 import Razorpay from 'razorpay';
 dotenv.config();
@@ -11,60 +17,157 @@ dotenv.config();
 const router = express.Router();
 
 const razorpayInstance = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID, 
-    key_secret: process.env.RAZORPAY_KEY_SECRET, 
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
+
+/**
+ * Resolves the requested items against the database. Prices and names always
+ * come from the DB, never from the request. Accepts either `id` (website) or
+ * `itemId` (mobile app) as the item reference.
+ */
+const priceItems = async (items) => {
+  if (!Array.isArray(items) || items.length === 0) {
+    return { ok: false, message: "No items provided" };
+  }
+
+  if (items.length > MAX_ITEMS_PER_ORDER) {
+    return {
+      ok: false,
+      message: `An order cannot contain more than ${MAX_ITEMS_PER_ORDER} items`,
+    };
+  }
+
+  const priced = [];
+
+  for (const item of items) {
+    if (typeof item !== "object" || item === null) {
+      return { ok: false, message: "Invalid item" };
+    }
+
+    const quantity = Number(item.quantity);
+
+    if (!Number.isInteger(quantity) || quantity <= 0) {
+      return { ok: false, message: "Invalid quantity" };
+    }
+
+    const reference = item.id !== undefined ? item.id : item.itemId;
+
+    if (typeof reference !== "string") {
+      return { ok: false, message: "One or more items are no longer available" };
+    }
+
+    const product = await Item.findById(reference).catch(() => null);
+
+    if (!product) {
+      return { ok: false, message: "One or more items are no longer available" };
+    }
+
+    if (product.stock < quantity) {
+      return {
+        ok: false,
+        message: `Only ${product.stock} of ${product.name} left in stock`,
+      };
+    }
+
+    priced.push({
+      id: product._id.toString(),
+      name: product.name,
+      price: product.price,
+      quantity,
+    });
+  }
+
+  return { ok: true, items: priced };
+};
+
+const rupeeTotal = (items) =>
+  items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+const paiseTotal = (items) =>
+  items.reduce((sum, item) => sum + Math.round(item.price * 100) * item.quantity, 0);
+
+/**
+ * Creates the Razorpay order and the PendingOrder that records what the server
+ * expects to be paid. No real Order exists until the payment is verified.
+ */
+const startOnlinePayment = async (req, res, pricedItems, deliveryAddress) => {
+  const expectedAmount = paiseTotal(pricedItems);
+
+  if (expectedAmount <= 0) {
+    return res.status(400).json({ message: 'Invalid order total' });
+  }
+
+  const order = await razorpayInstance.orders.create({
+    amount: expectedAmount,
+    currency: 'INR',
+    receipt: `receipt_order_${Date.now()}`,
+  });
+
+  if (!order) {
+    return res.status(500).json({ message: 'Razorpay order creation failed' });
+  }
+
+  await PendingOrder.create({
+    razorpayOrderId: order.id,
+    userId: req.user.id,
+    items: pricedItems,
+    expectedAmount,
+    deliveryAddress,
+    paymentMethod: 'online',
+  });
+
+  // `id` is what the website reads, `razorpayOrderId` what the mobile app reads.
+  return res.json({
+    id: order.id,
+    razorpayOrderId: order.id,
+    amount: order.amount,
+    currency: order.currency,
+  });
+};
 
 router.post("/", protect, async (req, res) => {
   try {
-    const { items } = req.body;
+    const { items, paymentMethod, deliveryAddress } = req.body;
 
-    if (!Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ message: "No items provided" });
+    if (!isRecognisedPaymentMethod(paymentMethod)) {
+      return res.status(400).json({ message: "Unsupported payment method" });
     }
 
-    const orderItems = [];
+    const address = sanitiseDeliveryAddress(deliveryAddress);
 
-    for (const item of items) {
-      const quantity = Number(item.quantity);
-
-      if (!Number.isInteger(quantity) || quantity <= 0) {
-        return res.status(400).json({ message: "Invalid quantity" });
-      }
-
-      const product = await Item.findById(item.id).catch(() => null);
-
-      if (!product) {
-        return res
-          .status(400)
-          .json({ message: "One or more items are no longer available" });
-      }
-
-      orderItems.push({
-        id: product._id.toString(),
-        name: product.name,
-        price: product.price,
-        quantity,
-      });
+    if (!address.ok) {
+      return res.status(400).json({ message: address.message });
     }
 
-    const totalAmount = orderItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
+    const priced = await priceItems(items);
+
+    if (!priced.ok) {
+      return res.status(400).json({ message: priced.message });
+    }
+
+    // Online payments do not create an Order here: the Order is created once
+    // the payment is verified, so an abandoned payment leaves nothing behind.
+    if (isOnlinePaymentMethod(paymentMethod)) {
+      return await startOnlinePayment(req, res, priced.items, address.value);
+    }
 
     const newOrder = new Order({
       userId: req.user.id,
-      items: orderItems,
-      totalAmount,
+      items: priced.items,
+      totalAmount: rupeeTotal(priced.items),
       paid: false,
+      paymentMethod: "cod",
+      deliveryAddress: address.value,
     });
 
     await newOrder.save();
 
-    res
-      .status(201)
-      .json({ message: "Order placed successfully", orderId: newOrder._id });
+    res.status(201).json({
+      message: "Order placed successfully",
+      orderId: newOrder._id,
+      paymentMethod: "cod",
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to place order" });
@@ -76,7 +179,11 @@ router.patch("/:id", protect, adminProtect, async (req, res) => {
     const { id } = req.params;
     const { paid } = req.body;
 
-    const order = await Order.findById(id);
+    if (typeof paid !== "boolean") {
+      return res.status(400).json({ message: "paid must be true or false" });
+    }
+
+    const order = await Order.findById(id).catch(() => null);
     if (!order) return res.status(404).json({ message: "Order not found" });
 
     if (paid && !order.paid) {
@@ -93,6 +200,14 @@ router.patch("/:id", protect, adminProtect, async (req, res) => {
             quantity: orderItem.quantity,
           });
         }
+      }
+    } else if (!paid && order.paid) {
+      // Reversing the flag returns the stock, so toggling cannot drain it.
+      for (const orderItem of order.items) {
+        await Item.findOneAndUpdate(
+          { _id: orderItem.id },
+          { $inc: { stock: orderItem.quantity } }
+        ).catch(() => null);
       }
     }
 
@@ -148,77 +263,28 @@ router.get("/my-latest", protect, async (req, res) => {
 
 router.post('/create-razorpay-order', protect, async (req, res) => {
     try {
-        const { items } = req.body;
+        const { items, deliveryAddress } = req.body;
 
-        if (!Array.isArray(items) || items.length === 0) {
-            return res.status(400).json({ message: 'No items provided' });
+        const address = sanitiseDeliveryAddress(deliveryAddress);
+
+        if (!address.ok) {
+            return res.status(400).json({ message: address.message });
         }
 
-        const pricedItems = [];
+        const priced = await priceItems(items);
 
-        for (const item of items) {
-            const quantity = Number(item.quantity);
-
-            if (!Number.isInteger(quantity) || quantity <= 0) {
-                return res.status(400).json({ message: 'Invalid quantity' });
-            }
-
-            const product = await Item.findById(item.id).catch(() => null);
-
-            if (!product) {
-                return res
-                    .status(400)
-                    .json({ message: 'One or more items are no longer available' });
-            }
-
-            if (product.stock < quantity) {
-                return res.status(400).json({
-                    message: `Only ${product.stock} of ${product.name} left in stock`,
-                });
-            }
-
-            pricedItems.push({
-                id: product._id.toString(),
-                name: product.name,
-                price: product.price,
-                quantity,
-            });
+        if (!priced.ok) {
+            return res.status(400).json({ message: priced.message });
         }
 
-        const expectedAmount = pricedItems.reduce(
-            (sum, item) => sum + Math.round(item.price * 100) * item.quantity,
-            0
-        );
-
-        if (expectedAmount <= 0) {
-            return res.status(400).json({ message: 'Invalid order total' });
-        }
-
-        const order = await razorpayInstance.orders.create({
-            amount: expectedAmount,
-            currency: 'INR',
-            receipt: `receipt_order_${Date.now()}`,
-        });
-
-        if (!order) {
-            return res.status(500).json({ message: 'Razorpay order creation failed' });
-        }
-
-        await PendingOrder.create({
-            razorpayOrderId: order.id,
-            userId: req.user.id,
-            items: pricedItems,
-            expectedAmount,
-        });
-
-        res.json({ id: order.id, amount: order.amount, currency: order.currency });
+        return await startOnlinePayment(req, res, priced.items, address.value);
     } catch (error) {
         console.error('Razorpay order creation error:', error);
         res.status(500).json({ message: 'Server error creating Razorpay order' });
     }
 });
 
-router.post('/verify-payment', protect, async (req, res) => {
+const verifyPayment = async (req, res) => {
     const {
         razorpay_order_id,
         razorpay_payment_id,
@@ -293,13 +359,7 @@ router.post('/verify-payment', protect, async (req, res) => {
             return res.status(400).json({ message: 'Payment has already been processed' });
         }
 
-        const newOrder = new Order({
-            userId: pending.userId,
-            items: pending.items,
-            totalAmount: pending.expectedAmount / 100,
-            paid: true,
-            razorpayPaymentId: razorpay_payment_id,
-        });
+        const newOrder = new Order(orderFromPending(pending, razorpay_payment_id));
 
         await newOrder.save();
 
@@ -324,7 +384,29 @@ router.post('/verify-payment', protect, async (req, res) => {
         console.error('Payment verification/Order creation error:', error);
         res.status(500).json({ message: 'Server error during payment verification or order creation' });
     }
+};
+
+/**
+ * Builds the paid Order from a verified PendingOrder. Exported so the carry-over
+ * of delivery details can be tested without calling Razorpay.
+ */
+export const orderFromPending = (pending, razorpayPaymentId) => ({
+  userId: pending.userId,
+  items: pending.items,
+  totalAmount: pending.expectedAmount / 100,
+  paid: true,
+  razorpayPaymentId,
+  deliveryAddress: pending.deliveryAddress
+    ? (typeof pending.deliveryAddress.toObject === 'function'
+        ? pending.deliveryAddress.toObject()
+        : pending.deliveryAddress)
+    : undefined,
+  paymentMethod: 'online',
 });
+
+router.post('/verify-payment', protect, verifyPayment);
+// The mobile app posts to /verify; same handler.
+router.post('/verify', protect, verifyPayment);
 
 
 export default router;
